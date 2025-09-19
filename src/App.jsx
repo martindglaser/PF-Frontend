@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:5001/analizar";
+const API_URL = "http://localhost:5288/api/Analysis";
 
 const CATEGORIES = [
     { key: "ui", label: "UI/Styles" },
@@ -50,8 +50,9 @@ function getSeverity(data) {
 export default function App() {
     // Nav + configuración
     const [tab, setTab] = useState("dashboard");
-    const [url, setUrl] = useState("");
-    const [tolerancia, setTolerancia] = useState("media");
+    const [Url, setUrl] = useState("");
+    const [Tolerance, setTolerance] = useState("medium");
+    const [Language, setLanguage] = useState("es");
     const [cats, setCats] = useState(() =>
         Object.fromEntries(CATEGORIES.map((c) => [c.key, true]))
     );
@@ -81,7 +82,7 @@ export default function App() {
         setError("");
         setResult(null);
 
-        if (!/^https?:\/\//i.test(url)) {
+        if (!/^https?:\/\//i.test(Url)) {
             setError("Ingresá una URL con http(s)://");
             return;
         }
@@ -89,7 +90,7 @@ export default function App() {
         const started = performance.now();
         setLoading(true);
         try {
-            const payload = { url, tolerancia, categorias: selectedCats };
+            const payload = { Url, Tolerance, Language, categorias: selectedCats };
             const res = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -107,9 +108,10 @@ export default function App() {
 
             const entry = {
                 id: Date.now(),
-                url,
+                Url,
                 fecha: new Date().toISOString(),
-                tolerancia,
+                Tolerance,
+                Language,
                 categorias: selectedCats,
                 durationMs: Math.round(elapsed),
                 counts,
@@ -156,8 +158,9 @@ export default function App() {
         const rows = [
             [
                 "date",
-                "url",
-                "tolerance",
+                "Url",
+                "Tolerance",
+                "Language",
                 "categories",
                 "duration",
                 "severity",
@@ -170,8 +173,9 @@ export default function App() {
         history.forEach((h) =>
             rows.push([
                 h.fecha,
-                h.url,
-                h.tolerancia,
+                h.Url,
+                h.Tolerance,
+                h.Language,
                 h.categorias.join("|"),
                 formatDuration(h.durationMs),
                 h.severity,
@@ -265,8 +269,8 @@ export default function App() {
                                         {history.slice(0, 5).map((h) => (
                                             <li key={h.id} className="run">
                                                 <div className="run-url">
-                                                    <a href={h.url} target="_blank" rel="noreferrer">
-                                                        {h.url}
+                                                    <a href={h.Url} target="_blank" rel="noreferrer">
+                                                        {h.Url}
                                                     </a>
                                                 </div>
                                                 <div className="run-meta">
@@ -306,7 +310,7 @@ export default function App() {
                                             className="input"
                                             type="url"
                                             placeholder="https://example.com"
-                                            value={url}
+                                            value={Url}
                                             onChange={(e) => setUrl(e.target.value)}
                                         />
                                     </label>
@@ -332,12 +336,24 @@ export default function App() {
                                             <span>Sensitivity</span>
                                             <select
                                                 className="select"
-                                                value={tolerancia}
-                                                onChange={(e) => setTolerancia(e.target.value)}
+                                                value={Tolerance}
+                                                onChange={(e) => setTolerance(e.target.value)}
                                             >
-                                                <option value="alta">Alta</option>
-                                                <option value="media">Media</option>
-                                                <option value="baja">Baja</option>
+                                                <option value="High">Alta</option>
+                                                <option value="Medium">Media</option>
+                                                <option value="Low">Baja</option>
+                                            </select>
+                                        </label>
+                                        <label className="field">
+                                            <span>Language</span>
+                                            <select
+                                                className="select"
+                                                value={Tolerance}
+                                                onChange={(e) => setLanguage(e.target.value)}
+                                            >
+                                                <option value="es">Español</option>
+                                                <option value="en">English</option>
+                                                <option value="it">Italiano</option>
                                             </select>
                                         </label>
 
@@ -379,8 +395,8 @@ export default function App() {
                                             {history.map((h) => (
                                                 <tr key={h.id}>
                                                     <td className="ellipsis">
-                                                        <a href={h.url} target="_blank" rel="noreferrer">
-                                                            {h.url}
+                                                        <a href={h.Url} target="_blank" rel="noreferrer">
+                                                            {h.Url}
                                                         </a>
                                                     </td>
                                                     <td>
