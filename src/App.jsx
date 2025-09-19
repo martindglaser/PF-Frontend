@@ -316,7 +316,7 @@ export default function App() {
                                     </label>
 
                                     <div className="field">
-                                        <span>Test Categories</span>
+                                        <span>Test Categoriess</span>
                                         <div className="chips">
                                             {CATEGORIES.map((c) => (
                                                 <label key={c.key} className="chip">
@@ -333,7 +333,7 @@ export default function App() {
 
                                     <div className="row">
                                         <label className="field">
-                                            <span>Sensitivity</span>
+                                            <span>Tolerance</span>
                                             <select
                                                 className="select"
                                                 value={Tolerance}
@@ -514,6 +514,11 @@ export default function App() {
                                             {JSON.stringify(result, null, 2)}
                                         </pre>
                                     </details>
+                                    <img
+                                        className="screenshot"
+                                        src={`http://localhost:5288/assets/screenshots/${result.id}.png`}
+                                        alt="Website Screenshot"
+                                    />
                                 </>
                             )}
                         </div>
