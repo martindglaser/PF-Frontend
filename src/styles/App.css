@@ -55,7 +55,9 @@ body {
 .content {
     padding: 18px 24px;
     display: grid;
-    gap: 18px
+    gap: 18px;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* ===== Sidebar ===== */
@@ -185,7 +187,8 @@ body {
 .cards {
     display: grid;
     grid-template-columns: repeat(4,1fr);
-    gap: 12px
+    gap: 12px;
+    width: 100%;
 }
 
 @media (max-width:1000px) {
@@ -206,8 +209,9 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 16px
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    width: 100%;
 }
 
 @media (max-width:1100px) {
@@ -233,6 +237,16 @@ body {
     gap: 12px
 }
 
+.row {
+    display: flex;
+    gap: 12px;
+    align-items: end;
+}
+
+.grow {
+    flex: 1;
+}
+
 .field {
     display: flex;
     flex-direction: column;
@@ -251,24 +265,6 @@ body {
         color: #9aa4b2;
         opacity: 1
     }
-
-.chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px
-}
-
-.chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border: 1px solid #2a3550;
-    border-radius: 999px;
-    background: #0f1626;
-    color: #cbd5e1;
-    font-size: 12px;
-}
 
 /* ===== Buttons ===== */
 .btn {

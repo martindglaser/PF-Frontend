@@ -1,16 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import "../styles/App.css";
 
-const API_URL = "http://localhost:5288/api/Analysis";
-
-const CATEGORIES = [
-    { key: "ui", label: "UI/Styles" },
-    { key: "forms", label: "Forms" },
-    { key: "links", label: "Links" },
-    { key: "images", label: "Images" },
-    { key: "text", label: "Text" },
-    { key: "responsive", label: "Responsiveness" },
-];
+const API_URL = import.meta.env.VITE_API_URL;
 
 const TABS = [
     { key: "dashboard", label: "Dashboard", icon: "🏠" },
@@ -53,9 +44,6 @@ export default function App() {
     const [Url, setUrl] = useState("");
     const [Tolerance, setTolerance] = useState("medium");
     const [Language, setLanguage] = useState("es");
-    const [cats, setCats] = useState(() =>
-        Object.fromEntries(CATEGORIES.map((c) => [c.key, true]))
-    );
 
     // Estado ejecución
     const [loading, setLoading] = useState(false);
@@ -72,11 +60,6 @@ export default function App() {
         localStorage.setItem("qaHistoryV1", JSON.stringify(history));
     }, [history]);
 
-    const selectedCats = useMemo(
-        () => CATEGORIES.filter((c) => cats[c.key]).map((c) => c.label),
-        [cats]
-    );
-
     async function runAnalysis(e) {
         e?.preventDefault?.();
         setError("");
@@ -90,7 +73,7 @@ export default function App() {
         const started = performance.now();
         setLoading(true);
         try {
-            const payload = { Url, Tolerance, Language, categorias: selectedCats };
+            const payload = { Url, Tolerance, Language };
             const res = await fetch(API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -112,7 +95,6 @@ export default function App() {
                 fecha: new Date().toISOString(),
                 Tolerance,
                 Language,
-                categorias: selectedCats,
                 durationMs: Math.round(elapsed),
                 counts,
                 total,
@@ -142,9 +124,6 @@ export default function App() {
     }, [history]);
 
     // Helpers UI
-    function toggleCat(key) {
-        setCats((p) => ({ ...p, [key]: !p[key] }));
-    }
     function badgeClass(sev) {
         return `pill ${sev}`;
     }
@@ -161,7 +140,6 @@ export default function App() {
                 "Url",
                 "Tolerance",
                 "Language",
-                "categories",
                 "duration",
                 "severity",
                 "A",
@@ -176,7 +154,6 @@ export default function App() {
                 h.Url,
                 h.Tolerance,
                 h.Language,
-                h.categorias.join("|"),
                 formatDuration(h.durationMs),
                 h.severity,
                 h.counts.alto,
@@ -314,22 +291,6 @@ export default function App() {
                                             onChange={(e) => setUrl(e.target.value)}
                                         />
                                     </label>
-
-                                    <div className="field">
-                                        <span>Test Categoriess</span>
-                                        <div className="chips">
-                                            {CATEGORIES.map((c) => (
-                                                <label key={c.key} className="chip">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={!!cats[c.key]}
-                                                        onChange={() => toggleCat(c.key)}
-                                                    />
-                                                    {c.label}
-                                                </label>
-                                            ))}
-                                        </div>
-                                    </div>
 
                                     <div className="row">
                                         <label className="field">
