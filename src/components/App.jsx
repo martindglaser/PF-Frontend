@@ -1,5 +1,5 @@
 ﻿import { useEffect, useMemo, useState } from "react";
-import "./App.css";
+import "../styles/App.css";
 
 const API_URL = "http://localhost:5288/api/Analysis";
 
