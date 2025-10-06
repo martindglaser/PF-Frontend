@@ -1,0 +1,163 @@
+/* ===== History table ===== */
+.table-wrap {
+    overflow: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text);
+}
+
+.table th, .table td {
+    border-bottom: 1px solid #263247;
+    padding: 10px 8px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.table th {
+    color: #cbd5e1;
+}
+
+/* ===== Recent runs ===== */
+.runs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.run {
+    padding: 10px 12px;
+    border: 1px solid #243043;
+    border-radius: 12px;
+    background: #0f172a;
+}
+
+.run-url a {
+    color: #e5e7eb;
+    text-decoration: none;
+}
+
+.run-url a:hover {
+    text-decoration: underline;
+}
+
+.run-meta {
+    color: #9aa4b2;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.run-actions {
+    margin-top: 8px;
+}
+
+/* ===== AI Analysis ===== */
+.analysis-head {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.pill-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.findings {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.finding {
+    border: 1px solid #263247;
+    border-radius: 12px;
+    padding: 12px;
+    background: #0f172a;
+}
+
+.finding-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: #1f2540;
+    color: #c7d2fe;
+    font-size: 12px;
+}
+
+.tag.sm {
+    font-size: 11px;
+}
+
+.tag.alto {
+    background: rgba(239,68,68,.15);
+    color: #fca5a5;
+}
+
+.tag.medio {
+    background: rgba(245,158,11,.15);
+    color: #fbbf24;
+}
+
+.tag.bajo {
+    background: rgba(16,185,129,.15);
+    color: #6ee7b7;
+}
+
+.finding-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.finding-desc {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.code {
+    white-space: pre-wrap;
+    background: #0b1324;
+    border: 1px solid #253149;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 12px;
+    color: #e2e8f0;
+    font-family: 'Courier New', monospace;
+}
+
+.list {
+    padding-left: 18px;
+}
+
+.raw {
+    margin-top: 10px;
+}
+
+.raw summary {
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.screenshot {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 16px;
+    border: 1px solid var(--border);
+}

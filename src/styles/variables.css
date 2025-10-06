@@ -1,0 +1,26 @@
+:root {
+    /* Base dark */
+    --bg: #0b0f1a; /* fondo general */
+    --card: #111827; /* tarjetas/paneles */
+    --text: #e5e7eb; /* texto principal */
+    --muted: #94a3b8; /* texto secundario */
+    --border: #1f2937; /* bordes oscuros */
+    --shadow: rgba(0,0,0,.35);
+    
+    /* Acentos violeta */
+    --accent: #7c3aed;
+    --accent-2: #60a5fa;
+    --accent-ink: #ffffff;
+    
+    /* Sidebar */
+    --side-bg: #0d1220;
+    --side-ink: #e6e7ec;
+    --side-muted: #a1a6b0;
+    --side-active: rgba(124,58,237,.2);
+    --side-border: rgba(255,255,255,.06);
+    
+    /* Estados */
+    --ok: #10b981;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+}

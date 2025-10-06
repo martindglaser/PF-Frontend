@@ -1,0 +1,88 @@
+/* ===== Cards & grids ===== */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 16px 42px var(--shadow);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 12px;
+    width: 100%;
+}
+
+@media (max-width:1000px) {
+    .cards {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+.kpi-title {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.kpi-num {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    width: 100%;
+}
+
+@media (max-width:1100px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.card-title {
+    font-weight: 800;
+}
+
+/* ===== Pills / status ===== */
+.pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.pill.ok {
+    background: rgba(16,185,129,.18);
+    color: #34d399;
+}
+
+.pill.medium {
+    background: rgba(245,158,11,.18);
+    color: #fbbf24;
+}
+
+.pill.high {
+    background: rgba(239,68,68,.2);
+    color: #fca5a5;
+}
+
+/* ===== Messages ===== */
+.error {
+    background: rgba(239,68,68,.15);
+    border: 1px solid rgba(239,68,68,.35);
+    color: #fecaca;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
