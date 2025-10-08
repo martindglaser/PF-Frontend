@@ -8,7 +8,6 @@ import Dashboard from "./Dashboard";
 import History from "./History";
 import Reports from "./Reports";
 import Analysis from "./Analysis";
-import Settings from "./Settings";
 
 export default function App() {
     // Nav + configuración
@@ -65,8 +64,6 @@ export default function App() {
                 return <Reports history={history} />;
             case "analysis":
                 return <Analysis result={result} />;
-            case "settings":
-                return <Settings />;
             default:
                 return <Dashboard />;
         }

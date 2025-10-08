@@ -1,29 +1,33 @@
 import { TABS } from "../utils/constants";
+import { t } from "../i18n";
 
 export default function Sidebar({ activeTab, onTabChange }) {
     return (
         <aside className="sidebar">
             <div className="brand-row">
                 <div className="logo-circle">AI</div>
-                <div className="brand-txt">QA Dashboard</div>
+                <div className="brand-txt">{t('brand.title')}</div>
             </div>
 
             <nav className="nav">
-                {TABS.map((t) => (
-                    <button
-                        key={t.key}
-                        className={`nav-item ${activeTab === t.key ? "active" : ""}`}
-                        onClick={() => onTabChange(t.key)}
-                        title={t.label}
-                    >
-                        <span className="nav-ico">{t.icon}</span>
-                        <span>{t.label}</span>
-                    </button>
-                ))}
+                {TABS.map((tabItem) => {
+                    const label = t(`nav.${tabItem.key}`);
+                    return (
+                        <button
+                            key={tabItem.key}
+                            className={`nav-item ${activeTab === tabItem.key ? "active" : ""}`}
+                            onClick={() => onTabChange(tabItem.key)}
+                            title={label}
+                        >
+                            <span className="nav-ico">{tabItem.icon}</span>
+                            <span>{label}</span>
+                        </button>
+                    );
+                })}
             </nav>
 
             <div className="sidebar-foot">
-                <div className="muted">Proyecto colaborativo</div>
+                <div className="muted">{t('brand.footer')}</div>
             </div>
         </aside>
     );

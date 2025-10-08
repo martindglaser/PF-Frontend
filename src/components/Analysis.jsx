@@ -1,9 +1,10 @@
 import { getSeverity, badgeClass, sevLabel } from "../utils/helpers";
+import { t } from "../i18n";
 
 export default function Analysis({ result }) {
     return (
         <>
-            <h1 className="page-title">AI Analysis</h1>
+            <h1 className="page-title">{t('analysis.title')}</h1>
             <div className="card">
                 {!result ? (
                     <div className="muted">
@@ -47,7 +48,7 @@ export default function Analysis({ result }) {
                         ) : Array.isArray(result.modificaciones) &&
                           result.modificaciones.length > 0 ? (
                             <>
-                                <h3>Modificaciones sugeridas</h3>
+                                <h3>{t('analysis.modifications')}</h3>
                                 <ul className="list">
                                     {result.modificaciones.map((m, i) => (
                                         <li key={i}>{m}</li>
@@ -55,7 +56,7 @@ export default function Analysis({ result }) {
                                 </ul>
                             </>
                         ) : (
-                            <div className="muted">Sin hallazgos.</div>
+                            <div className="muted">{t('analysis.noFindings')}</div>
                         )}
 
                         <details className="raw">

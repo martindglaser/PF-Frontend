@@ -1,24 +1,25 @@
 import { formatDuration, badgeClass, sevLabel } from "../utils/helpers";
+import { t } from "../i18n";
 
 export default function History({ history, onViewResult, onTabChange }) {
     return (
         <>
-            <h1 className="page-title">Test History</h1>
+            <h1 className="page-title">{t('history.title')}</h1>
             <div className="card">
                 {history.length === 0 ? (
-                    <div className="muted">No hay tests registrados.</div>
+                    <div className="muted">{t('history.noTests')}</div>
                 ) : (
                     <div className="table-wrap">
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th>URL</th>
-                                    <th>Status</th>
-                                    <th>Findings</th>
-                                    <th>Criticality</th>
-                                    <th>Date</th>
-                                    <th>Duration</th>
-                                    <th>Action</th>
+                                    <th>{t('history.headers.url')}</th>
+                                    <th>{t('history.headers.status')}</th>
+                                    <th>{t('history.headers.findings')}</th>
+                                    <th>{t('history.headers.criticality')}</th>
+                                    <th>{t('history.headers.date')}</th>
+                                    <th>{t('history.headers.duration')}</th>
+                                    <th>{t('history.headers.action')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,7 +49,7 @@ export default function History({ history, onViewResult, onTabChange }) {
                                                     onTabChange("analysis");
                                                 }}
                                             >
-                                                View
+                                                {t('common.view')}
                                             </button>
                                         </td>
                                     </tr>

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { formatDuration, badgeClass, sevLabel, countCriticalities, getSeverity } from "../utils/helpers";
 import { API_URL } from "../utils/constants";
+import { t } from "../i18n";
 
 export default function Dashboard({ 
     history, 
@@ -39,7 +40,7 @@ export default function Dashboard({
         setResult(null);
 
         if (!/^https?:\/\//i.test(Url)) {
-            setError("Ingresá una URL con http(s)://");
+            setError(t('form.urlError'));
             return;
         }
 
@@ -84,23 +85,23 @@ export default function Dashboard({
 
     return (
         <>
-            <h1 className="page-title">QA Testing Dashboard</h1>
+            <h1 className="page-title">{t('dashboard.title')}</h1>
 
             <section className="cards">
                 <div className="card kpi">
-                    <div className="kpi-title">Total Tests</div>
+                    <div className="kpi-title">{t('dashboard.totalTests')}</div>
                     <div className="kpi-num">{kpi.total}</div>
                 </div>
                 <div className="card kpi">
-                    <div className="kpi-title">Success Rate</div>
+                    <div className="kpi-title">{t('dashboard.successRate')}</div>
                     <div className="kpi-num">{kpi.successRate}%</div>
                 </div>
                 <div className="card kpi">
-                    <div className="kpi-title">Critical Issues</div>
+                    <div className="kpi-title">{t('dashboard.criticalIssues')}</div>
                     <div className="kpi-num">{kpi.critical}</div>
                 </div>
                 <div className="card kpi">
-                    <div className="kpi-title">Avg. Execution</div>
+                    <div className="kpi-title">{t('dashboard.avgExecution')}</div>
                     <div className="kpi-num">{formatDuration(kpi.avgMs)}</div>
                 </div>
             </section>
@@ -109,11 +110,11 @@ export default function Dashboard({
                 {/* Últimas ejecuciones */}
                 <div className="card">
                     <div className="card-head">
-                        <div className="card-title">Recent Test Executions</div>
+                        <div className="card-title">{t('dashboard.recentTitle')}</div>
                     </div>
-                    {history.length === 0 ? (
-                        <div className="muted">Aún no hay ejecuciones.</div>
-                    ) : (
+                        {history.length === 0 ? (
+                            <div className="muted">{t('dashboard.noExecutions')}</div>
+                        ) : (
                         <ul className="runs">
                             {history.slice(0, 5).map((h) => (
                                 <li key={h.id} className="run">
@@ -123,7 +124,7 @@ export default function Dashboard({
                                         </a>
                                     </div>
                                     <div className="run-meta">
-                                        {new Date(h.fecha).toLocaleString()} · {h.total} findings ·{" "}
+                                        {new Date(h.fecha).toLocaleString()} · {h.total} {t('history.headers.findings')} ·{" "}
                                         <span className={badgeClass(h.severity)}>
                                             {sevLabel(h.severity)}
                                         </span>{" "}
@@ -137,7 +138,7 @@ export default function Dashboard({
                                                 onTabChange("analysis");
                                             }}
                                         >
-                                            View
+                                            {t('common.view')}
                                         </button>
                                     </div>
                                 </li>
@@ -149,12 +150,12 @@ export default function Dashboard({
                 {/* Configuración + Run */}
                 <div className="card">
                     <div className="card-head">
-                        <div className="card-title">Test Configuration</div>
+                        <div className="card-title">{t('dashboard.configTitle')}</div>
                     </div>
 
                     <form className="form" onSubmit={runAnalysis}>
                         <label className="field">
-                            <span>Website URL</span>
+                            <span>{t('dashboard.websiteUrl')}</span>
                             <input
                                 className="input"
                                 type="url"
@@ -166,33 +167,33 @@ export default function Dashboard({
 
                         <div className="row">
                             <label className="field">
-                                <span>Tolerance</span>
+                                            <span>{t('dashboard.tolerance')}</span>
                                 <select
                                     className="select"
                                     value={Tolerance}
                                     onChange={(e) => setTolerance(e.target.value)}
                                 >
-                                    <option value="High">Alta</option>
-                                    <option value="Medium">Media</option>
-                                    <option value="Low">Baja</option>
+                                    <option value="High">{t('dashboard.toleranceHigh')}</option>
+                                    <option value="Medium">{t('dashboard.toleranceMedium')}</option>
+                                    <option value="Low">{t('dashboard.toleranceLow')}</option>
                                 </select>
                             </label>
                             <label className="field">
-                                <span>Language</span>
+                                            <span>{t('dashboard.language')}</span>
                                 <select
                                     className="select"
                                     value={Language}
                                     onChange={(e) => setLanguage(e.target.value)}
                                 >
-                                    <option value="es">Español</option>
-                                    <option value="en">English</option>
-                                    <option value="it">Italiano</option>
+                                    <option value="es">{t('dashboard.lang_es')}</option>
+                                    <option value="en">{t('dashboard.lang_en')}</option>
+                                    <option value="it">{t('dashboard.lang_it')}</option>
                                 </select>
                             </label>
 
                             <div className="grow" />
                             <button className="btn primary" disabled={loading}>
-                                {loading ? "Running…" : "Run Test"}
+                                {loading ? t('dashboard.running') : t('dashboard.runButton')}
                             </button>
                         </div>
 

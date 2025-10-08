@@ -1,19 +1,18 @@
 import { exportHistoryCSV } from "../utils/helpers";
+import { t } from "../i18n";
 
 export default function Reports({ history }) {
     return (
         <>
-            <h1 className="page-title">Reports</h1>
+            <h1 className="page-title">{t('reports.title')}</h1>
             <div className="card">
-                <p className="muted">
-                    Exportá el historial en CSV para compartir con el equipo.
-                </p>
+                <p className="muted">{t('reports.exportHint')}</p>
                 <button
                     className="btn primary"
                     onClick={() => exportHistoryCSV(history)}
                     disabled={history.length === 0}
                 >
-                    Export CSV
+                    {t('reports.exportButton')}
                 </button>
             </div>
         </>
