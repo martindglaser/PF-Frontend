@@ -3,7 +3,6 @@ import "../styles/App.css";
 
 // Componentes
 import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
 import Dashboard from "./Dashboard";
 import History from "./History";
 import Reports from "./Reports";
@@ -74,7 +73,6 @@ export default function App() {
             <Sidebar activeTab={tab} onTabChange={setTab} />
             
             <main className="content">
-                <Topbar />
                 {renderContent()}
             </main>
         </div>

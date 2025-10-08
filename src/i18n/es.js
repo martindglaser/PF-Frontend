@@ -9,8 +9,7 @@ const es = {
     title: 'QA Dashboard'
   },
   topbar: {
-    searchPlaceholder: 'Search tests, URLs, or findings…',
-    user: 'TU',
+    // removed: topbar strings
   },
   dashboard: {
     title: 'QA Testing Dashboard',
