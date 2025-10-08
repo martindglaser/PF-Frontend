@@ -2,12 +2,11 @@ const es = {
   nav: {
     dashboard: 'Dashboard',
     history: 'Historial',
-    reports: 'Reports',
-    analysis: 'AI Analysis',
+    reports: 'Reportes',
+    analysis: 'Analisis IA',
   },
   brand: {
-    title: 'QA Dashboard',
-    footer: 'Proyecto colaborativo',
+    title: 'QA Dashboard'
   },
   topbar: {
     searchPlaceholder: 'Search tests, URLs, or findings…',
@@ -15,15 +14,15 @@ const es = {
   },
   dashboard: {
     title: 'QA Testing Dashboard',
-    totalTests: 'Total Tests',
-    successRate: 'Success Rate',
-    criticalIssues: 'Critical Issues',
-    avgExecution: 'Avg. Execution',
-    recentTitle: 'Recent Test Executions',
+    totalTests: 'Tests Totales',
+    successRate: 'Tasa de Éxito',
+    criticalIssues: 'Errores Críticos',
+    avgExecution: 'tiempo promedio de ejecución',
+    recentTitle: 'Ejecuciones Recientes',
     noExecutions: 'Aún no hay ejecuciones.',
-    configTitle: 'Test Configuration',
-    websiteUrl: 'Website URL',
-    tolerance: 'Tolerance',
+    configTitle: 'Configuración del Test',
+    websiteUrl: 'URL del Sitio',
+    tolerance: 'Tolerancia',
     toleranceHigh: 'Alta',
     toleranceMedium: 'Media',
     toleranceLow: 'Baja',
@@ -31,11 +30,11 @@ const es = {
     lang_es: 'Español',
     lang_en: 'English',
     lang_it: 'Italiano',
-    runButton: 'Run Test',
-    running: 'Running…',
+    runButton: 'Correr Test',
+    running: 'Ejecutando…',
   },
   history: {
-    title: 'Test History',
+    title: 'Historial de Tests',
     noTests: 'No hay tests registrados.',
     headers: {
       url: 'URL',
@@ -48,18 +47,17 @@ const es = {
     },
   },
   reports: {
-    title: 'Reports',
+    title: 'Reportes',
     exportHint: 'Exportá el historial en CSV para compartir con el equipo.',
     exportButton: 'Export CSV',
   },
   analysis: {
-    title: 'AI Analysis',
+    title: 'Analisis IA',
     empty: 'Ejecutá un test desde el Dashboard para ver resultados.',
     modifications: 'Modificaciones sugeridas',
     raw: 'Ver JSON crudo',
     noFindings: 'Sin hallazgos.',
   },
-  // settings: removed — component deleted
   form: {
     urlError: 'Ingresá una URL con http(s)://',
   }

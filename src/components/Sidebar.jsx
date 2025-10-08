@@ -25,10 +25,6 @@ export default function Sidebar({ activeTab, onTabChange }) {
                     );
                 })}
             </nav>
-
-            <div className="sidebar-foot">
-                <div className="muted">{t('brand.footer')}</div>
-            </div>
         </aside>
     );
 }
