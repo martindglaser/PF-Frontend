@@ -10,3 +10,18 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Tailwind CSS
+
+This project was updated to include Tailwind CSS (v4+).
+
+- Tailwind and PostCSS bridge installed as dev dependencies: `tailwindcss`, `@tailwindcss/postcss`, `postcss`, `autoprefixer`.
+- Config files added: `tailwind.config.cjs` and `postcss.config.cjs`.
+- Tailwind directives are included in `src/styles/main.css` (imported by `src/main.jsx`).
+
+Usage:
+
+- Add Tailwind utility classes in your JSX (e.g. `<div className="p-4 bg-slate-100">...`).
+- Tailwind scans `index.html` and `src/**/*.{js,jsx,ts,tsx}` per `tailwind.config.cjs`.
+
+If you need Purge/content changes, edit `tailwind.config.cjs`.

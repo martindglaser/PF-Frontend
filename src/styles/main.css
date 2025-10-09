@@ -1,6 +1,10 @@
 /* Archivo main.css limpiado - Los estilos están en la arquitectura modular */
-/* Solo mantener estilos esenciales que no interfieran */
+/* Tailwind base/components/utilities se incluyen aquí */
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+@tailwind utilities;
 
+/* Reglas globales adicionales y reset mínimo */
 * {
   box-sizing: border-box;
 }
