@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { getAllCachedEntries, clearCache } from '../cache'
 
-export default function History({ list = [], onView, onUpdate }) {
+export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)
 
   function handleRefresh() {
@@ -13,7 +13,10 @@ export default function History({ list = [], onView, onUpdate }) {
       {list.length === 0 && <div className="empty">No cached requests yet</div>}
 
       {list.map((entry, idx) => (
-        <div key={entry.key || idx} className="history-item">
+        <div 
+          key={entry.key || idx} 
+          className={`history-item ${selectedItem?.key === entry.key ? 'selected' : ''}`}
+        >
           <div className="meta">
             <div className="url">{entry.payload.url}</div>
             <div className="meta-right">
