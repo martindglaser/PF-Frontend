@@ -2,6 +2,36 @@
 
 ## Últimas mejoras (Octubre 2025)
 
+## 2025-10-19 — Mejoras en Historial, UI y correcciones
+
+### ✅ Resumen rápido
+- Historia: botón de eliminar por entrada, badges informativos (tolerancia, idioma, en caché, recuento de problemas) y normalización de timestamps.
+- Visual: header de resultados centrado, meta (tolerancia/idioma/cached) centrada bajo la URL y timestamp alineado a la derecha.
+- Loading: se eliminó el porcentaje determinista; ahora muestra una barra indeterminada animada cuando no hay un progreso real disponible.
+- Sidebar: la imagen del logo rellena su contenedor correctamente.
+- i18n: nuevas claves añadidas para acciones de historial (eliminar/confirmar), y se actualizaron cadenas relacionadas.
+
+### 🛠️ Detalles técnicos
+- feat(history): Añadido botón "Eliminar" por registro que llama a `deleteAnalysis(id)` con confirmación y actualización optimista de la UI.
+- fix(history): Al obtener la lista se normalizan timestamps desde varios campos posibles (response.createdAtUtc, response.createdAt, createdAt, ts, etc.) y se guardan en `entry.ts` para mostrar la hora real de ejecución.
+- fix(history/view): Al pulsar "Ver" se intenta obtener el registro completo con `getAnalysis(id)` para asegurar que `createdAtUtc` y metadatos vienen del backend.
+- feat(history/ui): Se añadieron badges por fila: tolerancia, idioma, badge "en caché" y contador de problemas (issue count).
+- fix(result/header): Ajustes CSS para centrar la URL y las badges; el timestamp queda a la derecha y ya no se sustituye por la hora actual al abrir el detalle.
+- fix(loading): Loading screen acepta progreso externo y, por defecto, muestra una barra indeterminada animada (izquierda->derecha) sin porcentaje.
+- ui(sidebar): El logo ahora usa `object-fit: cover` y rellena el contenedor de `.sidebar-logo`.
+- layout(analysis): Se añadieron reglas `max-width`/`min-height` para el panel del formulario/resultados para evitar cambios de tamaño indeseados cuando se muestran resultados.
+- i18n: Nuevas claves añadidas en `src/i18n/en.js` y `src/i18n/es.js` (`history.delete`, `history.confirmDelete`, y otras pequeñas actualizaciones).
+
+### 📁 Archivos principales modificados hoy
+- `src/components/History.jsx` — delete button, fetch full analysis on view, timestamp normalization, badges in rows
+- `src/components/HistoryView.jsx` — UI tweaks
+- `src/components/LoadingScreen.jsx` & `src/styles/LoadingScreen.css` — indeterminate loading bar and behavior
+- `src/components/Result.jsx` & `src/styles/analysisview.css` — header centering and metadata layout
+- `src/styles/sidebar.css` — logo sizing/fill
+- `src/styles/analysisview.css` / `src/styles/historyview.css` — layout/width/height adjustments
+- `src/i18n/en.js`, `src/i18n/es.js` — new translation keys
+- `src/utils/api.js` — helpers used by history (list/get/delete)
+
 ### ✨ Nuevas funcionalidades
 
 #### 🔍 Visor de imágenes en pantalla completa
