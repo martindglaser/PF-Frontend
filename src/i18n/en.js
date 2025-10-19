@@ -7,6 +7,12 @@ const en = {
     clearCache: 'Clear cache',
     account: 'Account',
     testHistory: 'Test History',
+    historySubtitle: 'View and manage your cached test results',
+    confirmClearCache: 'Clear all cached requests?',
+    testDetails: 'Test Details',
+    close: 'Close',
+    issuesBySeverity: 'Issues by Severity',
+    issuesByCategory: 'Issues by Category',
     cachedRequestsCount: (n) => `Cached Requests (${n})`
   },
   loading: {

@@ -44,8 +44,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
       }
 
       const result = await analyze(payload)
-      // store
-      try { putCached(payload, result) } catch (e) { /* ignore */ }
+  // store
+  try { putCached(payload, result) } catch { /* ignore */ }
       onComplete({ result, fromCache: false })
     } catch (err) {
       onComplete({ error: err.message || String(err) })

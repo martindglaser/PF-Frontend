@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { getAllCachedEntries, clearCache } from '../utils/cache'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)
@@ -16,6 +15,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
         <div 
           key={entry.key || idx} 
           className={`history-item ${selectedItem?.key === entry.key ? 'selected' : ''}`}
+          onClick={() => setExpanded(expanded === idx ? null : idx)}
         >
           <div className="meta">
             <div className="url">{entry.payload.url}</div>
