@@ -14,13 +14,8 @@ export default function HistoryView({ cacheList, onView, onUpdate, selectedHisto
 
       <div className="history-layout">
         <div className="content-section history-list-section">
-          <div className="history-header">
-            <h3>{t('app.cachedRequestsCount')(cacheList.length)}</h3>
-            <button className="small" onClick={() => { if (confirm(t('app.confirmClearCache'))) { onClearCache ? onClearCache() : (localStorage.removeItem('qaHistoryV1'), onUpdate()); } }}>{t('app.clearCache')}</button>
-          </div>
           <div className="history-section">
             <History 
-              list={cacheList} 
               onView={onView} 
               onUpdate={onUpdate}
               selectedItem={selectedHistoryItem}

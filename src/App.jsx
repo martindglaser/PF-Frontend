@@ -41,7 +41,11 @@ export default function App() {
   }
 
   function handleViewCached(entry) {
-    setSelectedHistoryItem(entry)
+    const normalized = {
+      ...entry,
+      response: entry.response ?? entry.result ?? entry
+    }
+    setSelectedHistoryItem(normalized)
     setActiveView('history')
   }
 
