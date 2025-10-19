@@ -112,3 +112,57 @@ Luego abre http://localhost:5173/
 - ✅ Responsive en todas las pantallas
 - ✅ Botones de fullscreen en screenshots
 - ✅ Loading state con pantalla dedicada (no solo texto)
+
+## 2025-10-19 — Internacionalización y limpieza de textos
+
+### 🔤 Internacionalización (i18n)
+- Extracción y sustitución de textos hard-coded en todos los componentes dentro de `src/components`.
+- Se crearon/actualizaron claves en `src/i18n/en.js` y `src/i18n/es.js` para cubrir:
+	- `app.*` (ya existentes) y nuevas subclaves: `app.severity.*`, `app.categoryLabels.*`.
+	- `result.*` (etiquetas del panel de resultados, timestamps, badges, contadores, labels de selector, screenshots, etc.).
+	- `form.*` (labels, placeholder, opciones de tolerance, etiquetas de categorías y hints).
+	- `loading.*` (título, hechos/facts, porcentaje formateado).
+	- `history.*` (mensajes vacíos, botones 'View' y 'Refresh').
+	- `sidebar.backendLabel` para el pie del sidebar.
+
+### 🧩 Cambios en componentes
+- `src/components/Result.jsx`: traducción de títulos, badges, textos de estado, etiquetas de severidad y categorías, y etiquetas en la lista de modificaciones.
+- `src/components/Form.jsx`: labels y opciones traducidas; categorías ahora leen sus etiquetas desde i18n.
+- `src/components/LoadingScreen.jsx`: título y frases del carrusel movidas a i18n; porcentaje mostrado con la función de i18n.
+- `src/components/ImageViewer.jsx`: etiquetas de botones y aria-labels internacionales.
+- `src/components/History.jsx`: textos 'No cached requests yet', 'View' y 'Refresh' internacionalizados.
+- `src/components/Sidebar.jsx`: pie con label 'Backend' extraído a i18n.
+- `src/components/HistoryView.jsx`: ya internacionalizado parcialmente; ajustado para usar nuevas claves de severidad y categorías.
+
+### ✅ Verificación
+- ESLint: OK (sin errores tras los cambios).
+- Build (Vite production): OK — build completo y artefactos generados.
+
+### 🧭 Notas y recomendaciones
+- Algunas etiquetas dinámicas usan fallback (`t(...) || fallback`) cuando la clave no existe, para evitar roturas si aparecen categorías o severities nuevas.
+- `loading.facts` está referenciado por índices desde `LoadingScreen.jsx`. Si se prefiere, se puede convertir a claves numeradas (`loading.facts.0`) para mayor claridad.
+- Si deseas, puedo hacer un barrido adicional fuera de `src/components` (p. ej. `public/index.html`, `README.md`) para completar la internacionalización.
+
+---
+
+## 2025-10-19 — Nuevas helpers en cliente API (GET / DELETE)
+
+### 🔌 Nuevas funciones añadidas en `src/utils/api.js`
+- `listAnalyses(params?)` — GET `/api/analysis` con query string opcional. Devuelve la lista/paginación según backend.
+- `getAnalysis(id)` — GET `/api/analysis/{id}` para obtener un registro específico.
+- `deleteAnalysis(id)` — DELETE `/api/analysis/{id}` para eliminar un registro.
+- `deleteAllAnalyses()` — DELETE `/api/analysis` para eliminar todos los registros.
+
+Todas las funciones reutilizan la misma constante `BASE` y comparten el manejador `handleResponse(res)` para normalizar errores y parseo JSON.
+
+### ✅ Verificación
+- ESLint: OK
+- Build (Vite production): OK — build completado.
+
+### 🧭 Uso rápido
+- Listar: `const list = await listAnalyses({ page: 1, pageSize: 20 })`
+- Obtener: `const item = await getAnalysis('abc123')`
+- Borrar uno: `await deleteAnalysis('abc123')`
+- Borrar todo: `await deleteAllAnalyses()`
+
+---
