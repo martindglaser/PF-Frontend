@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { t } from '../i18n'
-import { listAnalyses, deleteAnalysis } from '../utils/api'
+import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)
@@ -14,7 +14,13 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
     try {
       const data = await listAnalyses(params)
       const resolved = Array.isArray(data) ? data : (data?.items ?? [])
-      setItems(resolved)
+      // normalize timestamps so we display the real run time instead of falling back to now
+      const normalized = resolved.map(item => {
+        const resp = item.response ?? item.result ?? item
+        const ts = resp?.createdAtUtc ?? resp?.createdAt ?? item.createdAt ?? item.ts ?? resp?.timestamp ?? resp?.time
+        return { ...item, ts }
+      })
+      setItems(normalized)
       onUpdate && onUpdate(resolved)
     } catch (err) {
       setError(err?.message ?? String(err))
@@ -71,12 +77,42 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
         >
           <div className="meta">
             <div className="url">{entry.payload?.url ?? entry.url}</div>
+
             <div className="meta-right">
+              {/* additional badges/info */}
+              {(() => {
+                const response = entry.response ?? entry.result ?? entry
+                const mods = response?.modifications || response?.modificaciones || []
+                const issueCount = Array.isArray(mods) ? mods.length : 0
+                return (
+                  <>
+                    <span className="badge small">{t('result.toleranceLabel')}: <strong style={{marginLeft:6}}>{response?.tolerance ?? entry.tolerance ?? '—'}</strong></span>
+                    <span className="badge small">{t('result.languageLabel')}: <strong style={{marginLeft:6}}>{response?.language ?? entry.language ?? '—'}</strong></span>
+                    {entry.fromCache || response?.fromCache ? (
+                      <span className="badge cached small">{t('result.cachedLabel')}</span>
+                    ) : null}
+                    <span className="badge issues small">{t('result.issueCount')(issueCount)}</span>
+                  </>
+                )
+              })()}
+
               <small>{new Date(entry.ts ?? entry.createdAt ?? Date.now()).toLocaleString()}</small>
               <button
                 className="tiny"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.stopPropagation()
+                  // try to fetch full analysis from backend to get accurate timestamp
+                  if (entry.id) {
+                    try {
+                      const full = await getAnalysis(entry.id)
+                      const combined = { ...entry, response: full, result: full }
+                      onView && onView(combined)
+                      return
+                    } catch (err) {
+                      // fallback to passing existing entry
+                      console.warn('getAnalysis failed', err)
+                    }
+                  }
                   onView && onView(entry)
                 }}
               >

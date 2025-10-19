@@ -41,9 +41,14 @@ export default function App() {
   }
 
   function handleViewCached(entry) {
+    const responseSrc = entry.response ?? entry.result ?? entry
+    // ensure response.createdAtUtc is present so details show the original timestamp
+    const createdAt = responseSrc.createdAtUtc ?? responseSrc.createdAt ?? entry.createdAt ?? entry.ts
+    const response = { ...responseSrc, createdAtUtc: createdAt }
+
     const normalized = {
       ...entry,
-      response: entry.response ?? entry.result ?? entry
+      response
     }
     setSelectedHistoryItem(normalized)
     setActiveView('history')
