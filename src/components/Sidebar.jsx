@@ -1,5 +1,6 @@
 import React from 'react'
 import { t } from '../i18n'
+import '../styles/sidebar.css'
 
 export default function Sidebar({ activeView, setActiveView }) {
   return (
