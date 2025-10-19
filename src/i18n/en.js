@@ -30,40 +30,7 @@ const en = {
     close: 'Close',
     closeEsc: 'Close (ESC)'
   },
-  auth: {
-    loginSuccess: 'Login successful!',
-    regSuccess: 'Registration successful!',
-    loggedOut: 'Logged out successfully',
-    accountTitle: '👤 Account',
-    accountSubtitle: 'You are logged in',
-    activeStatus: '✓ Active',
-    authLogin: '🔐 Login',
-    authRegister: '📝 Register',
-    signInPrompt: 'Sign in to access your account',
-    createAccountPrompt: 'Create a new account to get started',
-    tabLogin: 'Login',
-    tabRegister: 'Register',
-    emailLabel: 'Email',
-    emailPlaceholder: 'your@email.com',
-    passwordLabel: 'Password',
-    passwordPlaceholder: '••••••••',
-    confirmPasswordLabel: 'Confirm Password',
-    processing: '⏳ Processing...',
-    signInButton: '🔓 Sign In',
-    createAccountButton: '✨ Create Account',
-    dontHaveAccount: "Don't have an account? ",
-    alreadyHaveAccount: 'Already have an account? ',
-    registerHere: 'Register here',
-    loginHere: 'Login here',
-    logoutButton: '🚪 Logout',
-    errors: {
-      required: 'Email and password are required',
-      passwordsMismatch: 'Passwords do not match',
-      passwordShort: 'Password must be at least 6 characters',
-      authFailed: 'Authentication failed',
-      generic: 'An error occurred'
-    }
-  }
+  
 }
 
 export default en

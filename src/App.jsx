@@ -5,7 +5,7 @@ import AnalysisForm from './components/Form'
 import History from './components/History'
 import Result from './components/Result'
 import LoadingScreen from './components/LoadingScreen'
-import Auth from './components/Auth'
+import Sidebar from './components/Sidebar'
 import { getAllCachedEntries, clearCache } from './utils/cache'
 
 // Colores por categoría
@@ -67,43 +67,7 @@ function App() {
     <div className="app-root">
       {loading && <LoadingScreen />}
       
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="sidebar-logo">
-          <h2>
-            <span className="logo-icon">🤖</span>
-            {t('app.title')}
-          </h2>
-        </div>
-        
-        <nav className="sidebar-nav">
-          <button 
-            className={`nav-item ${activeView === 'analysis' ? 'active' : ''}`}
-            onClick={() => setActiveView('analysis')}
-          >
-            <span className="nav-icon">💡</span>
-            {t('app.title')}
-          </button>
-          <button 
-            className={`nav-item ${activeView === 'history' ? 'active' : ''}`}
-            onClick={() => setActiveView('history')}
-          >
-            <span className="nav-icon">🕒</span>
-            {t('app.testHistory')}
-          </button>
-          <button 
-            className={`nav-item ${activeView === 'auth' ? 'active' : ''}`}
-            onClick={() => setActiveView('auth')}
-          >
-            <span className="nav-icon">👤</span>
-            {t('app.account')}
-          </button>
-        </nav>
-        
-        <div className="sidebar-footer">
-          <small>Backend: <code>localhost:5288</code></small>
-        </div>
-      </aside>
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
 
       {/* Main Content */}
       <main className="main-content">
@@ -258,15 +222,6 @@ function App() {
                 </div>
               )}
             </div>
-          </>
-        ) : activeView === 'auth' ? (
-          <>
-            <div className="page-header">
-              <h1>Account</h1>
-              <p>Manage your account and authentication</p>
-            </div>
-            
-            <Auth />
           </>
         ) : null}
       </main>
