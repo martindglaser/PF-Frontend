@@ -4,7 +4,7 @@ import History from './History'
 import Result from './Result'
 import '../styles/historyview.css'
 
-export default function HistoryView({ cacheList, onView, onUpdate, selectedHistoryItem, setSelectedHistoryItem, onClearCache }) {
+export default function HistoryView({ onView, onUpdate, selectedHistoryItem, setSelectedHistoryItem }) {
   return (
     <>
       <div className="page-header">

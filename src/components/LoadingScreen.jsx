@@ -17,7 +17,7 @@ const funFacts = [
 
 export default function LoadingScreen() {
   const [factIndex, setFactIndex] = useState(0)
-  const [progress, setProgress] = useState(0)
+  
 
   useEffect(() => {
     // Rotate facts every 2.5 seconds
@@ -25,17 +25,8 @@ export default function LoadingScreen() {
       setFactIndex(prev => (prev + 1) % funFacts.length)
     }, 2500)
 
-    // Simulate progress
-    const progressInterval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 95) return prev
-        return prev + Math.random() * 3
-      })
-    }, 300)
-
     return () => {
       clearInterval(factInterval)
-      clearInterval(progressInterval)
     }
   }, [])
 
@@ -74,15 +65,11 @@ export default function LoadingScreen() {
           </p>
         </div>
 
-        {/* Progress bar */}
+        {/* Indeterminate progress bar (no percentage) */}
         <div className="progress-container">
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${progress}%` }}
-            ></div>
+          <div className="progress-bar indeterminate" aria-busy="true" aria-label={t('loading.loading')}> 
+            <div className="indeterminate-bar" />
           </div>
-          <span className="progress-text">{t('loading.percent')(Math.round(progress))}</span>
         </div>
 
         {/* Animated dots */}

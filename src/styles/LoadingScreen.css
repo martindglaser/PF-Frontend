@@ -291,6 +291,28 @@
   font-weight: 600;
 }
 
+/* Indeterminate bar animation: a band that moves left-to-right and loops */
+.progress-bar.indeterminate {
+  background: rgba(255, 255, 255, 0.04);
+}
+.progress-bar.indeterminate .indeterminate-bar {
+  position: absolute;
+  left: -40%;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.95), transparent);
+  animation: indeterminateMove 1.2s infinite linear;
+}
+
+@keyframes indeterminateMove {
+  0% { left: -40%; }
+  100% { left: 120%; }
+}
+
+/* hide percent text since we no longer show percentages */
+.progress-text { display: none; }
+
 /* Loading dots */
 .loading-dots {
   display: flex;
