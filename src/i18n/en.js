@@ -87,7 +87,9 @@ const en = {
   history: {
     empty: 'No cached requests yet',
     view: 'View',
-    refresh: 'Refresh'
+    refresh: 'Refresh',
+    delete: 'Delete',
+    confirmDelete: 'Delete this test?'
   },
   
 }

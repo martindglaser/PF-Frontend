@@ -14,9 +14,14 @@
 }
 
 .sidebar-logo {
-  padding: 0 20px 24px 20px;
+  padding: 0 20px 20px 20px;
   border-bottom: 1px solid var(--border);
   margin-bottom: 24px;
+  /* make logo area a fixed-height container so the image can fill it */
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar-logo h2 {
@@ -33,13 +38,12 @@
 
 /* Image logo (public/app-icon.png) - small and contained inside the logo area */
 .sidebar-logo .logo-img {
-  width: 100px;
-  height: 100px;
+  width: 80%;
+  height: 80%;
   max-width: 100%;
-  object-fit: contain;
-  border-radius: 8px;
+  object-fit: cover; /* fill the container visually */
+  border-radius: 6px;
   display: block;
-  margin: 0 auto; /* ensure centered inside the h2 */
 }
 
 .sidebar-nav {
@@ -121,12 +125,15 @@
   }
   
   .sidebar-logo {
-    padding: 0 12px 20px;
+    padding: 0 12px 0 12px;
+    height: 90px;
   }
   
 
   .sidebar-logo .logo-img {
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   
   .sidebar-nav {

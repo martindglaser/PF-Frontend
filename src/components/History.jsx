@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { t } from '../i18n'
-import { listAnalyses } from '../utils/api'
+import { listAnalyses, deleteAnalysis } from '../utils/api'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)
@@ -25,6 +25,25 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
 
   function handleRefresh() {
     fetchAnalyses()
+  }
+
+  async function handleDelete(entry, e) {
+    e.stopPropagation()
+    const id = entry.id || entry.key
+    if (!id) return setError('Cannot delete: missing id')
+    const ok = window.confirm(t('history.confirmDelete') || 'Delete this entry?')
+    if (!ok) return
+
+    try {
+      // optimistic UI update
+      setItems(prev => prev.filter(it => (it.id || it.key) !== id))
+      await deleteAnalysis(id)
+      onUpdate && onUpdate(items.filter(it => (it.id || it.key) !== id))
+    } catch (err) {
+      setError(err?.message ?? String(err))
+      // re-fetch to restore state
+      fetchAnalyses()
+    }
   }
 
   useEffect(() => {
@@ -62,6 +81,14 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                 }}
               >
                 {t('history.view')}
+              </button>
+              <button
+                className="tiny"
+                onClick={(e) => handleDelete(entry, e)}
+                title={t('history.delete')}
+                style={{ marginLeft: 8, background: 'transparent', border: '1px solid rgba(255,255,255,0.06)' }}
+              >
+                🗑️
               </button>
             </div>
           </div>

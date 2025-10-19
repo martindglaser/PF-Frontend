@@ -87,7 +87,9 @@ const es = {
   history: {
     empty: 'No hay solicitudes en caché',
     view: 'Ver',
-    refresh: 'Actualizar'
+    refresh: 'Actualizar',
+    delete: 'Eliminar',
+    confirmDelete: '¿Eliminar esta prueba?'
   },
   
 }
