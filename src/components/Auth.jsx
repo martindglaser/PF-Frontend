@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { t } from '../i18n/index'
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true)
@@ -14,17 +15,17 @@ export default function Auth() {
 
     // Validaciones básicas
     if (!email || !password) {
-      setError('Email and password are required')
+      setError(t('auth.errors.required'))
       return
     }
 
     if (!isLogin && password !== confirmPassword) {
-      setError('Passwords do not match')
+      setError(t('auth.errors.passwordsMismatch'))
       return
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters')
+      setError(t('auth.errors.passwordShort'))
       return
     }
 
@@ -57,9 +58,10 @@ export default function Auth() {
       setPassword('')
       setConfirmPassword('')
       
-      alert(isLogin ? 'Login successful!' : 'Registration successful!')
+      alert(isLogin ? t('auth.loginSuccess') : t('auth.regSuccess'))
     } catch (err) {
-      setError(err.message || 'An error occurred')
+      // Prefer server-provided message when available, otherwise localized generic
+      setError(err.message || t('auth.errors.generic'))
     } finally {
       setLoading(false)
     }
@@ -71,7 +73,7 @@ export default function Auth() {
     setEmail('')
     setPassword('')
     setConfirmPassword('')
-    alert('Logged out successfully')
+    alert(t('auth.loggedOut'))
   }
 
   const isLoggedIn = !!localStorage.getItem('auth_token')
@@ -82,8 +84,8 @@ export default function Auth() {
       <div className="auth-container">
         <div className="auth-card">
           <div className="auth-header">
-            <h2>👤 Account</h2>
-            <p className="auth-subtitle">You are logged in</p>
+            <h2>{t('auth.accountTitle')}</h2>
+            <p className="auth-subtitle">{t('auth.accountSubtitle')}</p>
           </div>
 
           <div className="user-info">
@@ -92,7 +94,7 @@ export default function Auth() {
             </div>
             <div className="user-details">
               <p className="user-email">{userEmail}</p>
-              <span className="user-status">✓ Active</span>
+              <span className="user-status">{t('auth.activeStatus')}</span>
             </div>
           </div>
 
@@ -100,7 +102,7 @@ export default function Auth() {
             onClick={handleLogout}
             className="auth-button logout-button"
           >
-            🚪 Logout
+            {t('auth.logoutButton')}
           </button>
         </div>
       </div>
@@ -111,11 +113,11 @@ export default function Auth() {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <h2>{isLogin ? '🔐 Login' : '📝 Register'}</h2>
+          <h2>{isLogin ? t('auth.authLogin') : t('auth.authRegister')}</h2>
           <p className="auth-subtitle">
             {isLogin 
-              ? 'Sign in to access your account' 
-              : 'Create a new account to get started'}
+              ? t('auth.signInPrompt') 
+              : t('auth.createAccountPrompt')}
           </p>
         </div>
 
@@ -128,7 +130,7 @@ export default function Auth() {
               setConfirmPassword('')
             }}
           >
-            Login
+            {t('auth.tabLogin')}
           </button>
           <button 
             className={`auth-tab ${!isLogin ? 'active' : ''}`}
@@ -137,7 +139,7 @@ export default function Auth() {
               setError('')
             }}
           >
-            Register
+            {t('auth.tabRegister')}
           </button>
         </div>
 
@@ -149,26 +151,26 @@ export default function Auth() {
           )}
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t('auth.emailLabel')}</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
+              placeholder={t('auth.emailPlaceholder')}
               required
               autoComplete="email"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">{t('auth.passwordLabel')}</label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder={t('auth.passwordPlaceholder')}
               required
               autoComplete={isLogin ? 'current-password' : 'new-password'}
             />
@@ -176,13 +178,13 @@ export default function Auth() {
 
           {!isLogin && (
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm Password</label>
+              <label htmlFor="confirmPassword">{t('auth.confirmPasswordLabel')}</label>
               <input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="••••••••"
+                placeholder={t('auth.passwordPlaceholder')}
                 required
                 autoComplete="new-password"
               />
@@ -194,13 +196,13 @@ export default function Auth() {
             className="auth-button"
             disabled={loading}
           >
-            {loading ? '⏳ Processing...' : (isLogin ? '🔓 Sign In' : '✨ Create Account')}
+            {loading ? t('auth.processing') : (isLogin ? t('auth.signInButton') : t('auth.createAccountButton'))}
           </button>
         </form>
 
         <div className="auth-footer">
           <p>
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
+            {isLogin ? t('auth.dontHaveAccount') : t('auth.alreadyHaveAccount')}
             <button 
               className="auth-link"
               onClick={() => {
@@ -209,7 +211,7 @@ export default function Auth() {
                 setConfirmPassword('')
               }}
             >
-              {isLogin ? 'Register here' : 'Login here'}
+              {isLogin ? t('auth.registerHere') : t('auth.loginHere')}
             </button>
           </p>
         </div>

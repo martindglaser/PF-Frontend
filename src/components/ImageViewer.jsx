@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import './ImageViewer.css'
+import '../styles/ImageViewer.css'
 
 export default function ImageViewer({ imageUrl, title, onClose }) {
   useEffect(() => {

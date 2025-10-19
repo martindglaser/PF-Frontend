@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getAllCachedEntries, clearCache } from '../cache'
+import { getAllCachedEntries, clearCache } from '../utils/cache'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)

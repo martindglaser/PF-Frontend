@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import './App.css'
+import './styles/app.css'
+import { t, setLocale } from './i18n'
 import AnalysisForm from './components/Form'
 import History from './components/History'
 import Result from './components/Result'
 import LoadingScreen from './components/LoadingScreen'
 import Auth from './components/Auth'
-import { getAllCachedEntries, clearCache } from './cache'
+import { getAllCachedEntries, clearCache } from './utils/cache'
 
 // Colores por categoría
 const CATEGORY_COLORS = {
@@ -71,7 +72,7 @@ function App() {
         <div className="sidebar-logo">
           <h2>
             <span className="logo-icon">🤖</span>
-            QA Analysis
+            {t('app.title')}
           </h2>
         </div>
         
@@ -81,21 +82,21 @@ function App() {
             onClick={() => setActiveView('analysis')}
           >
             <span className="nav-icon">💡</span>
-            AI Analysis
+            {t('app.title')}
           </button>
           <button 
             className={`nav-item ${activeView === 'history' ? 'active' : ''}`}
             onClick={() => setActiveView('history')}
           >
             <span className="nav-icon">🕒</span>
-            Test History
+            {t('app.testHistory')}
           </button>
           <button 
             className={`nav-item ${activeView === 'auth' ? 'active' : ''}`}
             onClick={() => setActiveView('auth')}
           >
             <span className="nav-icon">👤</span>
-            Account
+            {t('app.account')}
           </button>
         </nav>
         
@@ -109,13 +110,13 @@ function App() {
         {activeView === 'analysis' ? (
           <>
             <div className="page-header">
-              <h1>AI Webpage Analysis</h1>
-              <p>Submit a URL and get an AI-powered analysis of your webpage</p>
+                <h1>{t('app.title')}</h1>
+                <p>{t('app.subtitle')}</p>
             </div>
 
             <div className="dashboard-content">
               <div className="content-section">
-                <h3 className="section-title">New Analysis</h3>
+                <h3 className="section-title">{t('app.newAnalysis')}</h3>
                 <AnalysisForm onStart={onSubmitStart} onComplete={onSubmitEnd} />
               </div>
             </div>
@@ -137,8 +138,8 @@ function App() {
             <div className="history-layout">
               <div className="content-section history-list-section">
                 <div className="history-header">
-                  <h3>Cached Requests ({cacheList.length})</h3>
-                  <button className="small" onClick={handleClearCache}>Clear cache</button>
+                  <h3>{t('app.cachedRequestsCount')(cacheList.length)}</h3>
+                  <button className="small" onClick={handleClearCache}>{t('app.clearCache')}</button>
                 </div>
                 <div className="history-section">
                   <History 

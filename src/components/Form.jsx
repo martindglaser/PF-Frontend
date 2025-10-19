@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { analyze } from '../api'
-import { getCached, putCached } from '../cache'
+import { analyze } from '../utils/api'
+import { getCached, putCached } from '../utils/cache'
 
 const CATEGORIES = [
   { id: 'ui-styles', label: 'UI/estilos' },

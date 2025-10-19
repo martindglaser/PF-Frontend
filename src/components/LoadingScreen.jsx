@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import './LoadingScreen.css'
+import '../styles/LoadingScreen.css'
 
 const funFacts = [
   "🤖 AI is analyzing every pixel of your webpage...",
