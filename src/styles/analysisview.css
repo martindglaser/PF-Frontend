@@ -305,13 +305,13 @@
 
 .result-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
   gap: 16px;
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
+  width: 100%;
 }
 
 .result-header h2 {
@@ -320,6 +320,22 @@
   color: var(--text);
   word-break: break-all;
   line-height: 1.4;
+  text-align: center;
+}
+
+/* make the left header block take remaining space and center its contents */
+.result-header > div:first-child {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* timestamps container stays right aligned */
+.result-header .timestamps {
+  flex: 0 0 auto;
+  text-align: right;
 }
 
 .result-header .meta {
@@ -329,6 +345,7 @@
   color: var(--muted);
   font-size: 14px;
   margin-top: 8px;
+  justify-content: center; /* center badges under URL */
 }
 
 .result-header .meta span {
