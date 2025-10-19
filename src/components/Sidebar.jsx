@@ -7,8 +7,7 @@ export default function Sidebar({ activeView, setActiveView }) {
     <aside className="sidebar">
       <div className="sidebar-logo">
         <h2>
-          <span className="logo-icon">🤖</span>
-          {t('app.title')}
+          <img src="/app-icon.png" alt={t('app.title')} className="logo-img" />
         </h2>
       </div>
 
