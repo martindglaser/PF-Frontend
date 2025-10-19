@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { t } from '../i18n'
 import '../styles/ImageViewer.css'
 
 export default function ImageViewer({ imageUrl, title, onClose }) {
@@ -17,7 +18,7 @@ export default function ImageViewer({ imageUrl, title, onClose }) {
 
   return (
     <div className="image-viewer-overlay" onClick={onClose}>
-      <button className="viewer-close" onClick={onClose} aria-label="Close">
+      <button className="viewer-close" onClick={onClose} aria-label={t('viewer.close') || 'Close'}>
         ✕
       </button>
       <div className="viewer-content" onClick={(e) => e.stopPropagation()}>
@@ -29,7 +30,7 @@ export default function ImageViewer({ imageUrl, title, onClose }) {
         </div>
         <div className="viewer-footer">
           <button onClick={onClose} className="viewer-close-btn">
-            Close (ESC)
+            {t('viewer.closeEsc')}
           </button>
         </div>
       </div>

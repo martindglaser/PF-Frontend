@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import { t } from '../i18n'
 import ImageViewer from './ImageViewer'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
   const url = mobile ? `${base}/${id}_mobile.png` : `${base}/${id}.png`
-  const title = mobile ? '📱 Mobile' : '🖥️ Desktop'
+  const title = mobile ? t('result.screenshot.mobile') : t('result.screenshot.desktop')
   
   return (
     <div className="screenshot">
@@ -53,42 +54,42 @@ export default function Result({ result, fromCache }) {
       )}
       <div className="result-header">
         <div>
-          <div className="url-badge">🌐 URL</div>
+          <div className="url-badge">{t('result.urlBadge')}</div>
           <h2>{result.url}</h2>
           <div className="meta">
-            <span>📊 Tolerance: <strong>{result.tolerance}</strong></span>
-            <span>🌍 Language: <strong>{result.language}</strong></span>
+            <span>{t('result.toleranceLabel')}: <strong>{result.tolerance}</strong></span>
+            <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
             <span className={fromCache ? 'cached-badge' : 'live-badge'}>
-              {fromCache ? '💾 Cached' : '✨ Live'}
+              {fromCache ? t('result.cachedLabel') : t('result.liveLabel')}
             </span>
           </div>
         </div>
         <div className="timestamps">
-          <small>🕐 {new Date(result.createdAtUtc).toLocaleString()}</small>
+          <small>{t('result.timestampPrefix')} {new Date(result.createdAtUtc).toLocaleString()}</small>
         </div>
       </div>
 
       <div className="analysis-grid">
         <div className="analysis-main">
           <div className="section">
-            <h3>🤖 What the AI sees</h3>
+            <h3>{t('result.whatAISeesTitle')}</h3>
             <p className="whatisee">{result.whatHeSee}</p>
           </div>
 
           <div className="section">
             <h3>
-              {result.needsModifications ? '⚠️ Modifications needed' : '✅ No modifications needed'}
+              {result.needsModifications ? t('result.modificationsNeeded') : t('result.noModificationsNeeded')}
             </h3>
             {!result.needsModifications && (
-              <p className="success-message">Great! Your page looks good. No critical issues detected.</p>
+              <p className="success-message">{t('result.successMessage')}</p>
             )}
           </div>
 
           {Array.isArray(result.modifications) && result.modifications.length > 0 && (
-            <div className="section">
+              <div className="section">
               <div className="section-header">
-                <h3>🔧 Issues found</h3>
-                <span className="count-badge">{result.modifications.length} issue{result.modifications.length > 1 ? 's' : ''}</span>
+                <h3>{t('result.issuesFound')}</h3>
+                <span className="count-badge">{t('result.issueCount')(result.modifications.length)}</span>
               </div>
               <div className="mod-list">
                 {result.modifications.map((m, idx) => (
@@ -96,16 +97,16 @@ export default function Result({ result, fromCache }) {
                     <div className="mod-number">{idx + 1}</div>
                     <div className="mod-content">
                       <div className="mod-top">
-                        <strong>📌 {m.category}</strong>
-                        <span className={`sev sev-${m.severity.toLowerCase()}`}>
-                          {m.severity}
+                        <strong>📌 {t(`app.categoryLabels.${m.category}`) || m.category}</strong>
+                        <span className={`sev sev-${(m.severity || '').toLowerCase()}`}>
+                          {t(`app.severity.${(m.severity || '').toLowerCase()}`) || m.severity}
                         </span>
                       </div>
                       <div className="mod-desc">{m.description}</div>
                       <div className="mod-meta">
-                        <span className="state-badge state-{m.state}">{m.state}</span>
+                        <span className={`state-badge state-${m.state}`}>{m.state}</span>
                         <span className="selector-info">
-                          Selector: <code>{m.cssSelector}</code>
+                          {t('result.selectorLabel')}: <code>{m.cssSelector}</code>
                         </span>
                       </div>
                     </div>
@@ -116,13 +117,13 @@ export default function Result({ result, fromCache }) {
           )}
 
           <details className="json-section">
-            <summary>📄 View raw JSON</summary>
+            <summary>{t('result.viewRawJson')}</summary>
             <pre className="result-json-small">{JSON.stringify(result, null, 2)}</pre>
           </details>
         </div>
 
         <aside className="analysis-side">
-          <h4>📸 Screenshots</h4>
+          <h4>{t('result.screenshots')}</h4>
           <Screenshot 
             id={result.id} 
             mobile={false} 

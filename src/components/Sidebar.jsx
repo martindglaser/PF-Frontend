@@ -33,7 +33,7 @@ export default function Sidebar({ activeView, setActiveView }) {
       </nav>
 
       <div className="sidebar-footer">
-        <small>Backend: <code>localhost:5288</code></small>
+        <small>{t('sidebar.backendLabel')}: <code>localhost:5288</code></small>
       </div>
     </aside>
   )

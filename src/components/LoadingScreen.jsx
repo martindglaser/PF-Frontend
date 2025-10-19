@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
+import { t } from '../i18n'
 import '../styles/LoadingScreen.css'
 
 const funFacts = [
-  "🤖 AI is analyzing every pixel of your webpage...",
-  "🔍 Scanning for broken links and accessibility issues...",
-  "✨ Generating insights from visual elements...",
-  "🎯 Checking mobile responsiveness patterns...",
-  "🌐 Evaluating user experience metrics...",
-  "🔬 Deep diving into page structure...",
-  "🎨 Analyzing design consistency...",
-  "⚡ Running performance diagnostics...",
-  "🛡️ Checking security best practices...",
-  "📊 Computing comprehensive analysis..."
+  t('loading.facts.0'),
+  t('loading.facts.1'),
+  t('loading.facts.2'),
+  t('loading.facts.3'),
+  t('loading.facts.4'),
+  t('loading.facts.5'),
+  t('loading.facts.6'),
+  t('loading.facts.7'),
+  t('loading.facts.8'),
+  t('loading.facts.9')
 ]
 
 export default function LoadingScreen() {
@@ -64,7 +65,7 @@ export default function LoadingScreen() {
         </div>
 
         {/* Status text */}
-        <h2 className="loading-title">Analyzing your webpage</h2>
+        <h2 className="loading-title">{t('loading.title')}</h2>
         
         {/* Fun facts carousel */}
         <div className="fun-facts">
@@ -81,7 +82,7 @@ export default function LoadingScreen() {
               style={{ width: `${progress}%` }}
             ></div>
           </div>
-          <span className="progress-text">{Math.round(progress)}%</span>
+          <span className="progress-text">{t('loading.percent')(Math.round(progress))}</span>
         </div>
 
         {/* Animated dots */}

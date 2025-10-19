@@ -57,29 +57,29 @@ export default function HistoryView({ cacheList, onView, onUpdate, selectedHisto
 
                   return (
                     <div className="severity-stats">
-                      <div className="stat-card stat-high">
-                        <div className="stat-icon">🔴</div>
-                        <div className="stat-content">
-                          <div className="stat-label">High</div>
-                          <div className="stat-value">{highCount}</div>
-                        </div>
-                      </div>
+                          <div className="stat-card stat-high">
+                            <div className="stat-icon">🔴</div>
+                            <div className="stat-content">
+                              <div className="stat-label">{t('app.severity.high')}</div>
+                              <div className="stat-value">{highCount}</div>
+                            </div>
+                          </div>
 
-                      <div className="stat-card stat-medium">
-                        <div className="stat-icon">🟡</div>
-                        <div className="stat-content">
-                          <div className="stat-label">Medium</div>
-                          <div className="stat-value">{mediumCount}</div>
-                        </div>
-                      </div>
+                          <div className="stat-card stat-medium">
+                            <div className="stat-icon">🟡</div>
+                            <div className="stat-content">
+                              <div className="stat-label">{t('app.severity.medium')}</div>
+                              <div className="stat-value">{mediumCount}</div>
+                            </div>
+                          </div>
 
-                      <div className="stat-card stat-low">
-                        <div className="stat-icon">🟢</div>
-                        <div className="stat-content">
-                          <div className="stat-label">Low</div>
-                          <div className="stat-value">{lowCount}</div>
-                        </div>
-                      </div>
+                          <div className="stat-card stat-low">
+                            <div className="stat-icon">🟢</div>
+                            <div className="stat-content">
+                              <div className="stat-label">{t('app.severity.low')}</div>
+                              <div className="stat-value">{lowCount}</div>
+                            </div>
+                          </div>
                     </div>
                   )
                 })()}
@@ -105,7 +105,7 @@ export default function HistoryView({ cacheList, onView, onUpdate, selectedHisto
                           forms: { bg: 'rgba(34, 197, 94, 0.1)', border: 'rgba(34, 197, 94, 0.3)', icon: '📝' }
                         }[category] || { bg: 'rgba(139, 149, 176, 0.1)', border: 'rgba(139, 149, 176, 0.3)', icon: '📋' }
 
-                        const label = category
+                        const label = t(`app.categoryLabels.${category}`) || category
 
                         return (
                           <div 

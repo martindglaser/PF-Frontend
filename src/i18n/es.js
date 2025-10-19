@@ -13,7 +13,17 @@ const es = {
   close: 'Cerrar',
   issuesBySeverity: 'Problemas por severidad',
   issuesByCategory: 'Problemas por categoría',
-    cachedRequestsCount: (n) => `Solicitudes en caché (${n})`
+    cachedRequestsCount: (n) => `Solicitudes en caché (${n})`,
+    severity: {
+      high: 'Alto',
+      medium: 'Medio',
+      low: 'Bajo'
+    },
+    categoryLabels: {
+      ui: 'Interfaz',
+      forms: 'Formularios',
+      other: 'Otro'
+    }
     },
   loading: {
     title: 'Analizando tu página',
@@ -35,6 +45,49 @@ const es = {
   viewer: {
     close: 'Cerrar',
     closeEsc: 'Cerrar (ESC)'
+  },
+  result: {
+    urlBadge: '🌐 URL',
+    toleranceLabel: 'Tolerancia',
+    languageLabel: 'Idioma',
+    cachedLabel: '💾 En caché',
+    liveLabel: '✨ En vivo',
+    timestampPrefix: '🕐',
+    whatAISeesTitle: '🤖 Lo que la IA ve',
+    modificationsNeeded: '⚠️ Se necesitan modificaciones',
+    noModificationsNeeded: '✅ No se necesitan modificaciones',
+    successMessage: '¡Genial! Tu página se ve bien. No se detectaron problemas críticos.',
+    issuesFound: '🔧 Problemas encontrados',
+    issueCount: (n) => `${n} problema${n !== 1 ? 's' : ''}`,
+    selectorLabel: 'Selector',
+    viewRawJson: '📄 Ver JSON crudo',
+    screenshots: '📸 Capturas'
+  },
+  form: {
+    urlLabel: 'URL',
+    urlPlaceholder: 'https://example.com',
+    toleranceLabel: 'Tolerancia',
+    tolerance: { low: 'bajo', medium: 'medio', high: 'alto' },
+    languageLabel: 'Idioma',
+    categoriesLabel: 'Categorías',
+    categoriesSelected: (n) => `${n} seleccionada${n !== 1 ? 's' : ''}`,
+    selectCategoriesHint: 'Selecciona las categorías a analizar',
+    categories: {
+      ui: 'UI/estilos',
+      forms: 'Formularios',
+      buttons: 'Botones/Acciones',
+      images: 'Imágenes/Recursos',
+      texts: 'Textos',
+      accessibility: 'Accesibilidad'
+    }
+  },
+  sidebar: {
+    backendLabel: 'Backend'
+  },
+  history: {
+    empty: 'No hay solicitudes en caché',
+    view: 'Ver',
+    refresh: 'Actualizar'
   },
   
 }

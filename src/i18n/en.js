@@ -13,7 +13,17 @@ const en = {
     close: 'Close',
     issuesBySeverity: 'Issues by Severity',
     issuesByCategory: 'Issues by Category',
-    cachedRequestsCount: (n) => `Cached Requests (${n})`
+    cachedRequestsCount: (n) => `Cached Requests (${n})`,
+    severity: {
+      high: 'High',
+      medium: 'Medium',
+      low: 'Low'
+    },
+    categoryLabels: {
+      ui: 'UI',
+      forms: 'Forms',
+      other: 'Other'
+    }
   },
   loading: {
     title: 'Analyzing your webpage',
@@ -35,6 +45,49 @@ const en = {
   viewer: {
     close: 'Close',
     closeEsc: 'Close (ESC)'
+  },
+  result: {
+    urlBadge: '🌐 URL',
+    toleranceLabel: 'Tolerance',
+    languageLabel: 'Language',
+    cachedLabel: '💾 Cached',
+    liveLabel: '✨ Live',
+    timestampPrefix: '🕐',
+    whatAISeesTitle: '🤖 What the AI sees',
+    modificationsNeeded: '⚠️ Modifications needed',
+    noModificationsNeeded: '✅ No modifications needed',
+    successMessage: 'Great! Your page looks good. No critical issues detected.',
+    issuesFound: '🔧 Issues found',
+    issueCount: (n) => `${n} issue${n !== 1 ? 's' : ''}`,
+    selectorLabel: 'Selector',
+    viewRawJson: '📄 View raw JSON',
+    screenshots: '📸 Screenshots'
+  },
+  form: {
+    urlLabel: 'URL',
+    urlPlaceholder: 'https://example.com',
+    toleranceLabel: 'Tolerance',
+    tolerance: { low: 'low', medium: 'medium', high: 'high' },
+    languageLabel: 'Language',
+    categoriesLabel: 'Categories',
+    categoriesSelected: (n) => `${n} selected`,
+    selectCategoriesHint: 'Select categories to analyze',
+    categories: {
+      ui: 'UI/styles',
+      forms: 'Forms',
+      buttons: 'Buttons/Actions',
+      images: 'Images/Resources',
+      texts: 'Texts',
+      accessibility: 'Accessibility'
+    }
+  },
+  sidebar: {
+    backendLabel: 'Backend'
+  },
+  history: {
+    empty: 'No cached requests yet',
+    view: 'View',
+    refresh: 'Refresh'
   },
   
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { t } from '../i18n'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)
@@ -9,7 +10,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
 
   return (
     <div className="history">
-      {list.length === 0 && <div className="empty">No cached requests yet</div>}
+      {list.length === 0 && <div className="empty">{t('history.empty')}</div>}
 
       {list.map((entry, idx) => (
         <div 
@@ -21,7 +22,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
             <div className="url">{entry.payload.url}</div>
             <div className="meta-right">
               <small>{new Date(entry.ts).toLocaleString()}</small>
-              <button className="tiny" onClick={() => onView && onView(entry)}>View</button>
+              <button className="tiny" onClick={() => onView && onView(entry)}>{t('history.view')}</button>
             </div>
           </div>
           {expanded === idx && <pre className="mini">{JSON.stringify(entry.response, null, 2)}</pre>}
@@ -29,7 +30,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
       ))}
 
       <div className="history-actions">
-        <button className="small" onClick={handleRefresh}>Refresh</button>
+        <button className="small" onClick={handleRefresh}>{t('history.refresh')}</button>
       </div>
     </div>
   )
