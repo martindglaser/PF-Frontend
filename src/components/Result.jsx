@@ -6,33 +6,41 @@ function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
   const url = mobile ? `${base}/${id}_mobile.png` : `${base}/${id}.png`
   const title = mobile ? t('result.screenshot.mobile') : t('result.screenshot.desktop')
-  
+  const [imgError, setImgError] = React.useState(false)
+
   return (
     <div className="screenshot">
       <div className="screenshot-label">{title}</div>
       <div 
         className="screenshot-image-wrapper"
-        onClick={() => onView(url, title)}
-        title="Click to view fullscreen"
+        onClick={() => !imgError && onView(url, title)}
+        title={imgError ? t('result.screenshotUnavailable') : 'Click to view fullscreen'}
       >
-        <img 
-          src={url} 
-          alt={mobile ? 'Mobile screenshot' : 'Desktop screenshot'} 
-          onError={(e)=>{
-            e.target.style.opacity = 0.3
-            e.target.alt = 'Screenshot not available'
-          }} 
-        />
-        <button 
-          className="fullscreen-btn" 
-          onClick={(e) => {
-            e.stopPropagation()
-            onView(url, title)
-          }}
-          aria-label="View fullscreen"
-        >
-          🔍 Fullscreen
-        </button>
+        {!imgError ? (
+          <img 
+            src={url} 
+            alt={mobile ? 'Mobile screenshot' : 'Desktop screenshot'} 
+            onError={() => { setImgError(true); console.warn('Screenshot failed to load:', url) }} 
+          />
+        ) : (
+          <div className="screenshot-missing">
+            <div className="screenshot-missing-icon">📷</div>
+            <div className="screenshot-missing-text">{t('result.screenshotUnavailable')}</div>
+          </div>
+        )}
+
+        {!imgError && (
+          <button 
+            className="fullscreen-btn" 
+            onClick={(e) => {
+              e.stopPropagation()
+              onView(url, title)
+            }}
+            aria-label="View fullscreen"
+          >
+            🔍 Fullscreen
+          </button>
+        )}
       </div>
     </div>
   )

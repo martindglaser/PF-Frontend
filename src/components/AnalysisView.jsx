@@ -13,7 +13,7 @@ export default function AnalysisView({ onSubmitStart, onSubmitEnd, lastResult, e
       </div>
 
       <div className="dashboard-content">
-        <div className="content-section">
+        <div className="content-section panel-centered wide">
           <h3 className="section-title">{t('app.newAnalysis')}</h3>
           <AnalysisForm onStart={onSubmitStart} onComplete={onSubmitEnd} />
         </div>
@@ -22,7 +22,9 @@ export default function AnalysisView({ onSubmitStart, onSubmitEnd, lastResult, e
       <div className="result-section">
         {error && <div className="error">❌ Error: {error}</div>}
         {lastResult && (
-          <Result result={lastResult.result} fromCache={lastResult.fromCache} />
+          <div className="panel-width centered wide">
+            <Result result={lastResult.result} fromCache={lastResult.fromCache} />
+          </div>
         )}
       </div>
     </>

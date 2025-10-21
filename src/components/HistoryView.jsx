@@ -24,7 +24,7 @@ export default function HistoryView({ onView, onUpdate, selectedHistoryItem, set
         </div>
 
         {selectedHistoryItem && (
-          <div className="content-section history-detail-section">
+          <div id="history-detail" tabIndex={-1} className="content-section history-detail-section">
             <div className="detail-header">
               <h3>{t('app.testDetails')}</h3>
               <button className="small" onClick={() => setSelectedHistoryItem(null)}>✕ {t('app.close')}</button>

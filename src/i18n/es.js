@@ -61,7 +61,12 @@ const es = {
     issueCount: (n) => `${n} problema${n !== 1 ? 's' : ''}`,
     selectorLabel: 'Selector',
     viewRawJson: '📄 Ver JSON crudo',
-    screenshots: '📸 Capturas'
+    screenshots: '📸 Capturas',
+    screenshotUnavailable: 'Captura no disponible',
+    screenshot: {
+      desktop: 'Vista Desktop',
+      mobile: 'Vista Mobile'
+    }
   },
   form: {
     urlLabel: 'URL',

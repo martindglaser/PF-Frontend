@@ -61,7 +61,13 @@ const en = {
     issueCount: (n) => `${n} issue${n !== 1 ? 's' : ''}`,
     selectorLabel: 'Selector',
     viewRawJson: '📄 View raw JSON',
-    screenshots: '📸 Screenshots'
+    screenshots: '📸 Screenshots',
+    screenshotUnavailable: 'Screenshot not available'
+    ,
+    screenshot: {
+      desktop: 'Desktop view',
+      mobile: 'Mobile view'
+    }
   },
   form: {
     urlLabel: 'URL',

@@ -110,6 +110,14 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                       const full = await getAnalysis(entry.id)
                       const combined = { ...entry, response: full, result: full }
                       onView && onView(combined)
+                      // scroll the details pane into view after parent updates selection
+                      setTimeout(() => {
+                        const el = document.querySelector('#history-detail')
+                        if (el && typeof el.scrollIntoView === 'function') {
+                          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                          try { el.focus({ preventScroll: true }) } catch (e) { /* ignore */ }
+                        }
+                      }, 80)
                       return
                     } catch (err) {
                       // fallback to passing existing entry
@@ -117,6 +125,14 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                     }
                   }
                   onView && onView(entry)
+                  // scroll the details pane into view after parent updates selection
+                  setTimeout(() => {
+                    const el = document.querySelector('#history-detail')
+                    if (el && typeof el.scrollIntoView === 'function') {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      try { el.focus({ preventScroll: true }) } catch (e) { /* ignore */ }
+                    }
+                  }, 80)
                 }}
               >
                 {t('history.view')}
