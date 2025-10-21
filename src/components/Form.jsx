@@ -17,6 +17,7 @@ export default function AnalysisForm({ onStart, onComplete }) {
   const [tolerance, setTolerance] = useState('high')
   const [language, setLanguage] = useState('en')
   const [selectedCategories, setSelectedCategories] = useState([])
+  const [urlError, setUrlError] = useState(false)
 
   function handleCategoryToggle(categoryId) {
     setSelectedCategories(prev => 
@@ -34,7 +35,11 @@ export default function AnalysisForm({ onStart, onComplete }) {
       language,
       categories: selectedCategories
     }
-    if (!payload.url) return onComplete({ error: 'URL is required' })
+    if (!payload.url) {
+      setUrlError(true)
+      onComplete && onComplete({ error: 'URL is required' })
+      return
+    }
 
     onStart && onStart()
 
@@ -57,7 +62,12 @@ export default function AnalysisForm({ onStart, onComplete }) {
     <form className="analysis-form" onSubmit={handleSubmit}>
       <label>
         {t('form.urlLabel')}
-        <input value={url} onChange={e => setUrl(e.target.value)} placeholder={t('form.urlPlaceholder')} />
+        <input
+          value={url}
+          onChange={e => { setUrl(e.target.value); if (urlError) setUrlError(false) }}
+          placeholder={t('form.urlPlaceholder')}
+          className={urlError ? 'input-error' : ''}
+        />
       </label>
 
       <label>

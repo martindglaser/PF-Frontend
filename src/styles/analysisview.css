@@ -29,6 +29,22 @@
   transition: all 0.3s ease;
 }
 
+  /* Error state for inputs (URL required) */
+  .analysis-form input.input-error,
+  .analysis-form textarea.input-error,
+  .analysis-form select.input-error {
+    border: 1px solid #ff6b6b !important;
+    box-shadow: 0 0 0 6px rgba(255,107,107,0.06);
+    background-color: rgba(255,107,107,0.02);
+  }
+
+  .analysis-form input.input-error:focus,
+  .analysis-form textarea.input-error:focus,
+  .analysis-form select.input-error:focus {
+    outline: none;
+    box-shadow: 0 0 0 8px rgba(255,107,107,0.12);
+  }
+
 .analysis-form select option {
   background: #151b2e;
   color: #e4e9f7;

@@ -23,7 +23,9 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
       setItems(normalized)
       onUpdate && onUpdate(resolved)
     } catch (err) {
-      setError(err?.message ?? String(err))
+      // keep technical details in console for debugging, but show a generic message to users
+      console.warn('listAnalyses error', err)
+      setError(t('history.fetchError') || 'No se pudieron cargar los registros. Intente más tarde.')
     } finally {
       setLoading(false)
     }
@@ -36,7 +38,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
   async function handleDelete(entry, e) {
     e.stopPropagation()
     const id = entry.id || entry.key
-    if (!id) return setError('Cannot delete: missing id')
+  if (!id) return setError(t('history.deleteError') || 'No se pudo eliminar la entrada. Intente más tarde.')
     const ok = window.confirm(t('history.confirmDelete') || 'Delete this entry?')
     if (!ok) return
 
@@ -46,7 +48,8 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
       await deleteAnalysis(id)
       onUpdate && onUpdate(items.filter(it => (it.id || it.key) !== id))
     } catch (err) {
-      setError(err?.message ?? String(err))
+      console.warn('deleteAnalysis error', err)
+      setError(t('history.deleteError') || 'No se pudo eliminar la entrada. Intente más tarde.')
       // re-fetch to restore state
       fetchAnalyses()
     }

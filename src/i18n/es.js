@@ -90,6 +90,9 @@ const es = {
     refresh: 'Actualizar',
     delete: 'Eliminar',
     confirmDelete: '¿Eliminar esta prueba?'
+    ,
+    fetchError: 'No se pudieron cargar los registros. Intente más tarde.',
+    deleteError: 'No se pudo eliminar la entrada. Intente más tarde.'
   },
   
 }

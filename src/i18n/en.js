@@ -90,6 +90,9 @@ const en = {
     refresh: 'Refresh',
     delete: 'Delete',
     confirmDelete: 'Delete this test?'
+    ,
+    fetchError: 'Could not load history. Please try again later.',
+    deleteError: 'Could not delete the entry. Please try again later.'
   },
   
 }
