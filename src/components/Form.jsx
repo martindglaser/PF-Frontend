@@ -43,18 +43,27 @@ export default function AnalysisForm({ onStart, onComplete }) {
 
     onStart && onStart()
 
+    let cached
     try {
-      const cached = getCached(payload)
+      // show cached immediately if available, but do not skip the network request
+      cached = getCached(payload)
       if (cached) {
-        return onComplete({ result: cached.response, fromCache: true })
+        onComplete({ result: cached.response, fromCache: true })
       }
 
+      // always request a fresh analysis
       const result = await analyze(payload)
-  // store
-  try { putCached(payload, result) } catch { /* ignore */ }
+      // store fresh result in cache (best-effort)
+      try { putCached(payload, result) } catch { /* ignore */ }
+      // update UI with fresh server result
       onComplete({ result, fromCache: false })
     } catch (err) {
-      onComplete({ error: err.message || String(err) })
+      // if we had previously shown a cached result, keep it and only log the error
+      if (cached) {
+        console.warn('analyze request failed, keeping cached result', err)
+      } else {
+        onComplete({ error: err.message || String(err) })
+      }
     }
   }
 
