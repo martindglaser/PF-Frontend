@@ -28,15 +28,13 @@ const es = {
   loading: {
     title: 'Analizando tu página',
     facts: [
-      '🤖 El AI está analizando cada píxel de tu página...',
+      '🤖 La AI está analizando cada píxel de tu página...',
       '🔍 Buscando enlaces rotos y problemas de accesibilidad...',
       '✨ Generando insights de elementos visuales...',
       '🎯 Verificando patrones de responsividad móvil...',
       '🌐 Evaluando métricas de experiencia de usuario...',
       '🔬 Profundizando en la estructura de la página...',
       '🎨 Analizando consistencia de diseño...',
-      '⚡ Ejecutando diagnósticos de performance...',
-      '🛡️ Verificando prácticas de seguridad...',
       '📊 Calculando análisis comprensivo...'
     ],
     percent: (p) => `${Math.round(p)}%`,
@@ -90,7 +88,7 @@ const es = {
     backendLabel: 'Backend'
   },
   history: {
-    empty: 'No hay solicitudes en caché',
+    empty: 'No hay análisis ejecutados',
     view: 'Ver',
     refresh: 'Actualizar',
     delete: 'Eliminar',

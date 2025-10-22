@@ -35,8 +35,6 @@ const en = {
       '🌐 Evaluating user experience metrics...',
       '🔬 Deep diving into page structure...',
       '🎨 Analyzing design consistency...',
-      '⚡ Running performance diagnostics...',
-      '🛡️ Checking security best practices...',
       '📊 Computing comprehensive analysis...'
     ],
     percent: (p) => `${Math.round(p)}%`,
@@ -91,7 +89,7 @@ const en = {
     backendLabel: 'Backend'
   },
   history: {
-    empty: 'No cached requests yet',
+    empty: 'No analysis executed',
     view: 'View',
     refresh: 'Refresh',
     delete: 'Delete',
