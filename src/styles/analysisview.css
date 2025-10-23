@@ -303,21 +303,6 @@
 
 .result-section { overflow: visible; }
 
-.notification {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  padding: 12px 16px;
-  border-radius: 8px;
-  color: white;
-  font-weight: 700;
-  box-shadow: 0 6px 22px rgba(0,0,0,0.5);
-  z-index: 9999;
-}
-.notification.success { background: linear-gradient(90deg,#00d4ff,#4ade80); color:#06202a }
-.notification.error { background: linear-gradient(90deg,#ff6b6b,#fb7185); }
-.notification-close { background: transparent; border: none; color: inherit; margin-left: 12px; cursor: pointer; font-size: 14px }
-
 .error {
   color: var(--danger);
   background: rgba(255, 107, 107, 0.1);
