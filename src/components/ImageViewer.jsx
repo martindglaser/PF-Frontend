@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { t } from '../i18n'
 import '../styles/ImageViewer.css'
+import ReactDOM from 'react-dom'
 
 export default function ImageViewer({ imageUrl, title, onClose }) {
   useEffect(() => {
@@ -9,14 +10,13 @@ export default function ImageViewer({ imageUrl, title, onClose }) {
     }
     document.addEventListener('keydown', handleEscape)
     document.body.style.overflow = 'hidden'
-    
     return () => {
       document.removeEventListener('keydown', handleEscape)
       document.body.style.overflow = 'auto'
     }
   }, [onClose])
 
-  return (
+  const overlay = (
     <div className="image-viewer-overlay" onClick={onClose}>
       <button className="viewer-close" onClick={onClose} aria-label={t('viewer.close') || 'Close'}>
         ✕
@@ -36,4 +36,5 @@ export default function ImageViewer({ imageUrl, title, onClose }) {
       </div>
     </div>
   )
+  return ReactDOM.createPortal(overlay, document.body)
 }
