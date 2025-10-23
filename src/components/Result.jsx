@@ -100,12 +100,19 @@ export default function Result({ result, fromCache }) {
                 <span className="count-badge">{t('result.issueCount')(result.modifications.length)}</span>
               </div>
               <div className="mod-list">
-                {result.modifications.map((m, idx) => (
+                {result.modifications.map((m, idx) => {
+                  const labelKey = `app.categoryLabels.${m.category}`
+                  const translated = t(labelKey)
+                  const displayCategory = (translated && translated !== labelKey)
+                    ? translated
+                    : (m.category || '').toString().split('.').pop()
+
+                  return (
                   <div key={m.id} className="mod-item">
                     <div className="mod-number">{idx + 1}</div>
                     <div className="mod-content">
                       <div className="mod-top">
-                        <strong>📌 {t(`app.categoryLabels.${m.category}`) || m.category}</strong>
+                        <strong>{displayCategory}</strong>
                         <span className={`sev sev-${(m.severity || '').toLowerCase()}`}>
                           {t(`app.severity.${(m.severity || '').toLowerCase()}`) || m.severity}
                         </span>
@@ -119,7 +126,8 @@ export default function Result({ result, fromCache }) {
                       </div>
                     </div>
                   </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           )}
