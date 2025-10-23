@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { t } from '../i18n'
 import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
+import { formatLocal } from '../utils/formatDate'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)
@@ -99,7 +100,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                 )
               })()}
 
-              <small>{new Date(entry.ts ?? entry.createdAt ?? Date.now()).toLocaleString()}</small>
+              <small>{formatLocal(entry.ts ?? entry.createdAt ?? Date.now())}</small>
               <button
                 className="tiny"
                 onClick={async (e) => {

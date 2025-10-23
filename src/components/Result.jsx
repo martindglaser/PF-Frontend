@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { t } from '../i18n'
 import ImageViewer from './ImageViewer'
+import { formatLocal } from '../utils/formatDate'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
@@ -73,7 +74,7 @@ export default function Result({ result, fromCache }) {
           </div>
         </div>
         <div className="timestamps">
-          <small>{t('result.timestampPrefix')} {new Date(result.createdAtUtc).toLocaleString()}</small>
+          <small>{t('result.timestampPrefix')} {formatLocal(result.createdAtUtc)}</small>
         </div>
       </div>
 
