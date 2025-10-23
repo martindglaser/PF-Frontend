@@ -581,6 +581,12 @@
   color: var(--danger);
 }
 
+/* Spanish/alt aliases: treat 'critica' and 'critical' like 'alto/high' */
+.sev-critica, .sev-critical {
+  background: rgba(255, 107, 107, 0.2);
+  color: var(--danger);
+}
+
 .mod-desc {
   margin: 10px 0 12px 0;
   line-height: 1.7;
