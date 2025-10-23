@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { analyze } from '../utils/api'
 import { getCached, putCached } from '../utils/cache'
 import { t } from '../i18n'
@@ -18,6 +18,11 @@ export default function AnalysisForm({ onStart, onComplete }) {
   const [language, setLanguage] = useState('en')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [urlError, setUrlError] = useState(false)
+
+  // On mount, select all categories by default
+  useEffect(() => {
+    setSelectedCategories(CATEGORIES.map(c => c.id))
+  }, [])
 
   function handleCategoryToggle(categoryId) {
     setSelectedCategories(prev => 
@@ -120,7 +125,16 @@ export default function AnalysisForm({ onStart, onComplete }) {
       </div>
 
       <div className="form-actions">
-        <button type="submit">Run analysis</button>
+        <button type="submit" disabled={selectedCategories.length === 0}>Run analysis</button>
+        {selectedCategories.length === 0 && (
+          <div
+            role="alert"
+            aria-live="assertive"
+            style={{ color: 'var(--danger)', marginTop: 8, fontSize: 13, fontWeight: 700 }}
+          >
+            {'Seleccione al menos una categoría'}
+          </div>
+        )}
       </div>
     </form>
   )
