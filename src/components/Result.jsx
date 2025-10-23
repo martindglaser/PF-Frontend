@@ -107,15 +107,21 @@ export default function Result({ result, fromCache }) {
                     ? translated
                     : (m.category || '').toString().split('.').pop()
 
+                  // severity display and safe class
+                  const sevKey = `app.severity.${(m.severity || '').toString().toLowerCase()}`
+                  const sevTranslated = t(sevKey)
+                  const displaySeverity = (sevTranslated && !sevTranslated.includes('app.severity'))
+                    ? sevTranslated
+                    : (() => { const raw = (m.severity || '').toString().split('.').pop() || ''; return raw.charAt(0).toUpperCase() + raw.slice(1) })()
+                  const sevClass = (m.severity || '').toString().toLowerCase().split('.').pop().replace(/[^a-z0-9\-]/g, '').replace(/\s+/g, '-')
+
                   return (
                   <div key={m.id} className="mod-item">
                     <div className="mod-number">{idx + 1}</div>
                     <div className="mod-content">
                       <div className="mod-top">
                         <strong>{displayCategory}</strong>
-                        <span className={`sev sev-${(m.severity || '').toLowerCase()}`}>
-                          {t(`app.severity.${(m.severity || '').toLowerCase()}`) || m.severity}
-                        </span>
+                        <span className={`sev sev-${sevClass}`}>{displaySeverity}</span>
                       </div>
                       <div className="mod-desc">{m.description}</div>
                       <div className="mod-meta">
