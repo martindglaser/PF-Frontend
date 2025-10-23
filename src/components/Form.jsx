@@ -14,8 +14,8 @@ const CATEGORIES = [
 
 export default function AnalysisForm({ onStart, onComplete }) {
   const [url, setUrl] = useState('')
-  const [tolerance, setTolerance] = useState('high')
-  const [language, setLanguage] = useState('en')
+  const [tolerance, setTolerance] = useState('low')
+  const [language, setLanguage] = useState('es')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [urlError, setUrlError] = useState(false)
 

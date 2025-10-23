@@ -70,7 +70,7 @@ const es = {
     urlLabel: 'URL',
     urlPlaceholder: 'https://example.com',
     toleranceLabel: 'Tolerancia',
-    tolerance: { low: 'bajo', medium: 'medio', high: 'alto' },
+    tolerance: { low: 'Bajo', medium: 'Medio', high: 'Alto' },
     languageLabel: 'Idioma',
     categoriesLabel: 'Categorías',
     categoriesSelected: (n) => `${n} seleccionada${n !== 1 ? 's' : ''}`,
