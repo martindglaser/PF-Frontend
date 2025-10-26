@@ -16,6 +16,7 @@ const en = {
     cachedRequestsCount: (n) => `Cached Requests (${n})`,
     severity: {
       high: 'High',
+      critical: 'Critical',
       medium: 'Medium',
       low: 'Low'
     },
@@ -66,6 +67,10 @@ const en = {
       desktop: 'Desktop view',
       mobile: 'Mobile view'
     }
+    ,
+    state: {
+      confirmed: 'Confirmed'
+    }
   },
   form: {
     urlLabel: 'URL',
@@ -84,6 +89,8 @@ const en = {
       texts: 'Texts',
       accessibility: 'Accessibility'
     }
+    ,
+    runButton: 'Run analysis'
   },
   sidebar: {
     backendLabel: 'Backend'

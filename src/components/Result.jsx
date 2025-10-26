@@ -52,6 +52,19 @@ export default function Result({ result, fromCache }) {
 
   if (!result) return null
 
+  // translate tolerance via i18n if possible (form.tolerance.low|medium|high)
+  const rawTol = result?.tolerance ?? ''
+  let displayTolerance = rawTol || '—'
+  if (rawTol) {
+    try {
+      const key = rawTol.toString().toLowerCase()
+      const trans = t(`form.tolerance.${key}`)
+      displayTolerance = (typeof trans === 'string' && trans !== `form.tolerance.${key}`) ? trans : rawTol
+    } catch (e) {
+      displayTolerance = rawTol
+    }
+  }
+
   return (
     <div className="result-card">
       {viewerImage && (
@@ -65,8 +78,8 @@ export default function Result({ result, fromCache }) {
         <div>
           <div className="url-badge">{t('result.urlBadge')}</div>
           <h2>{result.url}</h2>
-          <div className="meta">
-            <span>{t('result.toleranceLabel')}: <strong>{result.tolerance}</strong></span>
+            <div className="meta">
+            <span>{t('result.toleranceLabel')}: <strong>{displayTolerance}</strong></span>
             <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
             <span className={fromCache ? 'cached-badge' : 'live-badge'}>
               {fromCache ? t('result.cachedLabel') : t('result.liveLabel')}
@@ -126,7 +139,14 @@ export default function Result({ result, fromCache }) {
                       </div>
                       <div className="mod-desc">{m.description}</div>
                       <div className="mod-meta">
-                        <span className={`state-badge state-${m.state}`}>{m.state}</span>
+                        {(() => {
+                          const stateKey = `result.state.${(m.state || '').toString().toLowerCase()}`
+                          const stateTranslated = t(stateKey)
+                          const displayState = (stateTranslated && stateTranslated !== stateKey)
+                            ? stateTranslated
+                            : (() => { const raw = (m.state || '').toString().split('.').pop() || ''; return raw.charAt(0).toUpperCase() + raw.slice(1) })()
+                          return <span className={`state-badge state-${m.state}`}>{displayState}</span>
+                        })()}
                         <span className="selector-info">
                           {t('result.selectorLabel')}: <code>{m.cssSelector}</code>
                         </span>

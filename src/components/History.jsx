@@ -88,9 +88,24 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                 const response = entry.response ?? entry.result ?? entry
                 const mods = response?.modifications || response?.modificaciones || []
                 const issueCount = Array.isArray(mods) ? mods.length : 0
+
+                // translate tolerance via i18n if possible (form.tolerance.low|medium|high)
+                const rawTol = response?.tolerance ?? entry.tolerance ?? ''
+                let displayTol = rawTol || '—'
+                if (rawTol) {
+                  try {
+                    const key = rawTol.toString().toLowerCase()
+                    const trans = t(`form.tolerance.${key}`)
+                    // t returns the path string if not found, so guard that case
+                    displayTol = (typeof trans === 'string' && trans !== `form.tolerance.${key}`) ? trans : rawTol
+                  } catch (e) {
+                    displayTol = rawTol
+                  }
+                }
+
                 return (
                   <>
-                    <span className="badge small">{t('result.toleranceLabel')}: <strong style={{marginLeft:6}}>{response?.tolerance ?? entry.tolerance ?? '—'}</strong></span>
+                    <span className="badge small">{t('result.toleranceLabel')}: <strong style={{marginLeft:6}}>{displayTol}</strong></span>
                     <span className="badge small">{t('result.languageLabel')}: <strong style={{marginLeft:6}}>{response?.language ?? entry.language ?? '—'}</strong></span>
                     {entry.fromCache || response?.fromCache ? (
                       <span className="badge cached small">{t('result.cachedLabel')}</span>

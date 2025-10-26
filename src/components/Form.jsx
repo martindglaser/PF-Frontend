@@ -125,7 +125,7 @@ export default function AnalysisForm({ onStart, onComplete }) {
       </div>
 
       <div className="form-actions">
-        <button type="submit" disabled={selectedCategories.length === 0}>Run analysis</button>
+        <button type="submit" disabled={selectedCategories.length === 0}>{t('form.runButton')}</button>
         {selectedCategories.length === 0 && (
           <div
             role="alert"

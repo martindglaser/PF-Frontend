@@ -16,6 +16,7 @@ const es = {
     cachedRequestsCount: (n) => `Solicitudes en caché (${n})`,
     severity: {
       high: 'Alto',
+      critical: 'Crítico',
       medium: 'Medio',
       low: 'Bajo'
     },
@@ -62,8 +63,12 @@ const es = {
     screenshots: '📸 Capturas',
     screenshotUnavailable: 'Captura no disponible',
     screenshot: {
-      desktop: 'Vista Desktop',
-      mobile: 'Vista Mobile'
+      desktop: 'Vista de escritorio',
+      mobile: 'Vista móvil'
+    }
+    ,
+    state: {
+      confirmed: 'Confirmado'
     }
   },
   form: {
@@ -83,6 +88,8 @@ const es = {
       texts: 'Textos',
       accessibility: 'Accesibilidad'
     }
+    ,
+    runButton: 'Ejecutar análisis'
   },
   sidebar: {
     backendLabel: 'Backend'
