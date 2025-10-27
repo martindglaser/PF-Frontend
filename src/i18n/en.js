@@ -78,6 +78,10 @@ const en = {
     toleranceLabel: 'Tolerance',
     tolerance: { low: 'low', medium: 'medium', high: 'high' },
     languageLabel: 'Language',
+  analysisNameLabel: 'Analysis name',
+  analysisNamePlaceholder: 'Descriptive name for this analysis',
+  userNameLabel: 'User name',
+  userNamePlaceholder: 'Name of the user running the analysis',
     categoriesLabel: 'Categories',
     categoriesSelected: (n) => `${n} selected`,
     selectCategoriesHint: 'Select categories to analyze',
@@ -91,6 +95,9 @@ const en = {
     }
     ,
     runButton: 'Run analysis'
+    ,analysisNameRequired: 'Analysis name is required',
+    userNameRequired: 'User name is required'
+    ,urlRequired: 'URL is required'
   },
   sidebar: {
     backendLabel: 'Backend'

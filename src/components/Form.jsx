@@ -1,7 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { analyze } from '../utils/api'
 import { getCached, putCached } from '../utils/cache'
 import { t } from '../i18n'
+
+// sanitize user-provided short text fields: strip tags, control chars, collapse whitespace, truncate
+function sanitizeInput(input, maxLen = 100) {
+  if (input == null) return ''
+  let s = String(input)
+  // remove HTML tags
+  s = s.replace(/<[^>]*>/g, '')
+  // remove common control characters (newlines, tabs) and replace with single space
+  s = s.replace(/[\r\n\t]+/g, ' ')
+  // collapse multiple whitespace into single space and trim
+  s = s.replace(/\s+/g, ' ').trim()
+  // remove angle brackets left over and other problematic chars if needed
+  s = s.replace(/[<>]/g, '')
+  if (maxLen && s.length > maxLen) s = s.slice(0, maxLen)
+  return s
+}
 
 const CATEGORIES = [
   { id: 'ui-styles', label: t('form.categories.ui') },
@@ -14,10 +30,21 @@ const CATEGORIES = [
 
 export default function AnalysisForm({ onStart, onComplete }) {
   const [url, setUrl] = useState('')
+  const [analysisName, setAnalysisName] = useState('')
+  const [userName, setUserName] = useState('')
   const [tolerance, setTolerance] = useState('low')
   const [language, setLanguage] = useState('es')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [urlError, setUrlError] = useState(false)
+  const [nameError, setNameError] = useState(false)
+  const [userError, setUserError] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
+  const urlRef = useRef(null)
+  const nameRef = useRef(null)
+  const userRef = useRef(null)
+  // field character limits
+  const ANALYSIS_NAME_MAX = 120
+  const USER_NAME_MAX = 60
 
   // On mount, select all categories by default
   useEffect(() => {
@@ -35,14 +62,38 @@ export default function AnalysisForm({ onStart, onComplete }) {
   async function handleSubmit(e) {
     e.preventDefault()
     const payload = { 
-      url: url.trim(), 
-      tolerance, 
+      url: url.trim(),
+      name: sanitizeInput(analysisName, ANALYSIS_NAME_MAX),
+      user: sanitizeInput(userName, USER_NAME_MAX),
+      tolerance,
       language,
       categories: selectedCategories
     }
+    // validate required fields: url, analysis name and user
+    let hasError = false
     if (!payload.url) {
       setUrlError(true)
-      onComplete && onComplete({ error: 'URL is required' })
+      // do not call onComplete here; show inline error next to URL instead to match other fields
+      hasError = true
+    }
+    if (!payload.name) {
+      setNameError(true)
+      hasError = true
+    }
+    if (!payload.user) {
+      setUserError(true)
+      hasError = true
+    }
+    if (hasError) {
+      // highlight submit button and focus first invalid field
+      setSubmitError(true)
+      setTimeout(() => setSubmitError(false), 1400)
+      // focus order: url, name, user
+      try {
+        if (!payload.url && urlRef.current) urlRef.current.focus()
+        else if (!payload.name && nameRef.current) nameRef.current.focus()
+        else if (!payload.user && userRef.current) userRef.current.focus()
+      } catch (e) { /* ignore */ }
       return
     }
 
@@ -73,13 +124,52 @@ export default function AnalysisForm({ onStart, onComplete }) {
   return (
     <form className="analysis-form" onSubmit={handleSubmit}>
       <label>
+        {t('form.analysisNameLabel')}
+        <input
+          ref={nameRef}
+          className={nameError ? 'input-error' : ''}
+          value={analysisName}
+          onChange={e => { setAnalysisName(sanitizeInput(e.target.value, ANALYSIS_NAME_MAX)); if (nameError) setNameError(false); if (submitError) setSubmitError(false) }}
+          placeholder={t('form.analysisNamePlaceholder') || 'Nombre del análisis'}
+          maxLength={ANALYSIS_NAME_MAX}
+        />
+        {nameError && (
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
+            {t('form.analysisNameRequired') || 'El nombre del análisis es obligatorio'}
+          </div>
+        )}
+      </label>
+
+      <label>
+        {t('form.userNameLabel')}
+        <input
+          ref={userRef}
+          className={userError ? 'input-error' : ''}
+          value={userName}
+          onChange={e => { setUserName(sanitizeInput(e.target.value, USER_NAME_MAX)); if (userError) setUserError(false); if (submitError) setSubmitError(false) }}
+          placeholder={t('form.userNamePlaceholder') || 'Nombre del usuario'}
+          maxLength={USER_NAME_MAX}
+        />
+        {userError && (
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
+            {t('form.userNameRequired') || 'El nombre del usuario es obligatorio'}
+          </div>
+        )}
+      </label>
+      <label>
         {t('form.urlLabel')}
         <input
+          ref={urlRef}
           value={url}
-          onChange={e => { setUrl(e.target.value); if (urlError) setUrlError(false) }}
+          onChange={e => { setUrl(e.target.value); if (urlError) setUrlError(false); if (submitError) setSubmitError(false) }}
           placeholder={t('form.urlPlaceholder')}
           className={urlError ? 'input-error' : ''}
         />
+        {urlError && (
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
+            {t('form.urlRequired') || 'El URL es obligatorio'}
+          </div>
+        )}
       </label>
 
       <label>
@@ -125,7 +215,14 @@ export default function AnalysisForm({ onStart, onComplete }) {
       </div>
 
       <div className="form-actions">
-        <button type="submit" disabled={selectedCategories.length === 0}>{t('form.runButton')}</button>
+        <button
+          type="submit"
+          disabled={selectedCategories.length === 0}
+          className={submitError ? 'btn-error' : ''}
+          style={submitError ? { borderColor: 'var(--danger)', boxShadow: '0 0 0 6px rgba(220, 38, 38, 0.12)' } : {}}
+        >
+          {t('form.runButton')}
+        </button>
         {selectedCategories.length === 0 && (
           <div
             role="alert"
