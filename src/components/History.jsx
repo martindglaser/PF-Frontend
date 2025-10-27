@@ -73,7 +73,16 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
 
       {!loading && items.length === 0 && <div className="empty">{t('history.empty')}</div>}
 
-      {items.map((entry, idx) => (
+      {loading ? (
+        <div className="history-loading" style={{ padding: 20, textAlign: 'center' }}>
+          <svg width="48" height="48" viewBox="0 0 50 50" style={{ marginBottom: 8 }}>
+            <circle cx="25" cy="25" r="20" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="4"/>
+            <path d="M45 25a20 20 0 0 1-20 20" stroke="var(--accent)" strokeWidth="4" strokeLinecap="round" fill="none">
+              <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite" />
+            </path>
+          </svg>
+        </div>
+      ) : items.map((entry, idx) => (
         <div
           key={entry.key || entry.id || idx}
           className={`history-item ${selectedItem?.key === entry.key ? 'selected' : ''}`}
