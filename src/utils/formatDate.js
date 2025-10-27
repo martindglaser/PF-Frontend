@@ -1,6 +1,6 @@
-export function formatLocal(input: string | number | Date | null | undefined, tz = 'America/Argentina/Buenos_Aires') {
+export function formatLocal(input, tz = 'America/Argentina/Buenos_Aires') {
   if (!input && input !== 0) return ''
-  let d: Date
+  let d
   if (input instanceof Date) d = input
   else if (typeof input === 'number') d = new Date(input)
   else {

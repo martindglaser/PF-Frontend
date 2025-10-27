@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { t } from '../i18n'
 import ImageViewer from './ImageViewer'
-import { formatLocal } from '../utils/formatDate'
+import { formatLocal } from '../utils/formatDate.js'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'

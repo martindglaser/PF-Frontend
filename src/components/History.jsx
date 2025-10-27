@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { t } from '../i18n'
 import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
-import { formatLocal } from '../utils/formatDate'
+import { formatLocal } from '../utils/formatDate.js'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   const [expanded, setExpanded] = useState(null)
