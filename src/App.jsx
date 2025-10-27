@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { t } from './i18n'
 import './styles/app.css'
 import LoadingScreen from './components/LoadingScreen'
 import Sidebar from './components/Sidebar'
@@ -16,6 +17,15 @@ export default function App() {
 
   useEffect(() => {
     setCacheList(getAllCachedEntries())
+  }, [])
+
+  // set page title from i18n
+  useEffect(() => {
+    try {
+      document.title = t('app.title') || document.title
+    } catch (e) {
+      // ignore if document not available
+    }
   }, [])
 
   function onSubmitStart() {

@@ -19,6 +19,22 @@ function sanitizeInput(input, maxLen = 100) {
   return s
 }
 
+// sanitize URL-like input: remove tags, control chars, and all whitespace (URLs shouldn't contain spaces)
+function sanitizeUrl(input, maxLen = 2000) {
+  if (input == null) return ''
+  let s = String(input)
+  // remove HTML tags
+  s = s.replace(/<[^>]*>/g, '')
+  // remove control characters (newlines, tabs)
+  s = s.replace(/[\r\n\t]+/g, '')
+  // remove all whitespace
+  s = s.replace(/\s+/g, '')
+  // remove angle brackets if any
+  s = s.replace(/[<>]/g, '')
+  if (maxLen && s.length > maxLen) s = s.slice(0, maxLen)
+  return s
+}
+
 const CATEGORIES = [
   { id: 'ui-styles', label: t('form.categories.ui') },
   { id: 'forms', label: t('form.categories.forms') },
@@ -62,7 +78,7 @@ export default function AnalysisForm({ onStart, onComplete }) {
   async function handleSubmit(e) {
     e.preventDefault()
     const payload = { 
-      url: url.trim(),
+      url: sanitizeUrl(url, 2000),
       name: sanitizeInput(analysisName, ANALYSIS_NAME_MAX),
       user: sanitizeInput(userName, USER_NAME_MAX),
       tolerance,
@@ -161,7 +177,7 @@ export default function AnalysisForm({ onStart, onComplete }) {
         <input
           ref={urlRef}
           value={url}
-          onChange={e => { setUrl(e.target.value); if (urlError) setUrlError(false); if (submitError) setSubmitError(false) }}
+          onChange={e => { setUrl(sanitizeUrl(e.target.value)); if (urlError) setUrlError(false); if (submitError) setSubmitError(false) }}
           placeholder={t('form.urlPlaceholder')}
           className={urlError ? 'input-error' : ''}
         />
