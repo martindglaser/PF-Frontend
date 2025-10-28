@@ -109,6 +109,8 @@ const en = {
     delete: 'Delete',
     confirmDelete: 'Delete this test?'
     ,
+    analysisTitle: 'Analysis title',
+    userLabel: 'User',
     fetchError: 'Could not load history. Please try again later.',
     deleteError: 'Could not delete the entry. Please try again later.'
   },

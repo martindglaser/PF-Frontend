@@ -108,6 +108,8 @@ const es = {
     delete: 'Eliminar',
     confirmDelete: '¿Eliminar esta prueba?'
     ,
+    analysisTitle: 'Título del análisis',
+    userLabel: 'Usuario',
     fetchError: 'No se pudieron cargar los registros. Intente más tarde.',
     deleteError: 'No se pudo eliminar la entrada. Intente más tarde.'
   },
