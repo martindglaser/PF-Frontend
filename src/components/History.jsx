@@ -146,13 +146,11 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                 className="tiny"
                 onClick={async (e) => {
                   e.stopPropagation()
-                  // try to fetch full analysis from backend to get accurate timestamp
                   if (entry.id) {
                     try {
                       const full = await getAnalysis(entry.id)
                       const combined = { ...entry, response: full, result: full }
                       onView && onView(combined)
-                      // scroll the details pane into view after parent updates selection
                       setTimeout(() => {
                         const el = document.querySelector('#history-detail')
                         if (el && typeof el.scrollIntoView === 'function') {
@@ -162,12 +160,10 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                       }, 80)
                       return
                     } catch (err) {
-                      // fallback to passing existing entry
                       console.warn('getAnalysis failed', err)
                     }
                   }
                   onView && onView(entry)
-                  // scroll the details pane into view after parent updates selection
                   setTimeout(() => {
                     const el = document.querySelector('#history-detail')
                     if (el && typeof el.scrollIntoView === 'function') {
@@ -190,15 +186,9 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
             </div>
           </div>
 
-          {/* expanded JSON on row click removed; 'Ver' button opens details pane */}
         </div>
       ))}
 
-      <div className="history-actions">
-        <button className="small" onClick={handleRefresh}>
-          {t('history.refresh')}
-        </button>
-      </div>
     </div>
   )
 }

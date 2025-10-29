@@ -8,7 +8,16 @@ import HistoryView from './components/HistoryView'
 import { getAllCachedEntries, clearCache } from './utils/cache'
 
 export default function App() {
-  const [activeView, setActiveView] = useState('analysis')
+  const [activeView, setActiveView] = useState(() => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem('activeView') || 'analysis'
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+    return 'analysis'
+  })
   const [cacheList, setCacheList] = useState([])
   const [lastResult, setLastResult] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -33,7 +42,7 @@ export default function App() {
     setError(null)
     setLastResult(null)
     setSelectedHistoryItem(null)
-    setActiveView('analysis')
+    changeView('analysis')
   }
 
   function onSubmitEnd(payload = {}) {
@@ -63,7 +72,18 @@ export default function App() {
       response
     }
     setSelectedHistoryItem(normalized)
-    setActiveView('history')
+    changeView('history')
+  }
+
+  function changeView(view) {
+    setActiveView(view)
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('activeView', view)
+      }
+    } catch (e) {
+      // ignore
+    }
   }
 
   function handleClearCache() {
@@ -76,7 +96,7 @@ export default function App() {
 
   return (
     <div className="app-root">
-      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+  <Sidebar activeView={activeView} setActiveView={changeView} />
 
       {loading && <LoadingScreen />}
 

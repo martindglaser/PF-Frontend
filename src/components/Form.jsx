@@ -52,6 +52,7 @@ export default function AnalysisForm({ onStart, onComplete }) {
   const [language, setLanguage] = useState('es')
   const [selectedCategories, setSelectedCategories] = useState([])
   const [urlError, setUrlError] = useState(false)
+  const [urlErrorMessage, setUrlErrorMessage] = useState('')
   const [nameError, setNameError] = useState(false)
   const [userError, setUserError] = useState(false)
   const [submitError, setSubmitError] = useState(false)
@@ -88,8 +89,6 @@ export default function AnalysisForm({ onStart, onComplete }) {
     const sanitizedName = sanitizeInput(analysisName, ANALYSIS_NAME_MAX)
     const sanitizedUser = sanitizeInput(userName, USER_NAME_MAX)
 
-    // Backend expects PascalCase fields (AnalysisName, UserName). Include them
-    // while keeping the lowercase fields for local usage/cache compatibility.
     const payload = {
       url: sanitizedUrl,
       AnalysisName: sanitizedName,
@@ -109,8 +108,21 @@ export default function AnalysisForm({ onStart, onComplete }) {
     let hasError = false
     if (!payload.url) {
       setUrlError(true)
-      // do not call onComplete here; show inline error next to URL instead to match other fields
+      setUrlErrorMessage(t('form.urlRequired') || 'El URL es obligatorio')
       hasError = true
+    }
+    else {
+      // validate URL format
+      try {
+        const parsed = new URL(payload.url)
+        if (!/^https?:$/i.test(parsed.protocol)) {
+          throw new Error('invalid protocol')
+        }
+      } catch (err) {
+        setUrlError(true)
+        setUrlErrorMessage('El URL no es válido')
+        hasError = true
+      }
     }
     if (!payload.name) {
       setNameError(true)
@@ -159,6 +171,26 @@ export default function AnalysisForm({ onStart, onComplete }) {
     }
   }
 
+  function validateUrlField(value) {
+    const v = sanitizeUrl(value)
+    if (!v) {
+      setUrlError(true)
+      setUrlErrorMessage(t('form.urlRequired') || 'El URL es obligatorio')
+      return false
+    }
+    try {
+      const parsed = new URL(v)
+      if (!/^https?:$/i.test(parsed.protocol)) throw new Error('invalid protocol')
+      setUrlError(false)
+      setUrlErrorMessage('')
+      return true
+    } catch (err) {
+      setUrlError(true)
+      setUrlErrorMessage(t('form.urlInvalid') || 'El URL no es válido')
+      return false
+    }
+  }
+
   return (
     <form className="analysis-form" onSubmit={handleSubmit}>
       <label>
@@ -201,13 +233,14 @@ export default function AnalysisForm({ onStart, onComplete }) {
         <input
           ref={urlRef}
           value={url}
-          onChange={e => { setUrl(sanitizeUrl(e.target.value)); if (urlError) setUrlError(false); if (submitError) setSubmitError(false) }}
+          onChange={e => { setUrl(sanitizeUrl(e.target.value)); if (urlError) { setUrlError(false); setUrlErrorMessage('') } if (submitError) setSubmitError(false) }}
+          onBlur={e => validateUrlField(e.target.value)}
           placeholder={t('form.urlPlaceholder')}
           className={urlError ? 'input-error' : ''}
         />
         {urlError && (
           <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
-            {t('form.urlRequired') || 'El URL es obligatorio'}
+            {urlErrorMessage || (t('form.urlRequired') || 'El URL es obligatorio')}
           </div>
         )}
       </label>
