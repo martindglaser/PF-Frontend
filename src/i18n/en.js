@@ -7,7 +7,7 @@ const en = {
     clearCache: 'Clear cache',
     account: 'Account',
     testHistory: 'Test History',
-    historySubtitle: 'View and manage your cached test results',
+    historySubtitle: 'View and manage your test results',
     confirmClearCache: 'Clear all cached requests?',
     testDetails: 'Test Details',
     close: 'Close',
@@ -109,7 +109,7 @@ const en = {
     delete: 'Delete',
     confirmDelete: 'Delete this test?'
     ,
-    analysisTitle: 'Analysis title',
+    analysisTitle: 'Title',
     userLabel: 'User',
     fetchError: 'Could not load history. Please try again later.',
     deleteError: 'Could not delete the entry. Please try again later.'

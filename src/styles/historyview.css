@@ -4,14 +4,17 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+  align-items: center; /* center child sections horizontally */
 }
 
 .history-list-section {
-  width: 100%;
+  width: 150%;
+  max-width: 1100px; /* allow history container to be wider so badges and titles fit */
 }
 
 .history-detail-section {
-  width: 100%;
+  width: 150%;
+  max-width: 1100px; /* match list width so detail pane aligns */
   animation: slideInFromBottom 0.3s ease-out;
 }
 
@@ -251,7 +254,7 @@
 }
 
 .history-section {
-  max-height: 520px;
+  max-height: 600px;
   overflow-y: auto;
   padding-right: 8px;
 }
@@ -273,7 +276,7 @@
 .history {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 13px;
 }
 
 .history-header {
@@ -318,7 +321,6 @@
 .history-item:hover {
   background: var(--panel-hover);
   border-color: var(--accent);
-  transform: translateX(4px);
 }
 
 .history-item.selected {
@@ -329,14 +331,7 @@
 }
 
 .history-item.selected::before {
-  content: '▶';
-  position: absolute;
-  left: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--accent);
-  font-size: 12px;
-  animation: pulse 2s ease-in-out infinite;
+  display: none;
 }
 
 @keyframes pulse {
@@ -380,6 +375,14 @@
   flex: 1;
 }
 
+.history-item .url .url-label {
+  margin-right: 8px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
 .history-item .meta-right {
   display: flex;
   gap: 8px;
@@ -408,4 +411,15 @@
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid var(--border);
+}
+
+/* Ensure no external/global rule shifts history rows on hover */
+.history-list-section .history-item:hover,
+.history-item:hover {
+  transform: none !important;
+}
+
+/* Also ensure selected arrow removed even if global adds it */
+.history-item.selected::before {
+  display: none !important;
 }

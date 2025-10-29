@@ -4,7 +4,7 @@ import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
 import { formatLocal } from '../utils/formatDate.js'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
-  const [expanded, setExpanded] = useState(null)
+  
   const [items, setItems] = useState(list || [])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -86,10 +86,23 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
         <div
           key={entry.key || entry.id || idx}
           className={`history-item ${selectedItem?.key === entry.key ? 'selected' : ''}`}
-          onClick={() => setExpanded(expanded === idx ? null : idx)}
         >
           <div className="meta">
-            <div className="url">{entry.payload?.url ?? entry.url}</div>
+            {/* derive response and displayable title/user from multiple possible shapes */}
+            {(() => {
+              const response = entry.response ?? entry.result ?? entry
+              const title = response?.AnalysisName ?? response?.analysisName ?? entry.payload?.AnalysisName ?? entry.payload?.name ?? response?.name ?? '—'
+              const userDisplay = response?.UserName ?? response?.userName ?? entry.payload?.UserName ?? entry.payload?.user ?? response?.user ?? '—'
+              return (
+                <div>
+                  {title && (
+                    <div className="analysis-title"><strong>{t('history.analysisTitle')}:</strong> {title}</div>
+                  )}
+                </div>
+              )
+            })()}
+
+            <div className="url"><strong className="url-label">URL:</strong> {entry.payload?.url ?? entry.url}</div>
 
             <div className="meta-right">
               {/* additional badges/info */}
@@ -112,9 +125,13 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                   }
                 }
 
+                const title = response?.AnalysisName ?? response?.analysisName ?? entry.payload?.AnalysisName ?? entry.payload?.name ?? response?.name ?? '—'
+                const userDisplay = response?.UserName ?? response?.userName ?? entry.payload?.UserName ?? entry.payload?.user ?? response?.user ?? '—'
+
                 return (
                   <>
                     <span className="badge small">{t('result.toleranceLabel')}: <strong style={{marginLeft:6}}>{displayTol}</strong></span>
+                    <span className="badge small">{t('history.userLabel')}: <strong style={{marginLeft:6}}>{userDisplay}</strong></span>
                     <span className="badge small">{t('result.languageLabel')}: <strong style={{marginLeft:6}}>{response?.language ?? entry.language ?? '—'}</strong></span>
                     {entry.fromCache || response?.fromCache ? (
                       <span className="badge cached small">{t('result.cachedLabel')}</span>
@@ -173,9 +190,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
             </div>
           </div>
 
-          {expanded === idx && (
-            <pre className="mini">{JSON.stringify(entry.response ?? entry.result ?? entry, null, 2)}</pre>
-          )}
+          {/* expanded JSON on row click removed; 'Ver' button opens details pane */}
         </div>
       ))}
 
