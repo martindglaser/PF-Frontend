@@ -77,14 +77,34 @@ export default function AnalysisForm({ onStart, onComplete }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    const payload = { 
-      url: sanitizeUrl(url, 2000),
-      name: sanitizeInput(analysisName, ANALYSIS_NAME_MAX),
-      user: sanitizeInput(userName, USER_NAME_MAX),
+    // clear previous errors before validating
+    setUrlError(false)
+    setNameError(false)
+    setUserError(false)
+    setSubmitError(false)
+
+    // sanitize values
+    const sanitizedUrl = sanitizeUrl(url, 2000)
+    const sanitizedName = sanitizeInput(analysisName, ANALYSIS_NAME_MAX)
+    const sanitizedUser = sanitizeInput(userName, USER_NAME_MAX)
+
+    // Backend expects PascalCase fields (AnalysisName, UserName). Include them
+    // while keeping the lowercase fields for local usage/cache compatibility.
+    const payload = {
+      url: sanitizedUrl,
+      AnalysisName: sanitizedName,
+      UserName: sanitizedUser,
+      // keep legacy keys used locally
+      name: sanitizedName,
+      user: sanitizedUser,
       tolerance,
       language,
       categories: selectedCategories
     }
+    // reflect sanitized values in the inputs so the UI matches validation
+    try { setUrl(payload.url) } catch (e) { /* ignore */ }
+    try { setAnalysisName(payload.name) } catch (e) { /* ignore */ }
+    try { setUserName(payload.user) } catch (e) { /* ignore */ }
     // validate required fields: url, analysis name and user
     let hasError = false
     if (!payload.url) {
@@ -115,6 +135,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
 
     onStart && onStart()
 
+    // ensure submit error flag is cleared when proceeding
+    setSubmitError(false)
     let cached
     try {
       // read cache but DO NOT render it immediately — we always await network
@@ -145,7 +167,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           ref={nameRef}
           className={nameError ? 'input-error' : ''}
           value={analysisName}
-          onChange={e => { setAnalysisName(sanitizeInput(e.target.value, ANALYSIS_NAME_MAX)); if (nameError) setNameError(false); if (submitError) setSubmitError(false) }}
+          onChange={e => { setAnalysisName(e.target.value); if (nameError) setNameError(false); if (submitError) setSubmitError(false) }}
+          onBlur={e => { setAnalysisName(sanitizeInput(e.target.value, ANALYSIS_NAME_MAX)) }}
           placeholder={t('form.analysisNamePlaceholder') || 'Nombre del análisis'}
           maxLength={ANALYSIS_NAME_MAX}
         />
@@ -162,7 +185,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           ref={userRef}
           className={userError ? 'input-error' : ''}
           value={userName}
-          onChange={e => { setUserName(sanitizeInput(e.target.value, USER_NAME_MAX)); if (userError) setUserError(false); if (submitError) setSubmitError(false) }}
+          onChange={e => { setUserName(e.target.value); if (userError) setUserError(false); if (submitError) setSubmitError(false) }}
+          onBlur={e => { setUserName(sanitizeInput(e.target.value, USER_NAME_MAX)) }}
           placeholder={t('form.userNamePlaceholder') || 'Nombre del usuario'}
           maxLength={USER_NAME_MAX}
         />

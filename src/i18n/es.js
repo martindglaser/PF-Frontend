@@ -25,6 +25,8 @@ const es = {
       forms: 'Formularios',
       other: 'Otro'
     }
+    ,
+    serverError: 'Ocurrió un error en el servidor. Intente nuevamente más tarde.'
     },
   loading: {
     title: 'Analizando tu página',

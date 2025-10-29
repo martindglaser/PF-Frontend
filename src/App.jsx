@@ -39,7 +39,9 @@ export default function App() {
   function onSubmitEnd(payload = {}) {
     setLoading(false)
     if (payload.error) {
-      setError(payload.error)
+      // Log full error for debugging, but show a generic message to the user to avoid leaking server internals
+      try { console.warn('Backend error:', payload.error) } catch (e) { /* ignore */ }
+      setError(t('app.serverError') || 'Ocurrió un error. Intente nuevamente más tarde.')
       setLastResult(null)
       return
     }

@@ -77,9 +77,19 @@ export default function Result({ result, fromCache }) {
       <div className="result-header">
         <div>
           <div className="url-badge">{t('result.urlBadge')}</div>
+          {/* analysisName: display title/label above the URL if provided */}
+          {result.analysisName && (
+            <div className="analysis-title">
+              <strong>{t('history.analysisTitle')}:</strong> {result.analysisName}
+            </div>
+          )}
           <h2>{result.url}</h2>
             <div className="meta">
             <span>{t('result.toleranceLabel')}: <strong>{displayTolerance}</strong></span>
+            {/* userName: show next to tolerance if present */}
+            {result.userName && (
+              <span className="user-meta">{t('history.userLabel')}: <strong>{result.userName}</strong></span>
+            )}
             <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
             <span className={fromCache ? 'cached-badge' : 'live-badge'}>
               {fromCache ? t('result.cachedLabel') : t('result.liveLabel')}
