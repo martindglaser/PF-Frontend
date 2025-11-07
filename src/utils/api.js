@@ -1,5 +1,5 @@
 /* Small API client to call the backend analysis endpoint */
-const BASE = 'http://localhost:5288/api/analysis/'
+const BASE = 'http://backend:5288/api/analysis/'
 
 async function handleResponse(res) {
   if (!res.ok) {
