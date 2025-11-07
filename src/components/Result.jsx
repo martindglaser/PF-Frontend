@@ -4,7 +4,7 @@ import ImageViewer from './ImageViewer'
 import { formatLocal } from '../utils/formatDate.js'
 
 function Screenshot({ id, mobile, onView }) {
-  const base = 'http://backend:5288/assets/screenshots'
+  const base = 'http://localhost:5288/assets/screenshots'
   const url = mobile ? `${base}/${id}_mobile.png` : `${base}/${id}.png`
   const title = mobile ? t('result.screenshot.mobile') : t('result.screenshot.desktop')
   const [imgError, setImgError] = React.useState(false)
