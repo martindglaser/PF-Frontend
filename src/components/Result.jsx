@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { t } from '../i18n'
 import ImageViewer from './ImageViewer'
+import { formatLocal } from '../utils/formatDate.js'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
@@ -51,6 +52,19 @@ export default function Result({ result, fromCache }) {
 
   if (!result) return null
 
+  // translate tolerance via i18n if possible (form.tolerance.low|medium|high)
+  const rawTol = result?.tolerance ?? ''
+  let displayTolerance = rawTol || '—'
+  if (rawTol) {
+    try {
+      const key = rawTol.toString().toLowerCase()
+      const trans = t(`form.tolerance.${key}`)
+      displayTolerance = (typeof trans === 'string' && trans !== `form.tolerance.${key}`) ? trans : rawTol
+    } catch (e) {
+      displayTolerance = rawTol
+    }
+  }
+
   return (
     <div className="result-card">
       {viewerImage && (
@@ -63,9 +77,19 @@ export default function Result({ result, fromCache }) {
       <div className="result-header">
         <div>
           <div className="url-badge">{t('result.urlBadge')}</div>
+          {/* analysisName: display title/label above the URL if provided */}
+          {result.analysisName && (
+            <div className="analysis-title">
+              <strong>{t('history.analysisTitle')}:</strong> {result.analysisName}
+            </div>
+          )}
           <h2>{result.url}</h2>
-          <div className="meta">
-            <span>{t('result.toleranceLabel')}: <strong>{result.tolerance}</strong></span>
+            <div className="meta">
+            <span>{t('result.toleranceLabel')}: <strong>{displayTolerance}</strong></span>
+            {/* userName: show next to tolerance if present */}
+            {result.userName && (
+              <span className="user-meta">{t('history.userLabel')}: <strong>{result.userName}</strong></span>
+            )}
             <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
             <span className={fromCache ? 'cached-badge' : 'live-badge'}>
               {fromCache ? t('result.cachedLabel') : t('result.liveLabel')}
@@ -73,7 +97,7 @@ export default function Result({ result, fromCache }) {
           </div>
         </div>
         <div className="timestamps">
-          <small>{t('result.timestampPrefix')} {new Date(result.createdAtUtc).toLocaleString()}</small>
+          <small>{t('result.timestampPrefix')} {formatLocal(result.createdAtUtc)}</small>
         </div>
       </div>
 
@@ -100,26 +124,47 @@ export default function Result({ result, fromCache }) {
                 <span className="count-badge">{t('result.issueCount')(result.modifications.length)}</span>
               </div>
               <div className="mod-list">
-                {result.modifications.map((m, idx) => (
+                {result.modifications.map((m, idx) => {
+                  const labelKey = `app.categoryLabels.${m.category}`
+                  const translated = t(labelKey)
+                  const displayCategory = (translated && translated !== labelKey)
+                    ? translated
+                    : (m.category || '').toString().split('.').pop()
+
+                  // severity display and safe class
+                  const sevKey = `app.severity.${(m.severity || '').toString().toLowerCase()}`
+                  const sevTranslated = t(sevKey)
+                  const displaySeverity = (sevTranslated && !sevTranslated.includes('app.severity'))
+                    ? sevTranslated
+                    : (() => { const raw = (m.severity || '').toString().split('.').pop() || ''; return raw.charAt(0).toUpperCase() + raw.slice(1) })()
+                  const sevClass = (m.severity || '').toString().toLowerCase().split('.').pop().replace(/[^a-z0-9\-]/g, '').replace(/\s+/g, '-')
+
+                  return (
                   <div key={m.id} className="mod-item">
                     <div className="mod-number">{idx + 1}</div>
                     <div className="mod-content">
                       <div className="mod-top">
-                        <strong>📌 {t(`app.categoryLabels.${m.category}`) || m.category}</strong>
-                        <span className={`sev sev-${(m.severity || '').toLowerCase()}`}>
-                          {t(`app.severity.${(m.severity || '').toLowerCase()}`) || m.severity}
-                        </span>
+                        <strong>{displayCategory}</strong>
+                        <span className={`sev sev-${sevClass}`}>{displaySeverity}</span>
                       </div>
                       <div className="mod-desc">{m.description}</div>
                       <div className="mod-meta">
-                        <span className={`state-badge state-${m.state}`}>{m.state}</span>
+                        {(() => {
+                          const stateKey = `result.state.${(m.state || '').toString().toLowerCase()}`
+                          const stateTranslated = t(stateKey)
+                          const displayState = (stateTranslated && stateTranslated !== stateKey)
+                            ? stateTranslated
+                            : (() => { const raw = (m.state || '').toString().split('.').pop() || ''; return raw.charAt(0).toUpperCase() + raw.slice(1) })()
+                          return <span className={`state-badge state-${m.state}`}>{displayState}</span>
+                        })()}
                         <span className="selector-info">
                           {t('result.selectorLabel')}: <code>{m.cssSelector}</code>
                         </span>
                       </div>
                     </div>
                   </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           )}

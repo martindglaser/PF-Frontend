@@ -10,9 +10,7 @@ const funFacts = [
   t('loading.facts.4'),
   t('loading.facts.5'),
   t('loading.facts.6'),
-  t('loading.facts.7'),
-  t('loading.facts.8'),
-  t('loading.facts.9')
+  t('loading.facts.7')
 ]
 
 export default function LoadingScreen() {

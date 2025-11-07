@@ -7,7 +7,7 @@ const en = {
     clearCache: 'Clear cache',
     account: 'Account',
     testHistory: 'Test History',
-    historySubtitle: 'View and manage your cached test results',
+    historySubtitle: 'View and manage your test results',
     confirmClearCache: 'Clear all cached requests?',
     testDetails: 'Test Details',
     close: 'Close',
@@ -16,6 +16,7 @@ const en = {
     cachedRequestsCount: (n) => `Cached Requests (${n})`,
     severity: {
       high: 'High',
+      critical: 'Critical',
       medium: 'Medium',
       low: 'Low'
     },
@@ -35,8 +36,6 @@ const en = {
       '🌐 Evaluating user experience metrics...',
       '🔬 Deep diving into page structure...',
       '🎨 Analyzing design consistency...',
-      '⚡ Running performance diagnostics...',
-      '🛡️ Checking security best practices...',
       '📊 Computing comprehensive analysis...'
     ],
     percent: (p) => `${Math.round(p)}%`,
@@ -68,6 +67,10 @@ const en = {
       desktop: 'Desktop view',
       mobile: 'Mobile view'
     }
+    ,
+    state: {
+      confirmed: 'Confirmed'
+    }
   },
   form: {
     urlLabel: 'URL',
@@ -75,6 +78,10 @@ const en = {
     toleranceLabel: 'Tolerance',
     tolerance: { low: 'low', medium: 'medium', high: 'high' },
     languageLabel: 'Language',
+  analysisNameLabel: 'Analysis name',
+  analysisNamePlaceholder: 'Descriptive name for this analysis',
+  userNameLabel: 'User name',
+  userNamePlaceholder: 'Name of the user running the analysis',
     categoriesLabel: 'Categories',
     categoriesSelected: (n) => `${n} selected`,
     selectCategoriesHint: 'Select categories to analyze',
@@ -86,17 +93,24 @@ const en = {
       texts: 'Texts',
       accessibility: 'Accessibility'
     }
+    ,
+    runButton: 'Run analysis'
+    ,analysisNameRequired: 'Analysis name is required',
+    userNameRequired: 'User name is required'
+    ,urlRequired: 'URL is required'
   },
   sidebar: {
     backendLabel: 'Backend'
   },
   history: {
-    empty: 'No cached requests yet',
+    empty: 'No analysis executed',
     view: 'View',
     refresh: 'Refresh',
     delete: 'Delete',
     confirmDelete: 'Delete this test?'
     ,
+    analysisTitle: 'Title',
+    userLabel: 'User',
     fetchError: 'Could not load history. Please try again later.',
     deleteError: 'Could not delete the entry. Please try again later.'
   },

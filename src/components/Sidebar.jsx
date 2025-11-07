@@ -7,7 +7,7 @@ export default function Sidebar({ activeView, setActiveView }) {
     <aside className="sidebar">
       <div className="sidebar-logo">
         <h2>
-          <img src="/app-icon.png" alt={t('app.title')} className="logo-img" />
+          <img src="/app-icon-v3.png" alt={t('app.title')} className="logo-img" />
         </h2>
       </div>
 
@@ -28,11 +28,10 @@ export default function Sidebar({ activeView, setActiveView }) {
           {t('app.testHistory')}
         </button>
 
-        {/* Auth removed: nav item omitted */}
       </nav>
 
       <div className="sidebar-footer">
-        <small>{t('sidebar.backendLabel')}: <code>localhost:5288</code></small>
+        {/* <small>{t('sidebar.backendLabel')}: <code>localhost:5288</code></small> */}
       </div>
     </aside>
   )

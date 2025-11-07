@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { t } from './i18n'
 import './styles/app.css'
 import LoadingScreen from './components/LoadingScreen'
 import Sidebar from './components/Sidebar'
@@ -7,7 +8,16 @@ import HistoryView from './components/HistoryView'
 import { getAllCachedEntries, clearCache } from './utils/cache'
 
 export default function App() {
-  const [activeView, setActiveView] = useState('analysis')
+  const [activeView, setActiveView] = useState(() => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem('activeView') || 'analysis'
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+    return 'analysis'
+  })
   const [cacheList, setCacheList] = useState([])
   const [lastResult, setLastResult] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -18,18 +28,29 @@ export default function App() {
     setCacheList(getAllCachedEntries())
   }, [])
 
+  // set page title from i18n
+  useEffect(() => {
+    try {
+      document.title = t('app.title') || document.title
+    } catch (e) {
+      // ignore if document not available
+    }
+  }, [])
+
   function onSubmitStart() {
     setLoading(true)
     setError(null)
     setLastResult(null)
     setSelectedHistoryItem(null)
-    setActiveView('analysis')
+    changeView('analysis')
   }
 
   function onSubmitEnd(payload = {}) {
     setLoading(false)
     if (payload.error) {
-      setError(payload.error)
+      // Log full error for debugging, but show a generic message to the user to avoid leaking server internals
+      try { console.warn('Backend error:', payload.error) } catch (e) { /* ignore */ }
+      setError(t('app.serverError') || 'Ocurrió un error. Intente nuevamente más tarde.')
       setLastResult(null)
       return
     }
@@ -43,15 +64,26 @@ export default function App() {
   function handleViewCached(entry) {
     const responseSrc = entry.response ?? entry.result ?? entry
     // ensure response.createdAtUtc is present so details show the original timestamp
-    const createdAt = responseSrc.createdAtUtc ?? responseSrc.createdAt ?? entry.createdAt ?? entry.ts
-    const response = { ...responseSrc, createdAtUtc: createdAt }
+  const createdAt = responseSrc.createdAtUtc ?? responseSrc.createdAt ?? entry.createdAt ?? entry.ts
+  const response = { ...responseSrc, createdAtUtc: createdAt }
 
     const normalized = {
       ...entry,
       response
     }
     setSelectedHistoryItem(normalized)
-    setActiveView('history')
+    changeView('history')
+  }
+
+  function changeView(view) {
+    setActiveView(view)
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('activeView', view)
+      }
+    } catch (e) {
+      // ignore
+    }
   }
 
   function handleClearCache() {
@@ -64,7 +96,7 @@ export default function App() {
 
   return (
     <div className="app-root">
-      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+  <Sidebar activeView={activeView} setActiveView={changeView} />
 
       {loading && <LoadingScreen />}
 

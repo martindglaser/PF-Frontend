@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { t } from '../i18n'
 import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
+import { formatLocal } from '../utils/formatDate.js'
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
-  const [expanded, setExpanded] = useState(null)
+  
   const [items, setItems] = useState(list || [])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -72,14 +73,36 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
 
       {!loading && items.length === 0 && <div className="empty">{t('history.empty')}</div>}
 
-      {items.map((entry, idx) => (
+      {loading ? (
+        <div className="history-loading" style={{ padding: 20, textAlign: 'center' }}>
+          <svg width="48" height="48" viewBox="0 0 50 50" style={{ marginBottom: 8 }}>
+            <circle cx="25" cy="25" r="20" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="4"/>
+            <path d="M45 25a20 20 0 0 1-20 20" stroke="var(--accent)" strokeWidth="4" strokeLinecap="round" fill="none">
+              <animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite" />
+            </path>
+          </svg>
+        </div>
+      ) : items.map((entry, idx) => (
         <div
           key={entry.key || entry.id || idx}
           className={`history-item ${selectedItem?.key === entry.key ? 'selected' : ''}`}
-          onClick={() => setExpanded(expanded === idx ? null : idx)}
         >
           <div className="meta">
-            <div className="url">{entry.payload?.url ?? entry.url}</div>
+            {/* derive response and displayable title/user from multiple possible shapes */}
+            {(() => {
+              const response = entry.response ?? entry.result ?? entry
+              const title = response?.AnalysisName ?? response?.analysisName ?? entry.payload?.AnalysisName ?? entry.payload?.name ?? response?.name ?? '—'
+              const userDisplay = response?.UserName ?? response?.userName ?? entry.payload?.UserName ?? entry.payload?.user ?? response?.user ?? '—'
+              return (
+                <div>
+                  {title && (
+                    <div className="analysis-title"><strong>{t('history.analysisTitle')}:</strong> {title}</div>
+                  )}
+                </div>
+              )
+            })()}
+
+            <div className="url"><strong className="url-label">URL:</strong> {entry.payload?.url ?? entry.url}</div>
 
             <div className="meta-right">
               {/* additional badges/info */}
@@ -87,9 +110,28 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                 const response = entry.response ?? entry.result ?? entry
                 const mods = response?.modifications || response?.modificaciones || []
                 const issueCount = Array.isArray(mods) ? mods.length : 0
+
+                // translate tolerance via i18n if possible (form.tolerance.low|medium|high)
+                const rawTol = response?.tolerance ?? entry.tolerance ?? ''
+                let displayTol = rawTol || '—'
+                if (rawTol) {
+                  try {
+                    const key = rawTol.toString().toLowerCase()
+                    const trans = t(`form.tolerance.${key}`)
+                    // t returns the path string if not found, so guard that case
+                    displayTol = (typeof trans === 'string' && trans !== `form.tolerance.${key}`) ? trans : rawTol
+                  } catch (e) {
+                    displayTol = rawTol
+                  }
+                }
+
+                const title = response?.AnalysisName ?? response?.analysisName ?? entry.payload?.AnalysisName ?? entry.payload?.name ?? response?.name ?? '—'
+                const userDisplay = response?.UserName ?? response?.userName ?? entry.payload?.UserName ?? entry.payload?.user ?? response?.user ?? '—'
+
                 return (
                   <>
-                    <span className="badge small">{t('result.toleranceLabel')}: <strong style={{marginLeft:6}}>{response?.tolerance ?? entry.tolerance ?? '—'}</strong></span>
+                    <span className="badge small">{t('result.toleranceLabel')}: <strong style={{marginLeft:6}}>{displayTol}</strong></span>
+                    <span className="badge small">{t('history.userLabel')}: <strong style={{marginLeft:6}}>{userDisplay}</strong></span>
                     <span className="badge small">{t('result.languageLabel')}: <strong style={{marginLeft:6}}>{response?.language ?? entry.language ?? '—'}</strong></span>
                     {entry.fromCache || response?.fromCache ? (
                       <span className="badge cached small">{t('result.cachedLabel')}</span>
@@ -99,18 +141,16 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                 )
               })()}
 
-              <small>{new Date(entry.ts ?? entry.createdAt ?? Date.now()).toLocaleString()}</small>
+              <small>{formatLocal(entry.ts ?? entry.createdAt ?? Date.now())}</small>
               <button
                 className="tiny"
                 onClick={async (e) => {
                   e.stopPropagation()
-                  // try to fetch full analysis from backend to get accurate timestamp
                   if (entry.id) {
                     try {
                       const full = await getAnalysis(entry.id)
                       const combined = { ...entry, response: full, result: full }
                       onView && onView(combined)
-                      // scroll the details pane into view after parent updates selection
                       setTimeout(() => {
                         const el = document.querySelector('#history-detail')
                         if (el && typeof el.scrollIntoView === 'function') {
@@ -120,12 +160,10 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                       }, 80)
                       return
                     } catch (err) {
-                      // fallback to passing existing entry
                       console.warn('getAnalysis failed', err)
                     }
                   }
                   onView && onView(entry)
-                  // scroll the details pane into view after parent updates selection
                   setTimeout(() => {
                     const el = document.querySelector('#history-detail')
                     if (el && typeof el.scrollIntoView === 'function') {
@@ -148,17 +186,9 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
             </div>
           </div>
 
-          {expanded === idx && (
-            <pre className="mini">{JSON.stringify(entry.response ?? entry.result ?? entry, null, 2)}</pre>
-          )}
         </div>
       ))}
 
-      <div className="history-actions">
-        <button className="small" onClick={handleRefresh}>
-          {t('history.refresh')}
-        </button>
-      </div>
     </div>
   )
 }
