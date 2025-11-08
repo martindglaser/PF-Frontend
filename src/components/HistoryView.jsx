@@ -1,4 +1,3 @@
-// src/components/HistoryView.jsx
 import React, { useState } from 'react'
 import { t } from '../i18n'
 import History from './History'
