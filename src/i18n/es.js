@@ -11,6 +11,8 @@ const es = {
   confirmClearCache: '¿Limpiar todas las solicitudes en caché?',
   testDetails: 'Detalles de la prueba',
   close: 'Cerrar',
+  filterLabel: 'Filtrar:',
+  filterPlaceholder: 'Título, Usuario o URL',
   issuesBySeverity: 'Problemas por severidad',
   issuesByCategory: 'Problemas por categoría',
     cachedRequestsCount: (n) => `Solicitudes en caché (${n})`,
