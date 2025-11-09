@@ -168,6 +168,13 @@ button.small img {
   overflow-y: auto;
   padding-right: 8px;
 }
+
+/* Allow disabling internal scroll when the section is marked no-scroll */
+.history-section.no-scroll {
+  max-height: none !important;
+  overflow: visible !important;
+  padding-right: 0 !important;
+}
 .history-section::-webkit-scrollbar { width: 6px; }
 .history-section::-webkit-scrollbar-track {
   background: rgba(255,255,255,.02);

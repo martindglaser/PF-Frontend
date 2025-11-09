@@ -52,7 +52,7 @@ export default function HistoryView({
 
       <div className="history-layout">
         <div className="content-section history-list-section">
-          <div className="history-section">
+          <div className="history-section no-scroll">
             <History
               onView={onView}
               onUpdate={onUpdate}
