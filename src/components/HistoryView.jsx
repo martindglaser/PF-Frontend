@@ -4,6 +4,7 @@ import History from './History'
 import Result from './Result'
 import { exportReportCSV } from '../utils/exportCSV' 
 import '../styles/historyview.css'
+import closeIcon from '../assets/exit.svg'
 
 export default function HistoryView({
   cacheList,
@@ -56,12 +57,11 @@ export default function HistoryView({
       <button
   className="small"
   onClick={() => {
-    console.log('🔍 SAMPLE ITEM --->', filteredList[0]);
     exportReportCSV(filteredList, 'reporte_consolidado.csv');
   }}
   title="Exportar reporte consolidado (CSV)"
 >
-  📤 Exportar reporte
+ Exportar reporte
 </button>
         </div>
       </div>
@@ -90,14 +90,15 @@ export default function HistoryView({
               <div className="detail-buttons" style={{ display: 'flex', gap: 8 }}>
        
                 <button className="small" onClick={() => setSelectedHistoryItem(null)}>
-                  ✕ {t('app.close')}
+                  <img src={closeIcon} alt="Close" />
+                  {t('app.close')}
                 </button>
               </div>
             </div>
 
             {selectedHistoryItem.response?.modificaciones?.length > 0 && (
               <>
-                <h4 className="stats-section-title">📊 {t('app.issuesBySeverity')}</h4>
+                <h4 className="stats-section-title">{t('app.issuesBySeverity')}</h4>
                 {(() => {
                   const mods = selectedHistoryItem.response.modificaciones
                   const norm = (x) => (x || '').toLowerCase()

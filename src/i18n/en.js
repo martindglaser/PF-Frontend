@@ -29,14 +29,14 @@ const en = {
   loading: {
     title: 'Analyzing your webpage',
     facts: [
-      '🤖 AI is analyzing every pixel of your webpage...',
-      '🔍 Scanning for broken links and accessibility issues...',
-      '✨ Generating insights from visual elements...',
-      '🎯 Checking mobile responsiveness patterns...',
-      '🌐 Evaluating user experience metrics...',
-      '🔬 Deep diving into page structure...',
-      '🎨 Analyzing design consistency...',
-      '📊 Computing comprehensive analysis...'
+      'AI is analyzing every pixel of your webpage...',
+      'Scanning for broken links and accessibility issues...',
+      'Generating insights from visual elements...',
+      'Checking mobile responsiveness patterns...',
+      'Evaluating user experience metrics...',
+      'Deep diving into page structure...',
+      'Analyzing design consistency...',
+      'Computing comprehensive analysis...'
     ],
     percent: (p) => `${Math.round(p)}%`,
     closeHint: 'Close (ESC)'
@@ -46,21 +46,17 @@ const en = {
     closeEsc: 'Close (ESC)'
   },
   result: {
-    urlBadge: '🌐 URL',
     toleranceLabel: 'Tolerance',
     languageLabel: 'Language',
-    cachedLabel: '💾 Cached',
-    liveLabel: '✨ Live',
-    timestampPrefix: '🕐',
-    whatAISeesTitle: '🤖 What the AI sees',
-    modificationsNeeded: '⚠️ Modifications needed',
-    noModificationsNeeded: '✅ No modifications needed',
+    liveLabel: 'Live',
+    whatAISeesTitle: 'What the AI sees',
+    modificationsNeeded: 'Modifications needed',
+    noModificationsNeeded: 'No modifications needed',
     successMessage: 'Great! Your page looks good. No critical issues detected.',
-    issuesFound: '🔧 Issues found',
+    issuesFound: 'Issues found',
     issueCount: (n) => `${n} issue${n !== 1 ? 's' : ''}`,
     selectorLabel: 'Selector',
-    viewRawJson: '📄 View raw JSON',
-    screenshots: '📸 Screenshots',
+    screenshots: 'Screenshots',
     screenshotUnavailable: 'Screenshot not available'
     ,
     screenshot: {

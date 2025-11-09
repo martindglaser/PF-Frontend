@@ -335,7 +335,9 @@
 }
 
 .url-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(0, 212, 255, 0.1);
   color: var(--accent);
   padding: 4px 12px;
@@ -347,6 +349,7 @@
 
 .result-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
@@ -374,10 +377,10 @@
   text-align: center;
 }
 
-/* timestamps container stays right aligned */
 .result-header .timestamps {
-  flex: 0 0 auto;
+  flex-basis: 100%;
   text-align: right;
+  margin-top: 8px;
 }
 
 .result-header .meta {
@@ -418,6 +421,12 @@
   color: var(--muted);
   font-size: 12px;
   text-align: right;
+}
+
+.timestamps small {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* Analysis grid */
@@ -496,6 +505,26 @@
   padding: 16px;
   border-radius: 8px;
   border-left: 3px solid var(--accent);
+  text-align: left;
+}
+
+/* Ensure icon inside section headers is properly sized and the heading content is left-aligned */
+.analysis-main h3 img {
+  height: 25px;
+  width: auto;
+  display: inline-block;
+}
+
+/* Section heading variant: left aligned icon + title, vertically centered */
+.section-heading-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+  text-align: left;
+}
+.section-heading-left img {
+  height: 32px;
 }
 
 /* Modifications */
@@ -792,3 +821,4 @@
   .result-card { padding: 16px }
   .content-section { padding: 16px }
 }
+
