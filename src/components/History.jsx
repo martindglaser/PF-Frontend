@@ -1,46 +1,77 @@
-import { useState, useEffect } from 'react' 
+import { useState, useEffect } from 'react'
 import { t } from '../i18n'
-
-import { deleteAnalysis, getAnalysis } from '../utils/api'
+import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
 import { formatLocal } from '../utils/formatDate.js'
-
 
 export default function History({ list = [], onView, onUpdate, selectedItem }) {
   
+  const [items, setItems] = useState(list || [])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  const [deleteError, setDeleteError] = useState(null)
 
- 
+  useEffect(() => {
+      fetchAnalyses()
+  }, [])
 
-  
+
+  async function fetchAnalyses(params = {}) {
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await listAnalyses(params)
+      const resolved = Array.isArray(data) ? data : (data?.items ?? [])
+      // normalize timestamps so we display the real run time instead of falling back to now
+      const normalized = resolved.map(item => {
+        const resp = item.response ?? item.result ?? item
+        const ts = resp?.createdAtUtc ?? resp?.createdAt ?? item.createdAt ?? item.ts ?? resp?.timestamp ?? resp?.time
+        return { ...item, ts }
+      })
+      setItems(normalized)
+      onUpdate && onUpdate(resolved)
+    } catch (err) {
+      // keep technical details in console for debugging, but show a generic message to users
+      console.warn('listAnalyses error', err)
+      setError(t('history.fetchError') || 'No se pudieron cargar los registros. Intente más tarde.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function handleRefresh() {
+    fetchAnalyses()
+  }
+
   async function handleDelete(entry, e) {
     e.stopPropagation()
-    setDeleteError(null)
     const id = entry.id || entry.key
-    if (!id) return setDeleteError(t('history.deleteError') || 'No se pudo eliminar la entrada. Intente más tarde.')
+  if (!id) return setError(t('history.deleteError') || 'No se pudo eliminar la entrada. Intente más tarde.')
     const ok = window.confirm(t('history.confirmDelete') || 'Delete this entry?')
     if (!ok) return
 
     try {
-    
+      // optimistic UI update
+      setItems(prev => prev.filter(it => (it.id || it.key) !== id))
       await deleteAnalysis(id)
-     
-      onUpdate && onUpdate()
+      onUpdate && onUpdate(items.filter(it => (it.id || it.key) !== id))
     } catch (err) {
       console.warn('deleteAnalysis error', err)
-      setDeleteError(t('history.deleteError') || 'No se pudo eliminar la entrada. Intente más tarde.')
+      setError(t('history.deleteError') || 'No se pudo eliminar la entrada. Intente más tarde.')
+      // re-fetch to restore state
+      fetchAnalyses()
     }
   }
 
-  
+
+
+
+
   return (
     <div className="history">
 
-      {deleteError && <div className="error">{deleteError}</div>}
+      {!items || items.length === 0 && <div className="empty">{t('history.empty')}</div>}
 
-      {!list || list.length === 0 && <div className="empty">{t('history.empty')}</div>}
-
-      {list.map((entry, idx) => (
+      {items.map((entry, idx) => (
         <div
           key={entry.key || entry.id || idx}
           className={`history-item ${selectedItem?.key === entry.key ? 'selected' : ''}`}
@@ -88,9 +119,6 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                     <span className="badge small">{t('result.toleranceLabel')}: <strong style={{marginLeft:6}}>{displayTol}</strong></span>
                     <span className="badge small">{t('history.userLabel')}: <strong style={{marginLeft:6}}>{userDisplay}</strong></span>
                     <span className="badge small">{t('result.languageLabel')}: <strong style={{marginLeft:6}}>{response?.language ?? entry.language ?? '—'}</strong></span>
-                    {entry.fromCache || response?.fromCache ? (
-                      <span className="badge cached small">{t('result.cachedLabel')}</span>
-                    ) : null}
                     <span className="badge issues small">{t('result.issueCount')(issueCount)}</span>
                   </>
                 )
