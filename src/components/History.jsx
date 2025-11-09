@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { t } from '../i18n'
 import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
 import { formatLocal } from '../utils/formatDate.js'
+import trashImage from '../assets/trash.svg'
 
-export default function History({ list = [], onView, onUpdate, selectedItem }) {
+export default function History({ list = [], onView, onUpdate, selectedItem, filterText = '' }) {
   
   const [items, setItems] = useState(list || [])
   const [loading, setLoading] = useState(false)
@@ -11,8 +12,8 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
 
 
   useEffect(() => {
-      fetchAnalyses()
-  }, [])
+      fetchAnalyses({ filter: filterText })
+  }, [filterText])
 
 
   async function fetchAnalyses(params = {}) {
@@ -36,10 +37,6 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
     } finally {
       setLoading(false)
     }
-  }
-
-  function handleRefresh() {
-    fetchAnalyses()
   }
 
   async function handleDelete(entry, e) {
@@ -164,7 +161,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
                 title={t('history.delete')}
                 style={{ marginLeft: 8, background: 'transparent', border: '1px solid rgba(255,255,255,0.06)' }}
               >
-                🗑️
+                <img src={trashImage} style={{height: 14}} alt={t('history.delete')} />
               </button>
             </div>
           </div>
