@@ -4,7 +4,7 @@ import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
 import { formatLocal } from '../utils/formatDate.js'
 import trashImage from '../assets/trash.svg'
 
-export default function History({ list = [], onView, onUpdate, selectedItem }) {
+export default function History({ list = [], onView, onUpdate, selectedItem, filterText = '' }) {
   
   const [items, setItems] = useState(list || [])
   const [loading, setLoading] = useState(false)
@@ -12,8 +12,8 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
 
 
   useEffect(() => {
-      fetchAnalyses()
-  }, [])
+      fetchAnalyses({ filter: filterText })
+  }, [filterText])
 
 
   async function fetchAnalyses(params = {}) {
@@ -37,10 +37,6 @@ export default function History({ list = [], onView, onUpdate, selectedItem }) {
     } finally {
       setLoading(false)
     }
-  }
-
-  function handleRefresh() {
-    fetchAnalyses()
   }
 
   async function handleDelete(entry, e) {

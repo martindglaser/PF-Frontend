@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { t } from '../i18n'
 import History from './History'
 import Result from './Result'
@@ -15,22 +15,6 @@ export default function HistoryView({
 }) {
   const [filterText, setFilterText] = useState('')
 
-  const filteredList = (cacheList || []).filter(item => {
-    const search = (filterText || '').toLowerCase()
-
-    const response = item.response ?? item.result ?? item
-    const payload  = item.payload ?? {}
-
-    const analysisName = (response?.AnalysisName ?? response?.analysisName ?? payload?.AnalysisName ?? response?.name ?? '').toLowerCase()
-    const url          = (payload?.url ?? item.url ?? '').toLowerCase()
-    const userName     = (response?.UserName ?? response?.userName ?? payload?.UserName ?? response?.user ?? '').toLowerCase()
-
-    return (
-      analysisName.includes(search) ||
-      url.includes(search) ||
-      userName.includes(search)
-    )
-  })
 
   return (
     <>
@@ -70,10 +54,10 @@ export default function HistoryView({
         <div className="content-section history-list-section">
           <div className="history-section">
             <History
-              list={filteredList}
               onView={onView}
               onUpdate={onUpdate}
               selectedItem={selectedHistoryItem}
+              filterText={filterText}
             />
           </div>
         </div>
