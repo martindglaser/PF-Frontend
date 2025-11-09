@@ -3,32 +3,40 @@ import { t } from '../i18n'
 import { listAnalyses, deleteAnalysis, getAnalysis } from '../utils/api'
 import { formatLocal } from '../utils/formatDate.js'
 import trashImage from '../assets/trash.svg'
+import fowardImage from '../assets/forward.svg'
+import previousImage from '../assets/previous.svg'
 
 export default function History({ list = [], onView, onUpdate, selectedItem, filterText = '' }) {
   
-  const [items, setItems] = useState(list || [])
+  const [response, setResponse] = useState({ items: [] })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [page, setPage] = useState(1)
 
+  
 
   useEffect(() => {
-      fetchAnalyses({ filter: filterText })
-  }, [filterText])
+      fetchAnalyses()
+  }, [filterText, page])
 
 
   async function fetchAnalyses(params = {}) {
+    params = { filter: filterText, pageSize: 6, page}
     setLoading(true)
     setError(null)
     try {
       const data = await listAnalyses(params)
+
       const resolved = Array.isArray(data) ? data : (data?.items ?? [])
+      
       // normalize timestamps so we display the real run time instead of falling back to now
       const normalized = resolved.map(item => {
         const resp = item.response ?? item.result ?? item
         const ts = resp?.createdAtUtc ?? resp?.createdAt ?? item.createdAt ?? item.ts ?? resp?.timestamp ?? resp?.time
         return { ...item, ts }
       })
-      setItems(normalized)
+      console.log(data)
+      setResponse(data)
       onUpdate && onUpdate(resolved)
     } catch (err) {
       // keep technical details in console for debugging, but show a generic message to users
@@ -48,9 +56,8 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
 
     try {
       // optimistic UI update
-      setItems(prev => prev.filter(it => (it.id || it.key) !== id))
       await deleteAnalysis(id)
-      onUpdate && onUpdate(items.filter(it => (it.id || it.key) !== id))
+      fetchAnalyses()
     } catch (err) {
       console.warn('deleteAnalysis error', err)
       setError(t('history.deleteError') || 'No se pudo eliminar la entrada. Intente más tarde.')
@@ -61,14 +68,12 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
 
 
 
-
-
   return (
     <div className="history">
 
-      {!items || items.length === 0 && <div className="empty">{t('history.empty')}</div>}
+      {!response.items || response.items.length === 0 && <div className="empty">{t('history.empty')}</div>}
 
-      {items.map((entry, idx) => (
+      {response.items.map((entry, idx) => (
         <div
           key={entry.key || entry.id || idx}
           className={`history-item ${selectedItem?.key === entry.key ? 'selected' : ''}`}
@@ -168,7 +173,32 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
 
         </div>
       ))}
+      
+  <div className="pagination" style={{display:'flex', alignItems:'center', justifyContent: 'center', gap:8, width: '100%'}}>
+      <button
+        className="tiny"
+        disabled={!response.currentPage || response.currentPage <= 1}
+        onClick={() => setPage(Math.max(1, page - 1))}
+        title={t('history.previousPage')}
+        style={{ visibility: (!response.currentPage || response.currentPage <= 1) ? 'hidden' : 'visible', width: 40, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <img src={previousImage} style={{height: 15}} alt={t('history.previousPage')} />
+      </button>
 
+      <span style={{minWidth: 100, textAlign: 'center', display: 'inline-block'}}>
+        {(response.currentPage ?? 0)} / {(response.totalPages ?? 0)}
+      </span>
+
+      <button
+        className="tiny"
+        disabled={!response.totalPages || response.currentPage >= response.totalPages}
+        onClick={() => setPage(Math.min(response.totalPages || page, page + 1))}
+        title={t('history.nextPage')}
+        style={{ visibility: (!response.totalPages || response.currentPage >= response.totalPages) ? 'hidden' : 'visible', width: 40, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <img src={fowardImage} style={{height: 15}} alt={t('history.nextPage')} />
+      </button>
+    </div>
     </div>
   )
 }
