@@ -33,14 +33,14 @@ const es = {
   loading: {
     title: 'Analizando tu página',
     facts: [
-      '🤖 La AI está analizando cada píxel de tu página...',
-      '🔍 Buscando enlaces rotos y problemas de accesibilidad...',
-      '✨ Generando insights de elementos visuales...',
-      '🎯 Verificando patrones de responsividad móvil...',
-      '🌐 Evaluando métricas de experiencia de usuario...',
-      '🔬 Profundizando en la estructura de la página...',
-      '🎨 Analizando consistencia de diseño...',
-      '📊 Calculando análisis comprensivo...'
+      'La AI está analizando cada píxel de tu página...',
+      'Buscando enlaces rotos y problemas de accesibilidad...',
+      'Generando insights de elementos visuales...',
+      'Verificando patrones de responsividad móvil...',
+      'Evaluando métricas de experiencia de usuario...',
+      'Profundizando en la estructura de la página...',
+      'Analizando consistencia de diseño...',
+      'Calculando análisis comprensivo...'
     ],
     percent: (p) => `${Math.round(p)}%`,
     closeHint: 'Close (ESC)'
@@ -50,21 +50,17 @@ const es = {
     closeEsc: 'Cerrar (ESC)'
   },
   result: {
-    urlBadge: '🌐 URL',
     toleranceLabel: 'Tolerancia',
     languageLabel: 'Idioma',
-    cachedLabel: '💾 En caché',
-    liveLabel: '✨ En vivo',
-    timestampPrefix: '🕐',
-    whatAISeesTitle: '🤖 Lo que la IA ve',
-    modificationsNeeded: '⚠️ Se necesitan modificaciones',
-    noModificationsNeeded: '✅ No se necesitan modificaciones',
+    liveLabel: 'En vivo',
+    whatAISeesTitle: 'Lo que la IA ve',
+    modificationsNeeded: 'Se necesitan modificaciones',
+    noModificationsNeeded: 'No se necesitan modificaciones',
     successMessage: '¡Genial! Tu página se ve bien. No se detectaron problemas críticos.',
-    issuesFound: '🔧 Problemas encontrados',
+    issuesFound: 'Problemas encontrados',
     issueCount: (n) => `${n} problema${n !== 1 ? 's' : ''}`,
     selectorLabel: 'Selector',
-    viewRawJson: '📄 Ver JSON crudo',
-    screenshots: '📸 Capturas',
+    screenshots: 'Capturas',
     screenshotUnavailable: 'Captura no disponible',
     screenshot: {
       desktop: 'Vista de escritorio',

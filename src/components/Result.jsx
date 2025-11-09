@@ -2,6 +2,12 @@ import React, { useState } from 'react'
 import { t } from '../i18n'
 import ImageViewer from './ImageViewer'
 import { formatLocal } from '../utils/formatDate.js'
+import internetImage from '../assets/internet.svg'
+import clockImage from '../assets/clock.svg'
+import robotImage from '../assets/robot.svg'
+import alertImage from '../assets/alert.svg'
+import tickImage from '../assets/tick.svg'
+import fixImage from '../assets/fix.svg'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
@@ -39,7 +45,7 @@ function Screenshot({ id, mobile, onView }) {
             }}
             aria-label="View fullscreen"
           >
-            🔍 Fullscreen
+            Fullscreen
           </button>
         )}
       </div>
@@ -76,7 +82,9 @@ export default function Result({ result, fromCache }) {
       )}
       <div className="result-header">
         <div>
-          <div className="url-badge">{t('result.urlBadge')}</div>
+          <div className="url-badge">
+            <img src={internetImage} alt="URL" style={{height: 18}} />
+          </div>
           {/* analysisName: display title/label above the URL if provided */}
           {result.analysisName && (
             <div className="analysis-title">
@@ -91,26 +99,39 @@ export default function Result({ result, fromCache }) {
               <span className="user-meta">{t('history.userLabel')}: <strong>{result.userName}</strong></span>
             )}
             <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
-            <span className={fromCache ? 'cached-badge' : 'live-badge'}>
-              {fromCache ? t('result.cachedLabel') : t('result.liveLabel')}
-            </span>
           </div>
         </div>
         <div className="timestamps">
-          <small>{t('result.timestampPrefix')} {formatLocal(result.createdAtUtc)}</small>
+          <small>
+            <img src={clockImage} style={{height: 12}} alt="Timestamp" />
+            {formatLocal(result.createdAtUtc)}
+          </small>
         </div>
       </div>
 
       <div className="analysis-grid">
         <div className="analysis-main">
           <div className="section">
-            <h3>{t('result.whatAISeesTitle')}</h3>
+            <h3 className="section-heading-left">
+              <img src={robotImage} alt="AI" />
+              {t('result.whatAISeesTitle')}
+            </h3>
             <p className="whatisee">{result.whatHeSee}</p>
           </div>
 
           <div className="section">
             <h3>
-              {result.needsModifications ? t('result.modificationsNeeded') : t('result.noModificationsNeeded')}
+              {result.needsModifications ? (
+                <>
+                  <img src={alertImage} alt="Alert" />
+                  {t('result.modificationsNeeded')}
+                </>
+              ) : (
+                <>
+                  <img src={tickImage} alt="Success" />
+                  {t('result.noModificationsNeeded')}
+                </>
+              )}
             </h3>
             {!result.needsModifications && (
               <p className="success-message">{t('result.successMessage')}</p>
@@ -120,7 +141,10 @@ export default function Result({ result, fromCache }) {
           {Array.isArray(result.modifications) && result.modifications.length > 0 && (
               <div className="section">
               <div className="section-header">
-                <h3>{t('result.issuesFound')}</h3>
+                <h3>
+                  <img src={fixImage} alt="Issues" />
+                  {t('result.issuesFound')}
+                </h3>
                 <span className="count-badge">{t('result.issueCount')(result.modifications.length)}</span>
               </div>
               <div className="mod-list">
@@ -168,11 +192,6 @@ export default function Result({ result, fromCache }) {
               </div>
             </div>
           )}
-
-          <details className="json-section">
-            <summary>{t('result.viewRawJson')}</summary>
-            <pre className="result-json-small">{JSON.stringify(result, null, 2)}</pre>
-          </details>
         </div>
 
         <aside className="analysis-side">
