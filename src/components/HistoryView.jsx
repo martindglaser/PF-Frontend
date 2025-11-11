@@ -15,6 +15,12 @@ export default function HistoryView({
 }) {
   const [filterText, setFilterText] = useState('')
 
+  const handleFilterChange = (newFilterText) => {
+    setFilterText(newFilterText)
+    if (onUpdate) {
+      onUpdate({ resetPage: true })
+    }
+  }
 
   return (
     <>
@@ -31,7 +37,7 @@ export default function HistoryView({
             type="text"
             placeholder={t('app.filterPlaceholder') || 'Título, URL o Usuario...'}
             value={filterText}
-            onChange={e => setFilterText(e.target.value)}
+            onChange={e => handleFilterChange(e.target.value)}
             autoComplete="off"
           />
         </div>
