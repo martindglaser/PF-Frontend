@@ -35,7 +35,6 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
         const ts = resp?.createdAtUtc ?? resp?.createdAt ?? item.createdAt ?? item.ts ?? resp?.timestamp ?? resp?.time
         return { ...item, ts }
       })
-      console.log(data)
       setResponse(data)
       onUpdate && onUpdate(resolved)
     } catch (err) {
@@ -174,31 +173,33 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
         </div>
       ))}
       
-  <div className="pagination" style={{display:'flex', alignItems:'center', justifyContent: 'center', gap:8, width: '100%'}}>
-      <button
-        className="tiny"
-        disabled={!response.currentPage || response.currentPage <= 1}
-        onClick={() => setPage(Math.max(1, page - 1))}
-        title={t('history.previousPage')}
-        style={{ visibility: (!response.currentPage || response.currentPage <= 1) ? 'hidden' : 'visible', width: 40, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <img src={previousImage} style={{height: 15}} alt={t('history.previousPage')} />
-      </button>
+      {response.totalPages > 0 && (
+      <div className="pagination" style={{display:'flex', alignItems:'center', justifyContent: 'center', gap:8, width: '100%'}}>
+        <button
+          className="tiny"
+          disabled={!response.currentPage || response.currentPage <= 1}
+          onClick={() => setPage(Math.max(1, page - 1))}
+          title={t('history.previousPage')}
+          style={{ visibility: (!response.currentPage || response.currentPage <= 1) ? 'hidden' : 'visible', width: 40, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <img src={previousImage} style={{height: 15}} alt={t('history.previousPage')} />
+        </button>
 
-      <span style={{minWidth: 100, textAlign: 'center', display: 'inline-block'}}>
-        {(response.currentPage ?? 0)} / {(response.totalPages ?? 0)}
-      </span>
+        <span style={{minWidth: 100, textAlign: 'center', display: 'inline-block'}}>
+          {(response.currentPage ?? 0)} / {(response.totalPages ?? 0)}
+        </span>
 
-      <button
-        className="tiny"
-        disabled={!response.totalPages || response.currentPage >= response.totalPages}
-        onClick={() => setPage(Math.min(response.totalPages || page, page + 1))}
-        title={t('history.nextPage')}
-        style={{ visibility: (!response.totalPages || response.currentPage >= response.totalPages) ? 'hidden' : 'visible', width: 40, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <img src={fowardImage} style={{height: 15}} alt={t('history.nextPage')} />
-      </button>
-    </div>
+        <button
+          className="tiny"
+          disabled={!response.totalPages || response.currentPage >= response.totalPages}
+          onClick={() => setPage(Math.min(response.totalPages || page, page + 1))}
+          title={t('history.nextPage')}
+          style={{ visibility: (!response.totalPages || response.currentPage >= response.totalPages) ? 'hidden' : 'visible', width: 40, height: 32, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <img src={fowardImage} style={{height: 15}} alt={t('history.nextPage')} />
+        </button>
+      </div>        
+      )}
     </div>
   )
 }
