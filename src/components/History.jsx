@@ -13,7 +13,10 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
   const [error, setError] = useState(null)
   const [page, setPage] = useState(1)
 
-  
+
+  useEffect(() => {
+    setPage(1)
+  }, [filterText])
 
   useEffect(() => {
       fetchAnalyses()
