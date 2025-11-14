@@ -41,18 +41,18 @@ export default function HistoryView({
             autoComplete="off"
           />
         </div>
-
    
         <div style={{ marginTop: 12 }}>
-      <button
-  className="small"
-  onClick={() => {
-    exportReportCSV(filteredList, 'reporte_consolidado.csv');
-  }}
-  title="Exportar reporte consolidado (CSV)"
->
- Exportar reporte
-</button>
+        <button
+          className="small"
+          onClick={() => {
+            const url = `http://localhost:5288/api/analysis/export?filter=${encodeURIComponent(filterText)}`;
+            window.location.href = url; // dispara el GET y la descarga
+          }}
+          title="Exportar reporte consolidado (Excel)"
+        >
+          Exportar reporte
+        </button>
         </div>
       </div>
 
