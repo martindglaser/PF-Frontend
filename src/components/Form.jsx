@@ -36,12 +36,12 @@ function sanitizeUrl(input, maxLen = 2000) {
 }
 
 const CATEGORIES = [
-  { id: 'ui-styles', label: t('form.categories.ui') },
-  { id: 'forms', label: t('form.categories.forms') },
-  { id: 'buttons-actions', label: t('form.categories.buttons') },
-  { id: 'images-resources', label: t('form.categories.images') },
-  { id: 'texts', label: t('form.categories.texts') },
-  { id: 'accessibility', label: t('form.categories.accessibility') }
+  { id: 'UI/Styles', label: t('form.categories.ui') },
+  { id: 'Forms', label: t('form.categories.forms') },
+  { id: 'Links', label: t('form.categories.links') },
+  { id: 'Images/Assets', label: t('form.categories.images') },
+  { id: 'Texts', label: t('form.categories.texts') },
+  { id: 'Responsiveness', label: t('form.categories.responsiveness') }
 ]
 
 export default function AnalysisForm({ onStart, onComplete }) {

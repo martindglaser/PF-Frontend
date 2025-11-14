@@ -87,10 +87,10 @@ const es = {
     categories: {
       ui: 'UI/estilos',
       forms: 'Formularios',
-      buttons: 'Botones/Acciones',
+      links: 'Links',
       images: 'Imágenes/Recursos',
       texts: 'Textos',
-      accessibility: 'Accesibilidad'
+      responsiveness: 'Responsividad'
     }
     ,
     runButton: 'Ejecutar análisis'

@@ -84,10 +84,10 @@ const en = {
     categories: {
       ui: 'UI/styles',
       forms: 'Forms',
-      buttons: 'Buttons/Actions',
+      links: 'Links',
       images: 'Images/Resources',
       texts: 'Texts',
-      accessibility: 'Accessibility'
+      responsiveness: 'Responsiveness'
     }
     ,
     runButton: 'Run analysis'
