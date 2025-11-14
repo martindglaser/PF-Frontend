@@ -163,6 +163,8 @@ export default function Result({ result, fromCache }) {
                     : (() => { const raw = (m.severity || '').toString().split('.').pop() || ''; return raw.charAt(0).toUpperCase() + raw.slice(1) })()
                   const sevClass = (m.severity || '').toString().toLowerCase().split('.').pop().replace(/[^a-z0-9\-]/g, '').replace(/\s+/g, '-')
 
+                  m.refactoring_suggestion = m.refactoring_suggestion || "Refactorizacion sugerida no disponible."
+                  
                   return (
                   <div key={m.id} className="mod-item">
                     <div className="mod-number">{idx + 1}</div>
@@ -172,6 +174,9 @@ export default function Result({ result, fromCache }) {
                         <span className={`sev sev-${sevClass}`}>{displaySeverity}</span>
                       </div>
                       <div className="mod-desc">{m.description}</div>
+                      {m.refactoring_suggestion && (
+                        <div className="mod-suggestion">{m.refactoring_suggestion}</div>
+                      )}
                       <div className="mod-meta">
                         {(() => {
                           const stateKey = `result.state.${(m.state || '').toString().toLowerCase()}`

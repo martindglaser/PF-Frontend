@@ -625,6 +625,20 @@
   font-size: 15px;
 }
 
+.mod-suggestion {
+  margin: 8px 0 10px 0;
+  line-height: 1.6;
+  color: var(--muted);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 13.5px;
+  font-style: italic;
+  padding: 8px 12px;
+  background: rgba(100, 150, 255, 0.08);
+  border-left: 3px solid rgba(100, 150, 255, 0.4);
+  border-radius: 4px;
+}
+
 .mod-meta {
   display: flex;
   flex-wrap: wrap;
