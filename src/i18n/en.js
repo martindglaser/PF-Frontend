@@ -100,6 +100,7 @@ const en = {
   },
   history: {
     empty: 'No analysis executed',
+    loading: 'Loading analyses...',
     view: 'View',
     refresh: 'Refresh',
     delete: 'Delete',

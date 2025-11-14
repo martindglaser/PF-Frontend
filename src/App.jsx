@@ -55,9 +55,27 @@ export default function App() {
       return
     }
     if (payload.result) {
-      setLastResult({ result: payload.result, fromCache: !!payload.fromCache })
+      // Instead of showing result in analysis view, redirect to history
+      const historyItem = {
+        response: payload.result,
+        result: payload.result,
+        fromCache: !!payload.fromCache,
+        ts: payload.result.createdAtUtc || payload.result.createdAt || new Date().toISOString()
+      }
+      setSelectedHistoryItem(historyItem)
+      changeView('history')
+      setLastResult(null)
       // refresh cache list
       setCacheList(getAllCachedEntries())
+      
+      // Scroll to detail after view changes
+      setTimeout(() => {
+        const el = document.querySelector('#history-detail')
+        if (el && typeof el.scrollIntoView === 'function') {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          try { el.focus({ preventScroll: true }) } catch (e) { /* ignore */ }
+        }
+      }, 100)
     }
   }
 

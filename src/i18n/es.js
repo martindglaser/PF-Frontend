@@ -103,6 +103,7 @@ const es = {
   },
   history: {
     empty: 'No hay análisis ejecutados',
+    loading: 'Cargando análisis...',
     view: 'Ver',
     refresh: 'Actualizar',
     delete: 'Eliminar',

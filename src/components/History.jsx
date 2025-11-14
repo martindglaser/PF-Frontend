@@ -72,8 +72,13 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
 
   return (
     <div className="history">
+      {loading && (
+        <div className="loading-message" style={{ padding: '20px', textAlign: 'center', color: 'var(--muted)' }}>
+          {t('history.loading') || 'Cargando análisis...'}
+        </div>
+      )}
 
-      {!response.items || response.items.length === 0 && <div className="empty">{t('history.empty')}</div>}
+      {!loading && (!response.items || response.items.length === 0) && <div className="empty">{t('history.empty')}</div>}
 
       {response.items.map((entry, idx) => (
         <div
