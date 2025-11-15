@@ -8,6 +8,8 @@ import robotImage from '../assets/robot.svg'
 import alertImage from '../assets/alert.svg'
 import tickImage from '../assets/tick.svg'
 import fixImage from '../assets/fix.svg'
+import { getTrafficLightForAnalysis } from '../utils/analysisLogic.js'
+import TrafficLight from './TrafficLight'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
@@ -71,6 +73,8 @@ export default function Result({ result, fromCache }) {
     }
   }
 
+  const analysisResult = getTrafficLightForAnalysis(result);
+
   return (
     <div className="result-card">
       {viewerImage && (
@@ -85,7 +89,6 @@ export default function Result({ result, fromCache }) {
           <div className="url-badge">
             <img src={internetImage} alt="URL" style={{height: 18}} />
           </div>
-          {/* analysisName: display title/label above the URL if provided */}
           {result.analysisName && (
             <div className="analysis-title">
               <strong>{t('history.analysisTitle')}:</strong> {result.analysisName}
@@ -94,13 +97,13 @@ export default function Result({ result, fromCache }) {
           <h2>{result.url}</h2>
             <div className="meta">
             <span>{t('result.toleranceLabel')}: <strong>{displayTolerance}</strong></span>
-            {/* userName: show next to tolerance if present */}
             {result.userName && (
               <span className="user-meta">{t('history.userLabel')}: <strong>{result.userName}</strong></span>
             )}
             <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
           </div>
         </div>
+        <TrafficLight light={analysisResult.light} />
         <div className="timestamps">
           <small>
             <img src={clockImage} style={{height: 12}} alt="Timestamp" />
