@@ -6,40 +6,61 @@ import trashImage from '../assets/trash.svg'
 import fowardImage from '../assets/forward.svg'
 import previousImage from '../assets/previous.svg'
 
-export default function History({ list = [], onView, onUpdate, selectedItem, filterText = '' }) {
+export default function History({ list = [], onView, onUpdate, selectedItem, filterText = '', fromDate = '', toDate = '' }) {
   
   const [response, setResponse] = useState({ items: [] })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [page, setPage] = useState(1)
 
+  // Función para convertir de yyyy-MM-dd a dd/MM/yyyy
+  const formatDateForBackend = (dateStr) => {
+    if (!dateStr) return ''
+    const [year, month, day] = dateStr.split('-')
+    return `${day}/${month}/${year}`
+  }
 
   useEffect(() => {
     setPage(1)
-  }, [filterText])
+  }, [filterText, fromDate, toDate])
 
   useEffect(() => {
       fetchAnalyses()
-  }, [filterText, page])
+  }, [filterText, fromDate, toDate, page])
 
 
   async function fetchAnalyses(params = {}) {
-    params = { filter: filterText, pageSize: 6, page}
+    params = { 
+      filter: filterText, 
+      from: formatDateForBackend(fromDate),
+      to: formatDateForBackend(toDate),
+      pageSize: 6, 
+      page
+    }
     setLoading(true)
     setError(null)
     try {
       const data = await listAnalyses(params)
 
       const resolved = Array.isArray(data) ? data : (data?.items ?? [])
-      
+
       // normalize timestamps so we display the real run time instead of falling back to now
       const normalized = resolved.map(item => {
         const resp = item.response ?? item.result ?? item
         const ts = resp?.createdAtUtc ?? resp?.createdAt ?? item.createdAt ?? item.ts ?? resp?.timestamp ?? resp?.time
         return { ...item, ts }
       })
-      setResponse(data)
-      onUpdate && onUpdate(resolved)
+
+      // If the API returns a paged object, keep metadata but replace items with normalized ones
+      if (data && typeof data === 'object' && Array.isArray(data.items)) {
+        setResponse({ ...data, items: normalized })
+      } else {
+        // if API returned a raw array, create a minimal response wrapper
+        setResponse({ items: normalized, currentPage: 1, totalPages: 1, totalItems: normalized.length })
+      }
+
+      // Notify parent with normalized items
+      onUpdate && onUpdate(normalized)
     } catch (err) {
       // keep technical details in console for debugging, but show a generic message to users
       console.warn('listAnalyses error', err)
@@ -133,7 +154,7 @@ export default function History({ list = [], onView, onUpdate, selectedItem, fil
                 )
               })()}
 
-              <small>{formatLocal(entry.ts ?? entry.createdAt ?? Date.now())}</small>
+              <small>{formatLocal(entry.ts ?? entry.createdAt ?? entry.response?.createdAtUtc)}</small>
               <button
                 className="tiny"
                 onClick={async (e) => {

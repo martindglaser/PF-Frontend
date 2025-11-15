@@ -14,12 +14,26 @@ export default function HistoryView({
   setSelectedHistoryItem
 }) {
   const [filterText, setFilterText] = useState('')
+  const [fromDate, setFromDate] = useState('')
+  const [toDate, setToDate] = useState('')
 
   const handleFilterChange = (newFilterText) => {
     setFilterText(newFilterText)
     if (onUpdate) {
       onUpdate({ resetPage: true })
     }
+  }
+
+  const handleDateChange = () => {
+    if (onUpdate) {
+      onUpdate({ resetPage: true })
+    }
+  }
+
+  const formatDateForBackend = (dateStr) => {
+    if (!dateStr) return ''
+    const [year, month, day] = dateStr.split('-')
+    return `${day}/${month}/${year}`
   }
 
   return (
@@ -29,24 +43,71 @@ export default function HistoryView({
         <p>{t('app.historySubtitle')}</p>
 
         <div className="history-filter">
-          <label htmlFor="history-filter-input" className="filter-label">
-            {t('app.filterLabel') || 'Filtrar:'}
-          </label>
-          <input
-            id="history-filter-input"
-            type="text"
-            placeholder={t('app.filterPlaceholder') || 'Título, URL o Usuario...'}
-            value={filterText}
-            onChange={e => handleFilterChange(e.target.value)}
-            autoComplete="off"
-          />
+          <div className="filter-text-group">
+            <label htmlFor="history-filter-input" className="filter-label">
+              {t('app.filterLabel') || 'Filtrar:'}
+            </label>
+            <input
+              id="history-filter-input"
+              type="text"
+              placeholder={t('app.filterPlaceholder') || 'Título, URL o Usuario...'}
+              value={filterText}
+              onChange={e => handleFilterChange(e.target.value)}
+              autoComplete="off"
+            />
+          </div>
+          
+          <div className="date-filters">
+            <div className="date-group">
+              <label htmlFor="from-date" className="date-label">
+                {t('app.fromDateLabel') || 'Desde:'}
+              </label>
+              <input
+                id="from-date"
+                type="date"
+                value={fromDate}
+                max={toDate || undefined}
+                onChange={e => {
+                  setFromDate(e.target.value)
+                  handleDateChange()
+                  // Focus en el date picker "hasta"
+                  if (e.target.value) {
+                    document.getElementById('to-date')?.focus()
+                  }
+                }}
+                className="date-input"
+              />
+            </div>
+            
+            <div className="date-group">
+              <label htmlFor="to-date" className="date-label">
+                {t('app.toDateLabel') || 'Hasta:'}
+              </label>
+              <input
+                id="to-date"
+                type="date"
+                value={toDate}
+                min={fromDate || undefined}
+                onChange={e => {
+                  setToDate(e.target.value)
+                  handleDateChange()
+                }}
+                className="date-input"
+              />
+            </div>
+          </div>
         </div>
    
         <div style={{ marginTop: 12 }}>
         <button
           className="small"
           onClick={() => {
-            const url = `http://localhost:5288/api/analysis/export?filter=${encodeURIComponent(filterText)}`;
+            const params = new URLSearchParams()
+            if (filterText) params.append('filter', filterText)
+            if (fromDate) params.append('from', formatDateForBackend(fromDate))
+            if (toDate) params.append('to', formatDateForBackend(toDate))
+
+            const url = `http://localhost:5288/api/analysis/export?${params.toString()}`
             window.location.href = url; // dispara el GET y la descarga
           }}
           title="Exportar reporte consolidado (Excel)"
@@ -64,6 +125,8 @@ export default function HistoryView({
               onUpdate={onUpdate}
               selectedItem={selectedHistoryItem}
               filterText={filterText}
+              fromDate={fromDate}
+              toDate={toDate}
             />
           </div>
         </div>
