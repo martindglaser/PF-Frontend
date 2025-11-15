@@ -86,15 +86,15 @@ export default function Result({ result, fromCache }) {
       )}
       <div className="result-header">
         <div>
-          <div className="url-badge">
-            <img src={internetImage} alt="URL" style={{height: 18}} />
-          </div>
           {result.analysisName && (
             <div className="analysis-title">
               <strong>{t('history.analysisTitle')}:</strong> {result.analysisName}
             </div>
           )}
-          <h2>{result.url}</h2>
+          <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
+            <img src={internetImage} alt={t('result.urlIconAlt') || 'URL'} style={{height: 18}} />
+            <h2 style={{margin: 0}}>{result.url}</h2>
+          </div>
             <div className="meta">
             <span>{t('result.toleranceLabel')}: <strong>{displayTolerance}</strong></span>
             {result.userName && (
