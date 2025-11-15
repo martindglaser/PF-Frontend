@@ -84,21 +84,10 @@ export default function Result({ result, fromCache }) {
         />
       )}
       <div className="result-header">
-        {/* Traffic light indicator positioned top-right inside header */}
-        <div
-          className="traffic-light"
-          role="img"
-          aria-label={t('result.trafficLight') || `Traffic light: ${analysisResult.light}`}
-        >
-          <span className={`bulb red ${analysisResult.light === 'red' ? 'active' : ''}`} />
-          <span className={`bulb yellow ${analysisResult.light === 'yellow' ? 'active' : ''}`} />
-          <span className={`bulb green ${analysisResult.light === 'green' ? 'active' : ''}`} />
-        </div>
         <div>
           <div className="url-badge">
             <img src={internetImage} alt="URL" style={{height: 18}} />
           </div>
-          {/* analysisName: display title/label above the URL if provided */}
           {result.analysisName && (
             <div className="analysis-title">
               <strong>{t('history.analysisTitle')}:</strong> {result.analysisName}
@@ -107,12 +96,20 @@ export default function Result({ result, fromCache }) {
           <h2>{result.url}</h2>
             <div className="meta">
             <span>{t('result.toleranceLabel')}: <strong>{displayTolerance}</strong></span>
-            {/* userName: show next to tolerance if present */}
             {result.userName && (
               <span className="user-meta">{t('history.userLabel')}: <strong>{result.userName}</strong></span>
             )}
             <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
           </div>
+        </div>
+        <div
+          className="traffic-light"
+          role="img"
+          aria-label={t('result.trafficLight') || `Traffic light: ${analysisResult.light}`}
+        >
+          <span className={`bulb red ${analysisResult.light === 'red' ? 'active' : ''}`} />
+          <span className={`bulb yellow ${analysisResult.light === 'yellow' ? 'active' : ''}`} />
+          <span className={`bulb green ${analysisResult.light === 'green' ? 'active' : ''}`} />
         </div>
         <div className="timestamps">
           <small>
