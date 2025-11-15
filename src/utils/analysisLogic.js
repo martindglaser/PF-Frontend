@@ -1,5 +1,3 @@
-// --- Definición de categorías por nivel de impacto ---
-
 const CATEGORY_GROUPS = {
   high: new Set(["Forms", "Links", "Responsiveness"]),
   medium: new Set(["Texts", "Images/Assets"]),
@@ -10,7 +8,6 @@ function getCategoryGroup(category) {
   if (CATEGORY_GROUPS.high.has(category)) return "high";
   if (CATEGORY_GROUPS.medium.has(category)) return "medium";
   if (CATEGORY_GROUPS.low.has(category)) return "low";
-  // fallback por si en el futuro aparece una categoría nueva
   return "medium";
 }
 
@@ -54,7 +51,7 @@ export function summarizeModifications(modifications = []) {
 
 /**
  * Verifica si se cumplen los criterios de aceptación
- * según la tolerance del análisis.
+ * según la tolerancia del análisis.
  */
 export function checkAcceptance(counts, tolerance) {
   const rule = ACCEPTANCE_RULES[tolerance] || ACCEPTANCE_RULES.medium;
@@ -99,12 +96,6 @@ export function getTrafficLightForAnalysis(analysis) {
   const hasCriticalMediumImpact = (medium.Critical ?? 0) > 0;
   const hasMediumHighImpact     = (high.Medium ?? 0) > 0;
 
-  // --- LÓGICA DEL COLOR ---
-
-  // 🔴 ROJO:
-  // - cualquier Critical en categorías de alto impacto
-  // - o cualquier Critical en general
-  // - o no pasa los criterios de aceptación
   if (
     hasCriticalHighImpact ||
     totalCritical > 0 ||
@@ -118,19 +109,15 @@ export function getTrafficLightForAnalysis(analysis) {
     };
   }
 
-  // 🟡 AMARILLO:
-  // - pasa criterios
-  // - pero hay problemas Medium en alto impacto
-  // - o hay varios Medium/Low acumulados
   const manyLow  = totalLow > 3;
   const manyMedium = totalMedium >= 2;
   const hasAnyMedium = totalMedium > 0;
 
   if (
-    hasMediumHighImpact ||      // Medium en Forms/Links/Responsiveness
-    hasAnyMedium ||             // hay Medium en cualquier categoría
-    manyLow ||                  // muchos Low
-    manyMedium                  // muchos Medium
+    hasMediumHighImpact ||
+    hasAnyMedium ||
+    manyLow ||
+    manyMedium
   ) {
     return {
       light: "yellow",
@@ -140,10 +127,6 @@ export function getTrafficLightForAnalysis(analysis) {
     };
   }
 
-  // 🟢 VERDE:
-  // - aceptado
-  // - sin Critical
-  // - pocos Low y como mucho 1 Medium (si lo permitís)
   return {
     light: "green",
     accepted,
