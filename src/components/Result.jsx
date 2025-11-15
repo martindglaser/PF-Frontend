@@ -148,7 +148,12 @@ export default function Result({ result, fromCache }) {
                   <img src={fixImage} alt="Issues" />
                   {t('result.issuesFound')}
                 </h3>
-                <span className="count-badge">{t('result.issueCount')(result.modifications.length)}</span>
+                <div className="counts-summary" aria-hidden={false}>
+                  <span className="count-pill pill-low">{t('app.severity.low')}: <strong>{analysisResult.counts?.Low ?? 0}</strong></span>
+                  <span className="count-pill pill-medium">{t('app.severity.medium')}: <strong>{analysisResult.counts?.Medium ?? 0}</strong></span>
+                  <span className="count-pill pill-high">{t('app.severity.critical')}: <strong>{analysisResult.counts?.Critical ?? 0}</strong></span>
+                  <span className="count-pill total">{t('result.totalLabel') || 'Total'}: <strong>{(analysisResult.counts?.Low ?? 0) + (analysisResult.counts?.Medium ?? 0) + (analysisResult.counts?.Critical ?? 0)}</strong></span>
+                </div>
               </div>
               <div className="mod-list">
                 {result.modifications.map((m, idx) => {

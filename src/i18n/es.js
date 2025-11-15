@@ -60,6 +60,7 @@ const es = {
     noModificationsNeeded: 'No se necesitan modificaciones',
     successMessage: '¡Genial! Tu página se ve bien. No se detectaron problemas críticos.',
     issuesFound: 'Problemas encontrados',
+    totalLabel: 'Total',
     issueCount: (n) => `${n} problema${n !== 1 ? 's' : ''}`,
     selectorLabel: 'Selector',
     screenshots: 'Capturas',

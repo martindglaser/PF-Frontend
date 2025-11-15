@@ -56,6 +56,7 @@ const en = {
     noModificationsNeeded: 'No modifications needed',
     successMessage: 'Great! Your page looks good. No critical issues detected.',
     issuesFound: 'Issues found',
+    totalLabel: 'Total',
     issueCount: (n) => `${n} issue${n !== 1 ? 's' : ''}`,
     selectorLabel: 'Selector',
     screenshots: 'Screenshots',
