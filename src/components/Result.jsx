@@ -9,6 +9,7 @@ import alertImage from '../assets/alert.svg'
 import tickImage from '../assets/tick.svg'
 import fixImage from '../assets/fix.svg'
 import { getTrafficLightForAnalysis } from '../utils/analysisLogic.js'
+import TrafficLight from './TrafficLight'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
@@ -102,15 +103,7 @@ export default function Result({ result, fromCache }) {
             <span>{t('result.languageLabel')}: <strong>{result.language}</strong></span>
           </div>
         </div>
-        <div
-          className="traffic-light"
-          role="img"
-          aria-label={t('result.trafficLight') || `Traffic light: ${analysisResult.light}`}
-        >
-          <span className={`bulb red ${analysisResult.light === 'red' ? 'active' : ''}`} />
-          <span className={`bulb yellow ${analysisResult.light === 'yellow' ? 'active' : ''}`} />
-          <span className={`bulb green ${analysisResult.light === 'green' ? 'active' : ''}`} />
-        </div>
+        <TrafficLight light={analysisResult.light} />
         <div className="timestamps">
           <small>
             <img src={clockImage} style={{height: 12}} alt="Timestamp" />
