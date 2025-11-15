@@ -59,11 +59,10 @@ export default function AnalysisForm({ onStart, onComplete }) {
   const urlRef = useRef(null)
   const nameRef = useRef(null)
   const userRef = useRef(null)
-  // field character limits
+
   const ANALYSIS_NAME_MAX = 120
   const USER_NAME_MAX = 60
 
-  // On mount, select all categories by default
   useEffect(() => {
     setSelectedCategories(CATEGORIES.map(c => c.id))
   }, [])
@@ -78,7 +77,6 @@ export default function AnalysisForm({ onStart, onComplete }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    // clear previous errors before validating
     setUrlError(false)
     setNameError(false)
     setUserError(false)
@@ -120,7 +118,7 @@ export default function AnalysisForm({ onStart, onComplete }) {
         }
       } catch (err) {
         setUrlError(true)
-        setUrlErrorMessage('El URL no es válido')
+        setUrlErrorMessage(t('form.urlInvalid') || 'El URL no es válido')
         hasError = true
       }
     }

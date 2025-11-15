@@ -76,6 +76,7 @@ const es = {
   },
   form: {
     urlLabel: 'URL',
+    urlInvalid: 'El URL no es válido',
     urlPlaceholder: 'https://example.com',
     toleranceLabel: 'Tolerancia',
     tolerance: { low: 'Bajo', medium: 'Medio', high: 'Alto' },

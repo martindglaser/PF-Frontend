@@ -73,6 +73,7 @@ const en = {
   },
   form: {
     urlLabel: 'URL',
+    urlInvalid: 'The URL is not valid',
     urlPlaceholder: 'https://example.com',
     toleranceLabel: 'Tolerance',
     tolerance: { low: 'low', medium: 'medium', high: 'high' },
