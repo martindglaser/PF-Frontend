@@ -435,7 +435,7 @@ footer code { background: rgba(255, 255, 255, 0.05); padding: 2px 6px; border-ra
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text);
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.03);
