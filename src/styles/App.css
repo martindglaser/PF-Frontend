@@ -288,6 +288,39 @@ footer code { background: rgba(255, 255, 255, 0.05); padding: 2px 6px; border-ra
   max-width: 100%;
 }
 
+/* Traffic light styles used by Result component */
+.result-header { position: relative; }
+
+/* Traffic light: positioned at top-right, horizontal and larger */
+.traffic-light {
+  position: absolute;
+  top: 12px;
+  right: 5px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: transparent;
+  z-index: 4;
+}
+.traffic-light .bulb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #444;
+  opacity: 0.18;
+  transition: opacity 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+.traffic-light .bulb.red { background: #d93025; }
+.traffic-light .bulb.yellow { background: #fbbc05; }
+.traffic-light .bulb.green { background: #34a853; }
+.traffic-light .bulb.active { opacity: 1; transform: scale(1.2); }
+.traffic-light .bulb.red.active { box-shadow: 0 0 12px rgba(217,48,37,0.7); }
+.traffic-light .bulb.yellow.active { box-shadow: 0 0 12px rgba(251,188,5,0.7); }
+.traffic-light .bulb.green.active { box-shadow: 0 0 12px rgba(52,168,83,0.65); }
+
 @keyframes slideIn {
   from {
     opacity: 0;

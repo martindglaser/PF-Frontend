@@ -8,6 +8,7 @@ import robotImage from '../assets/robot.svg'
 import alertImage from '../assets/alert.svg'
 import tickImage from '../assets/tick.svg'
 import fixImage from '../assets/fix.svg'
+import { getTrafficLightForAnalysis } from '../utils/analysisLogic.js'
 
 function Screenshot({ id, mobile, onView }) {
   const base = 'http://localhost:5288/assets/screenshots'
@@ -71,6 +72,8 @@ export default function Result({ result, fromCache }) {
     }
   }
 
+  const analysisResult = getTrafficLightForAnalysis(result);
+
   return (
     <div className="result-card">
       {viewerImage && (
@@ -81,6 +84,16 @@ export default function Result({ result, fromCache }) {
         />
       )}
       <div className="result-header">
+        {/* Traffic light indicator positioned top-right inside header */}
+        <div
+          className="traffic-light"
+          role="img"
+          aria-label={t('result.trafficLight') || `Traffic light: ${analysisResult.light}`}
+        >
+          <span className={`bulb red ${analysisResult.light === 'red' ? 'active' : ''}`} />
+          <span className={`bulb yellow ${analysisResult.light === 'yellow' ? 'active' : ''}`} />
+          <span className={`bulb green ${analysisResult.light === 'green' ? 'active' : ''}`} />
+        </div>
         <div>
           <div className="url-badge">
             <img src={internetImage} alt="URL" style={{height: 18}} />
