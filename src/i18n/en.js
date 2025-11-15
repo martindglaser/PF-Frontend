@@ -11,6 +11,8 @@ const en = {
     confirmClearCache: 'Clear all cached requests?',
     testDetails: 'Test Details',
     close: 'Close',
+    fromDateLabel: 'From:',
+    toDateLabel: 'To:',
     issuesBySeverity: 'Issues by Severity',
     issuesByCategory: 'Issues by Category',
     cachedRequestsCount: (n) => `Cached Requests (${n})`,

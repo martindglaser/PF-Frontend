@@ -13,6 +13,8 @@ const es = {
   close: 'Cerrar',
   filterLabel: 'Filtrar:',
   filterPlaceholder: 'Título, Usuario o URL',
+  fromDateLabel: 'Desde:',
+  toDateLabel: 'Hasta:',
   issuesBySeverity: 'Problemas por severidad',
   issuesByCategory: 'Problemas por categoría',
     cachedRequestsCount: (n) => `Solicitudes en caché (${n})`,
