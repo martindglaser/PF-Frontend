@@ -422,6 +422,29 @@ footer code { background: rgba(255, 255, 255, 0.05); padding: 2px 6px; border-ra
   font-weight: 600;
 }
 
+.counts-summary {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.counts-summary .count-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.counts-summary .pill-low { background: rgba(74, 222, 128, 0.08); color: var(--success); }
+.counts-summary .pill-medium { background: rgba(251, 191, 36, 0.08); color: var(--warning); }
+.counts-summary .pill-high { background: rgba(255, 107, 107, 0.08); color: var(--danger); }
+.counts-summary .total { background: rgba(0, 212, 255, 0.06); color: var(--accent); }
+
 .analysis-main h3,
 .analysis-side h4 {
   margin: 0 0 16px 0;

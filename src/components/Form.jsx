@@ -2,38 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { analyze } from '../utils/api'
 import { getCached, putCached } from '../utils/cache'
 import { t } from '../i18n'
-
-// sanitize user-provided short text fields: strip tags, control chars, collapse whitespace, truncate
-function sanitizeInput(input, maxLen = 100) {
-  if (input == null) return ''
-  let s = String(input)
-  // remove HTML tags
-  s = s.replace(/<[^>]*>/g, '')
-  // remove common control characters (newlines, tabs) and replace with single space
-  s = s.replace(/[\r\n\t]+/g, ' ')
-  // collapse multiple whitespace into single space and trim
-  s = s.replace(/\s+/g, ' ').trim()
-  // remove angle brackets left over and other problematic chars if needed
-  s = s.replace(/[<>]/g, '')
-  if (maxLen && s.length > maxLen) s = s.slice(0, maxLen)
-  return s
-}
-
-// sanitize URL-like input: remove tags, control chars, and all whitespace (URLs shouldn't contain spaces)
-function sanitizeUrl(input, maxLen = 2000) {
-  if (input == null) return ''
-  let s = String(input)
-  // remove HTML tags
-  s = s.replace(/<[^>]*>/g, '')
-  // remove control characters (newlines, tabs)
-  s = s.replace(/[\r\n\t]+/g, '')
-  // remove all whitespace
-  s = s.replace(/\s+/g, '')
-  // remove angle brackets if any
-  s = s.replace(/[<>]/g, '')
-  if (maxLen && s.length > maxLen) s = s.slice(0, maxLen)
-  return s
-}
+import { sanitizeInput, sanitizeUrl } from '../utils/input'
 
 const CATEGORIES = [
   { id: 'UI/Styles', label: t('form.categories.ui') },
@@ -59,11 +28,10 @@ export default function AnalysisForm({ onStart, onComplete }) {
   const urlRef = useRef(null)
   const nameRef = useRef(null)
   const userRef = useRef(null)
-  // field character limits
+
   const ANALYSIS_NAME_MAX = 120
   const USER_NAME_MAX = 60
 
-  // On mount, select all categories by default
   useEffect(() => {
     setSelectedCategories(CATEGORIES.map(c => c.id))
   }, [])
@@ -78,13 +46,11 @@ export default function AnalysisForm({ onStart, onComplete }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    // clear previous errors before validating
     setUrlError(false)
     setNameError(false)
     setUserError(false)
     setSubmitError(false)
 
-    // sanitize values
     const sanitizedUrl = sanitizeUrl(url, 2000)
     const sanitizedName = sanitizeInput(analysisName, ANALYSIS_NAME_MAX)
     const sanitizedUser = sanitizeInput(userName, USER_NAME_MAX)
@@ -93,18 +59,15 @@ export default function AnalysisForm({ onStart, onComplete }) {
       url: sanitizedUrl,
       AnalysisName: sanitizedName,
       UserName: sanitizedUser,
-      // keep legacy keys used locally
       name: sanitizedName,
       user: sanitizedUser,
       tolerance,
       language,
       categories: selectedCategories
     }
-    // reflect sanitized values in the inputs so the UI matches validation
-    try { setUrl(payload.url) } catch (e) { /* ignore */ }
-    try { setAnalysisName(payload.name) } catch (e) { /* ignore */ }
-    try { setUserName(payload.user) } catch (e) { /* ignore */ }
-    // validate required fields: url, analysis name and user
+    try { setUrl(payload.url) } catch (e) {  }
+    try { setAnalysisName(payload.name) } catch (e) {  }
+    try { setUserName(payload.user) } catch (e) {  }
     let hasError = false
     if (!payload.url) {
       setUrlError(true)
@@ -112,7 +75,6 @@ export default function AnalysisForm({ onStart, onComplete }) {
       hasError = true
     }
     else {
-      // validate URL format
       try {
         const parsed = new URL(payload.url)
         if (!/^https?:$/i.test(parsed.protocol)) {
@@ -120,7 +82,7 @@ export default function AnalysisForm({ onStart, onComplete }) {
         }
       } catch (err) {
         setUrlError(true)
-        setUrlErrorMessage('El URL no es válido')
+        setUrlErrorMessage(t('form.urlInvalid') || 'El URL no es válido')
         hasError = true
       }
     }
@@ -133,35 +95,27 @@ export default function AnalysisForm({ onStart, onComplete }) {
       hasError = true
     }
     if (hasError) {
-      // highlight submit button and focus first invalid field
       setSubmitError(true)
       setTimeout(() => setSubmitError(false), 1400)
-      // focus order: url, name, user
       try {
         if (!payload.url && urlRef.current) urlRef.current.focus()
         else if (!payload.name && nameRef.current) nameRef.current.focus()
         else if (!payload.user && userRef.current) userRef.current.focus()
-      } catch (e) { /* ignore */ }
+      } catch (e) {  }
       return
     }
 
     onStart && onStart()
 
-    // ensure submit error flag is cleared when proceeding
     setSubmitError(false)
     let cached
     try {
-      // read cache but DO NOT render it immediately — we always await network
       cached = getCached(payload)
 
-      // Perform the network analysis and await it so the LoadingScreen remains visible
       const result = await analyze(payload)
-      // store fresh result in cache (best-effort)
-      try { putCached(payload, result) } catch (e) { /* ignore */ }
-      // update UI with fresh server result
+      try { putCached(payload, result) } catch (e) {  }
       onComplete({ result, fromCache: false })
     } catch (err) {
-      // If the network failed but we have a cached result, use it as a fallback.
       if (cached) {
         console.warn('analyze request failed, returning cached result as fallback', err)
         onComplete({ result: cached.response, fromCache: true })
@@ -205,8 +159,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           maxLength={ANALYSIS_NAME_MAX}
         />
         {nameError && (
-          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
-            {t('form.analysisNameRequired') || 'El nombre del análisis es obligatorio'}
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 1, fontSize: 11, fontWeight: 600 }}>
+            {(t('form.analysisNameRequired') || 'El nombre del análisis es obligatorio').toLowerCase()}
           </div>
         )}
       </label>
@@ -223,8 +177,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           maxLength={USER_NAME_MAX}
         />
         {userError && (
-          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
-            {t('form.userNameRequired') || 'El nombre del usuario es obligatorio'}
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 1, fontSize: 11, fontWeight: 600 }}>
+            {(t('form.userNameRequired') || 'El nombre del usuario es obligatorio').toLowerCase()}
           </div>
         )}
       </label>
@@ -239,8 +193,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           className={urlError ? 'input-error' : ''}
         />
         {urlError && (
-          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
-            {urlErrorMessage || (t('form.urlRequired') || 'El URL es obligatorio')}
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 1, fontSize: 11, fontWeight: 600 }}>
+            {(urlErrorMessage || t('form.urlRequired') || 'El URL es obligatorio').toLowerCase()}
           </div>
         )}
       </label>
@@ -300,9 +254,9 @@ export default function AnalysisForm({ onStart, onComplete }) {
           <div
             role="alert"
             aria-live="assertive"
-            style={{ color: 'var(--danger)', marginTop: 8, fontSize: 13, fontWeight: 700 }}
+            style={{ color: 'var(--danger)', marginTop: 8, fontSize: 11, fontWeight: 600 }}
           >
-            {'Seleccione al menos una categoría'}
+            {'Seleccione al menos una categoría'.toLowerCase()}
           </div>
         )}
       </div>
