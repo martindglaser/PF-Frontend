@@ -159,8 +159,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           maxLength={ANALYSIS_NAME_MAX}
         />
         {nameError && (
-          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
-            {t('form.analysisNameRequired') || 'El nombre del análisis es obligatorio'}
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 1, fontSize: 11, fontWeight: 600 }}>
+            {(t('form.analysisNameRequired') || 'El nombre del análisis es obligatorio').toLowerCase()}
           </div>
         )}
       </label>
@@ -177,8 +177,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           maxLength={USER_NAME_MAX}
         />
         {userError && (
-          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
-            {t('form.userNameRequired') || 'El nombre del usuario es obligatorio'}
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 1, fontSize: 11, fontWeight: 600 }}>
+            {(t('form.userNameRequired') || 'El nombre del usuario es obligatorio').toLowerCase()}
           </div>
         )}
       </label>
@@ -193,8 +193,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
           className={urlError ? 'input-error' : ''}
         />
         {urlError && (
-          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 6, fontSize: 13, fontWeight: 700 }}>
-            {urlErrorMessage || (t('form.urlRequired') || 'El URL es obligatorio')}
+          <div role="alert" aria-live="assertive" style={{ color: 'var(--danger)', marginTop: 1, fontSize: 11, fontWeight: 600 }}>
+            {(urlErrorMessage || t('form.urlRequired') || 'El URL es obligatorio').toLowerCase()}
           </div>
         )}
       </label>
@@ -254,9 +254,9 @@ export default function AnalysisForm({ onStart, onComplete }) {
           <div
             role="alert"
             aria-live="assertive"
-            style={{ color: 'var(--danger)', marginTop: 8, fontSize: 13, fontWeight: 700 }}
+            style={{ color: 'var(--danger)', marginTop: 8, fontSize: 11, fontWeight: 600 }}
           >
-            {'Seleccione al menos una categoría'}
+            {'Seleccione al menos una categoría'.toLowerCase()}
           </div>
         )}
       </div>
