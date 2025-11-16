@@ -18,9 +18,6 @@ export default function ImageViewer({ imageUrl, title, onClose }) {
 
   const overlay = (
     <div className="image-viewer-overlay" onClick={onClose}>
-      <button className="viewer-close" onClick={onClose} aria-label={t('viewer.close') || 'Close'}>
-        ✕
-      </button>
       <div className="viewer-content" onClick={(e) => e.stopPropagation()}>
         <div className="viewer-header">
           <h3>{title}</h3>
