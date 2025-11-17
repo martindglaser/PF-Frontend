@@ -50,6 +50,19 @@ export default function HistoryView({
     try { el.click() } catch (e) { /* noop */ }
   }
 
+  const handleDateKeyDown = (e, id) => {
+    const allowed = ['Tab', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      openDatePicker(id)
+      return
+    }
+
+    if (!allowed.includes(e.key)) {
+      e.preventDefault()
+    }
+  }
+
   return (
     <>
       <div className="page-header">
@@ -81,11 +94,17 @@ export default function HistoryView({
                 type="date"
                 value={fromDate}
                 max={toDate || undefined}
+                onKeyDown={(e) => handleDateKeyDown(e, 'from-date')}
+                onFocus={() => openDatePicker('from-date')}
+                onClick={() => openDatePicker('from-date')}
                 onChange={e => {
-                  setFromDate(e.target.value)
+                  const v = e.target.value
+                  setFromDate(v)
+                  if (toDate && toDate < v) {
+                    setToDate(v)
+                  }
                   handleDateChange()
-                  // Focus en el date picker "hasta"
-                  if (e.target.value) {
+                  if (v) {
                     document.getElementById('to-date')?.focus()
                   }
                 }}
@@ -112,8 +131,15 @@ export default function HistoryView({
                 type="date"
                 value={toDate}
                 min={fromDate || undefined}
+                onKeyDown={(e) => handleDateKeyDown(e, 'to-date')}
+                onFocus={() => openDatePicker('to-date')}
+                onClick={() => openDatePicker('to-date')}
                 onChange={e => {
-                  setToDate(e.target.value)
+                  const v = e.target.value
+                  setToDate(v)
+                  if (fromDate && fromDate > v) {
+                    setFromDate(v)
+                  }
                   handleDateChange()
                 }}
                 className="date-input"
