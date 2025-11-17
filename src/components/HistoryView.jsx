@@ -36,6 +36,20 @@ export default function HistoryView({
     return `${day}/${month}/${year}`
   }
 
+  const openDatePicker = (id) => {
+    const el = document.getElementById(id)
+    if (!el) return
+    try {
+      if (typeof el.showPicker === 'function') {
+        el.showPicker()
+        return
+      }
+    } catch (e) {
+    }
+    el.focus()
+    try { el.click() } catch (e) { /* noop */ }
+  }
+
   return (
     <>
       <div className="page-header">
@@ -77,6 +91,16 @@ export default function HistoryView({
                 }}
                 className="date-input"
               />
+              <button
+                type="button"
+                className="date-picker-btn"
+                aria-label={t('app.openCalendar') || 'Abrir calendario'}
+                onClick={() => openDatePicker('from-date')}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <path fill="#00D4FF" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H5V9h14v9zM7 11h5v5H7z"/>
+                </svg>
+              </button>
             </div>
             
             <div className="date-group">
@@ -94,6 +118,16 @@ export default function HistoryView({
                 }}
                 className="date-input"
               />
+              <button
+                type="button"
+                className="date-picker-btn"
+                aria-label={t('app.openCalendar') || 'Abrir calendario'}
+                onClick={() => openDatePicker('to-date')}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <path fill="#00D4FF" d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H5V9h14v9zM7 11h5v5H7z"/>
+                </svg>
+              </button>
             </div>
           </div>
         </div>
