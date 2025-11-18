@@ -22,7 +22,7 @@ export default function Sidebar({ activeView, setActiveView }) {
           onClick={() => setActiveView('analysis')}
         >
           <span className="nav-icon"><img style={iconStyle} src={analysisImage} alt="Analysis" /></span>
-          {t('app.title')}
+          {t('app.analysisMenu')}
         </button>
 
         <button
