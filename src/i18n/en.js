@@ -2,6 +2,7 @@ const en = {
   app: {
     title: 'AI Webpage Analysis',
     subtitle: 'Submit a URL and get an AI-powered analysis of your webpage',
+    analysisMenu: 'Analysis',
     newAnalysis: 'New Analysis',
     cachedRequests: 'Cached Requests',
     clearCache: 'Clear cache',
