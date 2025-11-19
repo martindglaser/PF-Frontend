@@ -29,8 +29,8 @@ export default function AnalysisForm({ onStart, onComplete }) {
   const nameRef = useRef(null)
   const userRef = useRef(null)
 
-  const ANALYSIS_NAME_MAX = 120
-  const USER_NAME_MAX = 60
+  const ANALYSIS_NAME_MAX = 50
+  const USER_NAME_MAX = 35
 
   useEffect(() => {
     setSelectedCategories(CATEGORIES.map(c => c.id))

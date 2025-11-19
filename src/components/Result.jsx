@@ -157,13 +157,35 @@ export default function Result({ result, fromCache }) {
               </div>
               <div className="mod-list">
                 {result.modifications.map((m, idx) => {
-                  const labelKey = `app.categoryLabels.${m.category}`
-                  const translated = t(labelKey)
-                  const displayCategory = (translated && translated !== labelKey)
-                    ? translated
-                    : (m.category || '').toString().split('.').pop()
+                  const rawCategory = (m.category || '').toString()
+                  const normalize = s => s.toString().toLowerCase()
+                  const mappedKey = (() => {
+                    const s = normalize(rawCategory)
+                    if (!s) return ''
+                    if (s.includes('ui') || s.includes('style') || s.includes('estil')) return 'ui'
+                    if (s.includes('form')) return 'forms'
+                    if (s.includes('link')) return 'links'
+                    if (s.includes('image') || s.includes('asset') || s.includes('imagen')) return 'images'
+                    if (s.includes('text') || s.includes('texto')) return 'texts'
+                    if (s.includes('respons')) return 'responsiveness'
+                    return s.replace(/[^a-z0-9]+/g, '')
+                  })()
 
-                  // severity display and safe class
+                  let displayCategory = ''
+                  if (mappedKey) {
+                    const formKey = `form.categories.${mappedKey}`
+                    const fromForm = t(formKey)
+                    if (fromForm && fromForm !== formKey) {
+                      displayCategory = fromForm
+                    } else {
+                      const appKey = `app.categoryLabels.${mappedKey}`
+                      const fromApp = t(appKey)
+                      displayCategory = (fromApp && fromApp !== appKey) ? fromApp : rawCategory
+                    }
+                  } else {
+                    displayCategory = rawCategory
+                  }
+
                   const sevKey = `app.severity.${(m.severity || '').toString().toLowerCase()}`
                   const sevTranslated = t(sevKey)
                   const displaySeverity = (sevTranslated && !sevTranslated.includes('app.severity'))
