@@ -91,7 +91,7 @@ const es = {
     categories: {
       ui: 'UI/estilos',
       forms: 'Formularios',
-      links: 'Links',
+      links: 'Enlaces',
       images: 'Imágenes/Recursos',
       texts: 'Textos',
       responsiveness: 'Responsividad'
