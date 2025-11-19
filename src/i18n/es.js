@@ -1,7 +1,8 @@
 const es = {
     app: {
     title: 'Análisis de páginas web con IA',
-    subtitle: 'Envía una URL y obtén un análisis de tu página web con IA',
+    subtitle: 'Enviá una URL y obtené un informe de calidad',
+    analysisMenu: 'Análisis',
     newAnalysis: 'Nuevo análisis',
     cachedRequests: 'Solicitudes en caché',
     clearCache: 'Limpiar caché',

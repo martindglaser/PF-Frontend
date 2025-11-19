@@ -431,18 +431,27 @@ button.small img {
   font-family: inherit;
   min-width: 140px;
   cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .date-input::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity .2s ease;
+  opacity: 0;
 }
 
-.date-input::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
+.date-picker-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 6px;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 6px;
 }
+.date-picker-btn svg { display: block; }
+.date-picker-btn:focus { outline: 2px solid rgba(0,212,255,.18); }
 
 @media (max-width: 768px) {
   .history-filter {
