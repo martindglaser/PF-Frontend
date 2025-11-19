@@ -12,7 +12,7 @@ export default function Sidebar({ activeView, setActiveView }) {
     <aside className="sidebar">
       <div className="sidebar-logo">
         <h2>
-          <img src="/app-icon-v3.png" alt={t('app.title')} className="logo-img" />
+          <img src="/app-icon.png" alt={t('app.title')} className="logo-img" />
         </h2>
       </div>
 
